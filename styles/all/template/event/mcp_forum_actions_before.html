@@ -1,0 +1,659 @@
+<!-- IF S_SUPPORTTRIAGE_MCP_QUEUE_SHOW -->
+<div class="panel supporttriage-mcp-panel">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_MCP_QUEUE_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_MCP_QUEUE_EXPLAIN}</p>
+
+        <!-- IF S_SUPPORTTRIAGE_MCP_STATUS_SAVED -->
+        <p class="supporttriage-mcp-message successbox">{L_SUPPORTTRIAGE_MCP_STATUS_SAVED}</p>
+        <!-- ENDIF -->
+        <!-- IF S_SUPPORTTRIAGE_MCP_STATUS_SAVE_ERROR -->
+        <p class="supporttriage-mcp-message errorbox">{L_SUPPORTTRIAGE_MCP_STATUS_SAVE_ERROR}</p>
+        <!-- ENDIF -->
+
+        <div class="supporttriage-mcp-stats">
+            <button type="button" class="supporttriage-mcp-stat-chip supporttriage-status-badge supporttriage-status-new" data-supporttriage-set-filter="new">{L_SUPPORTTRIAGE_STATUS_NEW}: {SUPPORTTRIAGE_MCP_COUNT_NEW}</button>
+            <button type="button" class="supporttriage-mcp-stat-chip supporttriage-status-badge supporttriage-status-progress" data-supporttriage-set-filter="in_progress">{L_SUPPORTTRIAGE_STATUS_IN_PROGRESS}: {SUPPORTTRIAGE_MCP_COUNT_IN_PROGRESS}</button>
+            <button type="button" class="supporttriage-mcp-stat-chip supporttriage-status-badge supporttriage-status-waiting" data-supporttriage-set-filter="waiting_reply">{L_SUPPORTTRIAGE_STATUS_WAITING_REPLY}: {SUPPORTTRIAGE_MCP_COUNT_WAITING_REPLY}</button>
+            <button type="button" class="supporttriage-mcp-stat-chip supporttriage-status-badge supporttriage-status-solved" data-supporttriage-set-filter="solved">{L_SUPPORTTRIAGE_STATUS_SOLVED}: {SUPPORTTRIAGE_MCP_COUNT_SOLVED}</button>
+            <button type="button" class="supporttriage-mcp-stat-chip supporttriage-status-badge supporttriage-status-muted" data-supporttriage-set-filter="no_reply">{L_SUPPORTTRIAGE_STATUS_NO_REPLY}: {SUPPORTTRIAGE_MCP_COUNT_NO_REPLY}</button>
+        </div>
+
+        <div class="supporttriage-mcp-smart-stats">
+            <button type="button" class="supporttriage-mcp-smart-chip supporttriage-alert-badge supporttriage-alert-danger" data-supporttriage-set-workflow="action_now">{L_SUPPORTTRIAGE_MCP_WORKFLOW_ACTION_NOW}: <span id="supporttriage-mcp-count-action-now">0</span></button>
+            <button type="button" class="supporttriage-mcp-smart-chip supporttriage-alert-badge supporttriage-alert-warning" data-supporttriage-set-workflow="awaiting_team">{L_SUPPORTTRIAGE_MCP_WORKFLOW_AWAITING_TEAM}: <span id="supporttriage-mcp-count-awaiting-team">0</span></button>
+            <button type="button" class="supporttriage-mcp-smart-chip supporttriage-alert-badge supporttriage-alert-muted" data-supporttriage-set-workflow="awaiting_author">{L_SUPPORTTRIAGE_MCP_WORKFLOW_AWAITING_AUTHOR}: <span id="supporttriage-mcp-count-awaiting-author">0</span></button>
+            <span class="supporttriage-mcp-visible-meta" id="supporttriage-mcp-visible-meta">{L_SUPPORTTRIAGE_MCP_VISIBLE}: 0/0</span>
+        </div>
+
+        <div class="supporttriage-mcp-controls">
+            <div class="supporttriage-mcp-control">
+                <label for="supporttriage-mcp-workflow"><strong>{L_SUPPORTTRIAGE_MCP_WORKFLOW}{L_COLON}</strong></label>
+                <select id="supporttriage-mcp-workflow" class="supporttriage-mcp-workflow" data-supporttriage-current-workflow="{SUPPORTTRIAGE_MCP_WORKFLOW_FILTER}">
+                    <option value="all">{L_SUPPORTTRIAGE_MCP_WORKFLOW_ALL}</option>
+                    <option value="action_now">{L_SUPPORTTRIAGE_MCP_WORKFLOW_ACTION_NOW}</option>
+                    <option value="awaiting_team">{L_SUPPORTTRIAGE_MCP_WORKFLOW_AWAITING_TEAM}</option>
+                    <option value="awaiting_author">{L_SUPPORTTRIAGE_MCP_WORKFLOW_AWAITING_AUTHOR}</option>
+                </select>
+            </div>
+
+            <div class="supporttriage-mcp-control">
+                <label for="supporttriage-mcp-filter"><strong>{L_SUPPORTTRIAGE_MCP_FILTER}{L_COLON}</strong></label>
+                <select id="supporttriage-mcp-filter" class="supporttriage-mcp-filter" data-supporttriage-current-filter="{SUPPORTTRIAGE_MCP_FILTER}">
+                    <option value="all">{L_SUPPORTTRIAGE_MCP_FILTER_ALL}</option>
+                    <option value="new">{L_SUPPORTTRIAGE_STATUS_NEW}</option>
+                    <option value="in_progress">{L_SUPPORTTRIAGE_STATUS_IN_PROGRESS}</option>
+                    <option value="waiting_reply">{L_SUPPORTTRIAGE_STATUS_WAITING_REPLY}</option>
+                    <option value="no_reply">{L_SUPPORTTRIAGE_STATUS_NO_REPLY}</option>
+                    <option value="solved">{L_SUPPORTTRIAGE_STATUS_SOLVED}</option>
+                    <!-- IF SUPPORTTRIAGE_MCP_STALE_DAYS -->
+                    <option value="stale">{L_SUPPORTTRIAGE_MCP_FILTER_STALE}</option>
+                    <!-- ENDIF -->
+                </select>
+            </div>
+
+            <div class="supporttriage-mcp-control">
+                <label for="supporttriage-mcp-attention"><strong>{L_SUPPORTTRIAGE_MCP_ATTENTION}{L_COLON}</strong></label>
+                <select id="supporttriage-mcp-attention" class="supporttriage-mcp-attention" data-supporttriage-current-attention="{SUPPORTTRIAGE_MCP_ATTENTION_FILTER}">
+                    <option value="all">{L_SUPPORTTRIAGE_MCP_ATTENTION_ALL}</option>
+                    <option value="alerts">{L_SUPPORTTRIAGE_MCP_ATTENTION_ALERTS}</option>
+                    <!-- IF SUPPORTTRIAGE_MCP_STALE_DAYS -->
+                    <option value="stale">{L_SUPPORTTRIAGE_MCP_ATTENTION_STALE}</option>
+                    <!-- ENDIF -->
+                    <option value="attention">{L_SUPPORTTRIAGE_MCP_ATTENTION_NEEDS_WORK}</option>
+                    <option value="clean">{L_SUPPORTTRIAGE_MCP_ATTENTION_CLEAN}</option>
+                </select>
+            </div>
+
+            <!-- IF S_SUPPORTTRIAGE_PRIORITY_SUPPORTED -->
+            <div class="supporttriage-mcp-control">
+                <label for="supporttriage-mcp-priority"><strong>{L_SUPPORTTRIAGE_MCP_PRIORITY}{L_COLON}</strong></label>
+                <select id="supporttriage-mcp-priority" class="supporttriage-mcp-priority" data-supporttriage-current-priority="{SUPPORTTRIAGE_MCP_PRIORITY_FILTER}">
+                    <option value="all">{L_SUPPORTTRIAGE_MCP_PRIORITY_ALL}</option>
+                    <option value="low">{L_SUPPORTTRIAGE_PRIORITY_LOW}</option>
+                    <option value="normal">{L_SUPPORTTRIAGE_PRIORITY_NORMAL}</option>
+                    <option value="high">{L_SUPPORTTRIAGE_PRIORITY_HIGH}</option>
+                    <option value="critical">{L_SUPPORTTRIAGE_PRIORITY_CRITICAL}</option>
+                </select>
+            </div>
+            <!-- ENDIF -->
+
+            <div class="supporttriage-mcp-control">
+                <label for="supporttriage-mcp-sort"><strong>{L_SUPPORTTRIAGE_MCP_SORT}{L_COLON}</strong></label>
+                <select id="supporttriage-mcp-sort" class="supporttriage-mcp-sort" data-supporttriage-current-sort="{SUPPORTTRIAGE_MCP_SORT}">
+                    <option value="urgency">{L_SUPPORTTRIAGE_MCP_SORT_URGENCY}</option>
+                    <option value="oldest_update">{L_SUPPORTTRIAGE_MCP_SORT_OLDEST_UPDATE}</option>
+                    <option value="newest_update">{L_SUPPORTTRIAGE_MCP_SORT_NEWEST_UPDATE}</option>
+                    <option value="priority">{L_SUPPORTTRIAGE_MCP_SORT_PRIORITY}</option>
+                    <option value="title">{L_SUPPORTTRIAGE_MCP_SORT_TITLE}</option>
+                </select>
+            </div>
+
+            <div class="supporttriage-mcp-control supporttriage-mcp-control-search">
+                <label for="supporttriage-mcp-search"><strong>{L_SUPPORTTRIAGE_MCP_SEARCH}{L_COLON}</strong></label>
+                <input type="text" id="supporttriage-mcp-search" class="inputbox supporttriage-mcp-search" value="{SUPPORTTRIAGE_MCP_SEARCH}" placeholder="{L_SUPPORTTRIAGE_MCP_SEARCH_PLACEHOLDER}" autocomplete="off" />
+            </div>
+
+            <!-- IF SUPPORTTRIAGE_MCP_STALE_DAYS -->
+            <span class="supporttriage-mcp-hint">{SUPPORTTRIAGE_MCP_STALE_HINT}</span>
+            <!-- ENDIF -->
+        </div>
+
+        <!-- IF S_SUPPORTTRIAGE_MCP_NOTICES_SHOW -->
+        <div class="supporttriage-mcp-stale-list">
+            <h4>{L_SUPPORTTRIAGE_MCP_NOTICES_TITLE}</h4>
+            <p>{L_SUPPORTTRIAGE_MCP_NOTICES_EXPLAIN}</p>
+            <ul>
+                <!-- BEGIN supporttriage_mcp_notice_rows -->
+                <li>
+                    <a href="{supporttriage_mcp_notice_rows.U_TOPIC}">{supporttriage_mcp_notice_rows.TITLE}</a>
+                    <span class="supporttriage-alert-badge {supporttriage_mcp_notice_rows.CLASS}">{supporttriage_mcp_notice_rows.SHORT_LABEL}</span>
+                    <span class="supporttriage-mcp-stale-meta">{supporttriage_mcp_notice_rows.MESSAGE}</span>
+                </li>
+                <!-- END supporttriage_mcp_notice_rows -->
+            </ul>
+        </div>
+        <!-- ENDIF -->
+
+        <!-- IF .supporttriage_mcp_stale_topics -->
+        <div class="supporttriage-mcp-stale-list">
+            <h4>{L_SUPPORTTRIAGE_MCP_STALE_TOPICS}</h4>
+            <ul>
+                <!-- BEGIN supporttriage_mcp_stale_topics -->
+                <li>
+                    <a href="{supporttriage_mcp_stale_topics.U_TOPIC}">{supporttriage_mcp_stale_topics.TITLE}</a>
+                    <span class="supporttriage-status-badge {supporttriage_mcp_stale_topics.STATUS_CLASS}">{supporttriage_mcp_stale_topics.STATUS_LABEL}</span>
+                    <span class="supporttriage-mcp-stale-meta">{supporttriage_mcp_stale_topics.UPDATED}</span>
+                </li>
+                <!-- END supporttriage_mcp_stale_topics -->
+            </ul>
+        </div>
+        <!-- ENDIF -->
+
+        <!-- IF S_SUPPORTTRIAGE_MCP_BULK_SHOW -->
+        <div class="supporttriage-mcp-bulk-bar" id="supporttriage-mcp-bulk-panel" data-empty-selection="{L_SUPPORTTRIAGE_MCP_BULK_EMPTY}" data-empty-action="{L_SUPPORTTRIAGE_MCP_BULK_EMPTY_ACTION}" data-confirm="{L_SUPPORTTRIAGE_MCP_BULK_CONFIRM}">
+            <div class="supporttriage-mcp-bulk-summary">
+                <strong>{L_SUPPORTTRIAGE_MCP_BULK_TITLE}</strong>
+                <span id="supporttriage-mcp-bulk-count" class="supporttriage-mcp-bulk-count">{L_SUPPORTTRIAGE_MCP_BULK_SELECTED}: 0</span>
+            </div>
+            <div class="supporttriage-mcp-bulk-actions">
+                <label>
+                    <span>{L_SUPPORTTRIAGE_MCP_BULK_STATUS}{L_COLON}</span>
+                    <select id="supporttriage-mcp-bulk-status" class="inputbox">
+                        <option value="">{L_SUPPORTTRIAGE_MCP_BULK_STATUS_NONE}</option>
+                        <option value="new">{L_SUPPORTTRIAGE_STATUS_NEW}</option>
+                        <option value="in_progress">{L_SUPPORTTRIAGE_STATUS_IN_PROGRESS}</option>
+                        <option value="waiting_reply">{L_SUPPORTTRIAGE_STATUS_WAITING_REPLY}</option>
+                        <option value="no_reply">{L_SUPPORTTRIAGE_STATUS_NO_REPLY}</option>
+                        <option value="solved">{L_SUPPORTTRIAGE_STATUS_SOLVED}</option>
+                    </select>
+                </label>
+                <!-- IF S_SUPPORTTRIAGE_PRIORITY_SUPPORTED -->
+                <label>
+                    <span>{L_SUPPORTTRIAGE_MCP_BULK_PRIORITY}{L_COLON}</span>
+                    <select id="supporttriage-mcp-bulk-priority" class="inputbox">
+                        <option value="">{L_SUPPORTTRIAGE_MCP_BULK_PRIORITY_NONE}</option>
+                        <option value="low">{L_SUPPORTTRIAGE_PRIORITY_LOW}</option>
+                        <option value="normal">{L_SUPPORTTRIAGE_PRIORITY_NORMAL}</option>
+                        <option value="high">{L_SUPPORTTRIAGE_PRIORITY_HIGH}</option>
+                        <option value="critical">{L_SUPPORTTRIAGE_PRIORITY_CRITICAL}</option>
+                    </select>
+                </label>
+                <!-- ENDIF -->
+                <button type="button" class="button button-secondary" id="supporttriage-mcp-select-visible">{L_SUPPORTTRIAGE_MCP_BULK_SELECT_VISIBLE}</button>
+                <button type="button" class="button button-secondary" id="supporttriage-mcp-clear-selection">{L_SUPPORTTRIAGE_MCP_BULK_CLEAR_SELECTION}</button>
+                <button type="button" class="button1" id="supporttriage-mcp-bulk-apply">{L_SUPPORTTRIAGE_MCP_BULK_APPLY}</button>
+            </div>
+        </div>
+
+        <form id="supporttriage-mcp-quick-form" class="supporttriage-hidden-form" method="post" action="{SUPPORTTRIAGE_MCP_ACTION_URL}">
+            <input type="hidden" name="supporttriage_mcp_quick_status" value="0" />
+            <input type="hidden" name="supporttriage_mcp_bulk_apply" value="0" />
+            <input type="hidden" name="supporttriage_topic_id" value="0" />
+            <input type="hidden" name="supporttriage_quick_status" value="" />
+            <input type="hidden" name="supporttriage_bulk_status" value="" />
+            <input type="hidden" name="supporttriage_bulk_priority" value="" />
+            <div id="supporttriage-mcp-bulk-topic-ids"></div>
+            {SUPPORTTRIAGE_MCP_FORM_TOKEN}
+        </form>
+        <!-- ENDIF -->
+    </div>
+</div>
+
+<script>
+(function() {
+    var filter = document.getElementById('supporttriage-mcp-filter');
+    var workflow = document.getElementById('supporttriage-mcp-workflow');
+    var attention = document.getElementById('supporttriage-mcp-attention');
+    var priority = document.getElementById('supporttriage-mcp-priority');
+    var sortMode = document.getElementById('supporttriage-mcp-sort');
+    var search = document.getElementById('supporttriage-mcp-search');
+    if (!filter) {
+        return;
+    }
+
+    function normalize(text) {
+        return (text || '').toString().toLowerCase();
+    }
+
+    function priorityWeight(key) {
+        if (key === 'critical') {
+            return 4;
+        }
+        if (key === 'high') {
+            return 3;
+        }
+        if (key === 'normal') {
+            return 2;
+        }
+        return 1;
+    }
+
+    function workflowBucket(meta) {
+        if (meta.status === 'waiting_reply' || meta.status === 'no_reply') {
+            return 'awaiting_author';
+        }
+
+        if (meta.status === 'new' || meta.status === 'in_progress' || meta.primaryAlert === 'author_return') {
+            return 'awaiting_team';
+        }
+
+        return 'all';
+    }
+
+    function isActionNow(meta) {
+        return meta.primaryAlert === 'author_return'
+            || meta.primaryAlert === 'sla_warning'
+            || meta.stale
+            || meta.status === 'new'
+            || meta.status === 'in_progress'
+            || meta.status === 'no_reply'
+            || meta.priorityKey === 'critical';
+    }
+
+    function urgencyScore(meta) {
+        var score = 0;
+        if (meta.status === 'new') {
+            score += 50;
+        } else if (meta.status === 'in_progress') {
+            score += 45;
+        } else if (meta.status === 'no_reply') {
+            score += 60;
+        } else if (meta.status === 'waiting_reply') {
+            score += 20;
+        }
+
+        if (meta.primaryAlert === 'author_return') {
+            score += 80;
+        } else if (meta.primaryAlert === 'sla_warning') {
+            score += 70;
+        } else if (meta.primaryAlert === 'no_reply') {
+            score += 60;
+        } else if (meta.primaryAlert === 'kb_linked') {
+            score += 5;
+        }
+
+        if (meta.stale) {
+            score += 30;
+        }
+
+        score += priorityWeight(meta.priorityKey) * 10;
+        if (meta.updatedTs > 0) {
+            score += Math.min(20, Math.floor((Date.now() / 1000 - meta.updatedTs) / 86400));
+        }
+
+        return score;
+    }
+
+    function getEntries() {
+        return Array.prototype.slice.call(document.querySelectorAll('.supporttriage-topic-marker')).map(function(marker, index) {
+            var row = marker.closest('li.row, tr');
+            var parent = row ? row.parentNode : null;
+            return {
+                marker: marker,
+                row: row,
+                parent: parent,
+                index: index,
+                status: marker.getAttribute('data-supporttriage-status') || 'none',
+                stale: marker.getAttribute('data-supporttriage-stale') === '1',
+                hasAlert: marker.getAttribute('data-supporttriage-alert') === '1',
+                title: normalize(marker.getAttribute('data-supporttriage-title') || (row ? row.textContent : '')),
+                priorityKey: marker.getAttribute('data-supporttriage-priority') || 'normal',
+                updatedTs: parseInt(marker.getAttribute('data-supporttriage-updated') || '0', 10) || 0,
+                primaryAlert: marker.getAttribute('data-supporttriage-primary-alert') || '',
+                topicId: marker.getAttribute('data-supporttriage-topic-id') || '0'
+            };
+        }).filter(function(entry) {
+            return !!entry.row;
+        });
+    }
+
+    function updateSelectionCount() {
+        var countBox = document.getElementById('supporttriage-mcp-bulk-count');
+        if (!countBox) {
+            return;
+        }
+
+        var count = document.querySelectorAll('.supporttriage-mcp-bulk-checkbox:checked').length;
+        countBox.textContent = '{L_SUPPORTTRIAGE_MCP_BULK_SELECTED}: ' + count;
+    }
+
+    function updateSmartCounts(entries, visibleCount) {
+        var actionNow = 0;
+        var awaitingTeam = 0;
+        var awaitingAuthor = 0;
+        entries.forEach(function(entry) {
+            if (isActionNow(entry)) {
+                actionNow++;
+            }
+            if (workflowBucket(entry) === 'awaiting_team') {
+                awaitingTeam++;
+            }
+            if (workflowBucket(entry) === 'awaiting_author') {
+                awaitingAuthor++;
+            }
+        });
+
+        var actionNowBox = document.getElementById('supporttriage-mcp-count-action-now');
+        var awaitingTeamBox = document.getElementById('supporttriage-mcp-count-awaiting-team');
+        var awaitingAuthorBox = document.getElementById('supporttriage-mcp-count-awaiting-author');
+        var visibleMeta = document.getElementById('supporttriage-mcp-visible-meta');
+
+        if (actionNowBox) {
+            actionNowBox.textContent = actionNow;
+        }
+        if (awaitingTeamBox) {
+            awaitingTeamBox.textContent = awaitingTeam;
+        }
+        if (awaitingAuthorBox) {
+            awaitingAuthorBox.textContent = awaitingAuthor;
+        }
+        if (visibleMeta) {
+            visibleMeta.textContent = '{L_SUPPORTTRIAGE_MCP_VISIBLE}: ' + visibleCount + '/' + entries.length;
+        }
+    }
+
+    function sortEntries(entries, sortValue) {
+        var groups = [];
+        entries.forEach(function(entry) {
+            var found = null;
+            for (var i = 0; i < groups.length; i++) {
+                if (groups[i].parent === entry.parent) {
+                    found = groups[i];
+                    break;
+                }
+            }
+            if (!found) {
+                found = { parent: entry.parent, rows: [] };
+                groups.push(found);
+            }
+            found.rows.push(entry);
+        });
+
+        function compare(a, b) {
+            var aUrgency = urgencyScore(a);
+            var bUrgency = urgencyScore(b);
+            var aPriority = priorityWeight(a.priorityKey);
+            var bPriority = priorityWeight(b.priorityKey);
+            var aTitle = a.title || '';
+            var bTitle = b.title || '';
+
+            if (sortValue === 'oldest_update') {
+                if (a.updatedTs !== b.updatedTs) {
+                    if (a.updatedTs === 0) { return 1; }
+                    if (b.updatedTs === 0) { return -1; }
+                    return a.updatedTs - b.updatedTs;
+                }
+            } else if (sortValue === 'newest_update') {
+                if (a.updatedTs !== b.updatedTs) {
+                    return b.updatedTs - a.updatedTs;
+                }
+            } else if (sortValue === 'priority') {
+                if (aPriority !== bPriority) {
+                    return bPriority - aPriority;
+                }
+                if (aUrgency !== bUrgency) {
+                    return bUrgency - aUrgency;
+                }
+            } else if (sortValue === 'title') {
+                if (aTitle < bTitle) { return -1; }
+                if (aTitle > bTitle) { return 1; }
+            } else {
+                if (aUrgency !== bUrgency) {
+                    return bUrgency - aUrgency;
+                }
+                if (a.stale !== b.stale) {
+                    return a.stale ? -1 : 1;
+                }
+                if (aPriority !== bPriority) {
+                    return bPriority - aPriority;
+                }
+                if (a.updatedTs !== b.updatedTs) {
+                    if (a.updatedTs === 0) { return 1; }
+                    if (b.updatedTs === 0) { return -1; }
+                    return a.updatedTs - b.updatedTs;
+                }
+            }
+
+            return a.index - b.index;
+        }
+
+        groups.forEach(function(group) {
+            group.rows.sort(compare).forEach(function(entry) {
+                if (entry.parent) {
+                    entry.parent.appendChild(entry.row);
+                }
+            });
+        });
+    }
+
+    function updateRows() {
+        var filterValue = filter.value || 'all';
+        var workflowValue = workflow ? (workflow.value || 'all') : 'all';
+        var attentionValue = attention ? (attention.value || 'all') : 'all';
+        var priorityValue = priority ? (priority.value || 'all') : 'all';
+        var sortValue = sortMode ? (sortMode.value || 'urgency') : 'urgency';
+        var searchValue = search ? normalize(search.value) : '';
+        var entries = getEntries();
+        var visibleCount = 0;
+
+        entries.forEach(function(entry) {
+            var statusMatch = filterValue === 'all' || entry.status === filterValue || (filterValue === 'stale' && entry.stale);
+            var workflowMatch = workflowValue === 'all'
+                || (workflowValue === 'action_now' && isActionNow(entry))
+                || (workflowValue === 'awaiting_team' && workflowBucket(entry) === 'awaiting_team')
+                || (workflowValue === 'awaiting_author' && workflowBucket(entry) === 'awaiting_author');
+            var attentionMatch = attentionValue === 'all'
+                || (attentionValue === 'alerts' && entry.hasAlert)
+                || (attentionValue === 'stale' && entry.stale)
+                || (attentionValue === 'attention' && (entry.hasAlert || entry.stale || entry.status === 'no_reply'))
+                || (attentionValue === 'clean' && !entry.hasAlert && !entry.stale);
+            var priorityMatch = priorityValue === 'all' || entry.priorityKey === priorityValue;
+            var searchMatch = searchValue === '' || entry.title.indexOf(searchValue) !== -1;
+            var show = statusMatch && workflowMatch && attentionMatch && priorityMatch && searchMatch;
+
+            entry.row.style.display = show ? '' : 'none';
+            entry.row.classList.toggle('supporttriage-row-alert', entry.hasAlert);
+            entry.row.classList.toggle('supporttriage-row-stale', entry.stale);
+            entry.row.classList.toggle('supporttriage-row-critical', entry.priorityKey === 'critical');
+            entry.row.classList.toggle('supporttriage-row-author-return', entry.primaryAlert === 'author_return');
+            entry.row.classList.toggle('supporttriage-row-sla', entry.primaryAlert === 'sla_warning');
+            entry.row.classList.toggle('supporttriage-row-awaiting-author', workflowBucket(entry) === 'awaiting_author');
+            entry.row.classList.toggle('supporttriage-row-action-now', isActionNow(entry));
+
+            if (show) {
+                visibleCount++;
+            }
+        });
+
+        updateSmartCounts(entries, visibleCount);
+        sortEntries(entries, sortValue);
+        updateSelectionCount();
+
+        try {
+            var url = new URL(window.location.href);
+            if (filterValue === 'all') {
+                url.searchParams.delete('st_filter');
+            } else {
+                url.searchParams.set('st_filter', filterValue);
+            }
+            if (workflowValue === 'all') {
+                url.searchParams.delete('st_workflow');
+            } else {
+                url.searchParams.set('st_workflow', workflowValue);
+            }
+            if (attentionValue === 'all') {
+                url.searchParams.delete('st_attention');
+            } else {
+                url.searchParams.set('st_attention', attentionValue);
+            }
+            if (priorityValue === 'all') {
+                url.searchParams.delete('st_priority');
+            } else {
+                url.searchParams.set('st_priority', priorityValue);
+            }
+            if (sortValue === 'urgency') {
+                url.searchParams.delete('st_sort');
+            } else {
+                url.searchParams.set('st_sort', sortValue);
+            }
+            if (searchValue === '') {
+                url.searchParams.delete('st_q');
+            } else {
+                url.searchParams.set('st_q', search.value);
+            }
+            window.history.replaceState({}, '', url.toString());
+        } catch (e) {
+            // Ignore history API issues.
+        }
+    }
+
+    filter.value = filter.getAttribute('data-supporttriage-current-filter') || 'all';
+    if (workflow) {
+        workflow.value = workflow.getAttribute('data-supporttriage-current-workflow') || 'all';
+    }
+    if (attention) {
+        attention.value = attention.getAttribute('data-supporttriage-current-attention') || 'all';
+    }
+    if (priority) {
+        priority.value = priority.getAttribute('data-supporttriage-current-priority') || 'all';
+    }
+    if (sortMode) {
+        sortMode.value = sortMode.getAttribute('data-supporttriage-current-sort') || 'urgency';
+    }
+    updateRows();
+
+    filter.addEventListener('change', updateRows);
+    if (workflow) {
+        workflow.addEventListener('change', updateRows);
+    }
+    if (attention) {
+        attention.addEventListener('change', updateRows);
+    }
+    if (priority) {
+        priority.addEventListener('change', updateRows);
+    }
+    if (sortMode) {
+        sortMode.addEventListener('change', updateRows);
+    }
+    if (search) {
+        search.addEventListener('input', updateRows);
+    }
+
+    document.querySelectorAll('[data-supporttriage-set-filter]').forEach(function(button) {
+        button.addEventListener('click', function() {
+            filter.value = button.getAttribute('data-supporttriage-set-filter') || 'all';
+            updateRows();
+        });
+    });
+
+    document.querySelectorAll('[data-supporttriage-set-workflow]').forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (workflow) {
+                workflow.value = button.getAttribute('data-supporttriage-set-workflow') || 'all';
+                updateRows();
+            }
+        });
+    });
+
+    var quickForm = document.getElementById('supporttriage-mcp-quick-form');
+    if (quickForm) {
+        var quickFlag = quickForm.querySelector('input[name="supporttriage_mcp_quick_status"]');
+        var bulkFlag = quickForm.querySelector('input[name="supporttriage_mcp_bulk_apply"]');
+        var topicIdField = quickForm.querySelector('input[name="supporttriage_topic_id"]');
+        var quickStatusField = quickForm.querySelector('input[name="supporttriage_quick_status"]');
+        var bulkStatusField = quickForm.querySelector('input[name="supporttriage_bulk_status"]');
+        var bulkPriorityField = quickForm.querySelector('input[name="supporttriage_bulk_priority"]');
+        var bulkTopicIds = document.getElementById('supporttriage-mcp-bulk-topic-ids');
+        var bulkPanel = document.getElementById('supporttriage-mcp-bulk-panel');
+        var bulkStatus = document.getElementById('supporttriage-mcp-bulk-status');
+        var bulkPriority = document.getElementById('supporttriage-mcp-bulk-priority');
+        var bulkApply = document.getElementById('supporttriage-mcp-bulk-apply');
+        var selectVisible = document.getElementById('supporttriage-mcp-select-visible');
+        var clearSelection = document.getElementById('supporttriage-mcp-clear-selection');
+
+        function syncQuickFormAction() {
+            try {
+                quickForm.action = window.location.href;
+            } catch (e) {
+                // Ignore location assignment issues.
+            }
+        }
+
+        document.querySelectorAll('.supporttriage-mcp-bulk-checkbox').forEach(function(checkbox) {
+            checkbox.addEventListener('change', updateSelectionCount);
+        });
+
+        document.querySelectorAll('.supporttriage-mcp-quick').forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                var topicId = link.getAttribute('data-topic-id') || '0';
+                var status = link.getAttribute('data-status') || '';
+                quickFlag.value = '1';
+                bulkFlag.value = '0';
+                topicIdField.value = topicId;
+                quickStatusField.value = status;
+                bulkStatusField.value = '';
+                bulkPriorityField.value = '';
+                if (bulkTopicIds) {
+                    bulkTopicIds.innerHTML = '';
+                }
+                syncQuickFormAction();
+                quickForm.submit();
+            });
+        });
+
+        if (selectVisible) {
+            selectVisible.addEventListener('click', function() {
+                document.querySelectorAll('.supporttriage-mcp-bulk-checkbox').forEach(function(checkbox) {
+                    var row = checkbox.closest('li.row, tr');
+                    if (!row || row.style.display !== 'none') {
+                        checkbox.checked = true;
+                    }
+                });
+                updateSelectionCount();
+            });
+        }
+
+        if (clearSelection) {
+            clearSelection.addEventListener('click', function() {
+                document.querySelectorAll('.supporttriage-mcp-bulk-checkbox').forEach(function(checkbox) {
+                    checkbox.checked = false;
+                });
+                updateSelectionCount();
+            });
+        }
+
+        if (bulkApply) {
+            bulkApply.addEventListener('click', function() {
+                var selected = Array.prototype.slice.call(document.querySelectorAll('.supporttriage-mcp-bulk-checkbox:checked')).map(function(checkbox) {
+                    return checkbox.value;
+                }).filter(Boolean);
+                var selectedStatus = bulkStatus ? (bulkStatus.value || '') : '';
+                var selectedPriority = bulkPriority ? (bulkPriority.value || '') : '';
+
+                if (!selected.length) {
+                    window.alert(bulkPanel ? bulkPanel.getAttribute('data-empty-selection') : '{L_SUPPORTTRIAGE_MCP_BULK_EMPTY}');
+                    return;
+                }
+
+                if (!selectedStatus && !selectedPriority) {
+                    window.alert(bulkPanel ? bulkPanel.getAttribute('data-empty-action') : '{L_SUPPORTTRIAGE_MCP_BULK_EMPTY_ACTION}');
+                    return;
+                }
+
+                if (bulkPanel) {
+                    var confirmText = bulkPanel.getAttribute('data-confirm') || '';
+                    if (confirmText && !window.confirm(confirmText)) {
+                        return;
+                    }
+                }
+
+                quickFlag.value = '0';
+                bulkFlag.value = '1';
+                topicIdField.value = '0';
+                quickStatusField.value = '';
+                bulkStatusField.value = selectedStatus;
+                bulkPriorityField.value = selectedPriority;
+
+                if (bulkTopicIds) {
+                    bulkTopicIds.innerHTML = '';
+                    selected.forEach(function(topicId) {
+                        var input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'supporttriage_topic_ids[]';
+                        input.value = topicId;
+                        bulkTopicIds.appendChild(input);
+                    });
+                }
+
+                syncQuickFormAction();
+                quickForm.submit();
+            });
+        }
+
+        updateSelectionCount();
+    }
+})();
+</script>
+<!-- ENDIF -->

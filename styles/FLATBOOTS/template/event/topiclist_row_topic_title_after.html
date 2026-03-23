@@ -1,0 +1,33 @@
+<span class="supporttriage-topic-marker" data-supporttriage-status="{topicrow.SUPPORTTRIAGE_STATUS_KEY}" data-supporttriage-stale="<!-- IF topicrow.S_SUPPORTTRIAGE_STALE -->1<!-- ELSE -->0<!-- ENDIF -->" data-supporttriage-alert="<!-- IF topicrow.S_SUPPORTTRIAGE_HAS_ALERT -->1<!-- ELSE -->0<!-- ENDIF -->" data-supporttriage-title="{topicrow.SUPPORTTRIAGE_TOPIC_TITLE_PLAIN}" data-supporttriage-priority="{topicrow.SUPPORTTRIAGE_PRIORITY_KEY}" data-supporttriage-updated="{topicrow.SUPPORTTRIAGE_STATUS_UPDATED_TS}" data-supporttriage-primary-alert="{topicrow.SUPPORTTRIAGE_PRIMARY_ALERT_KEY}" data-supporttriage-topic-id="{topicrow.SUPPORTTRIAGE_TOPIC_ID}"></span>
+<!-- IF topicrow.S_SUPPORTTRIAGE_MCP_ACTIONS_SHOW -->
+    <label class="supporttriage-mcp-bulk-toggle">
+        <input type="checkbox" class="supporttriage-mcp-bulk-checkbox" value="{topicrow.SUPPORTTRIAGE_TOPIC_ID}" aria-label="{L_SUPPORTTRIAGE_MCP_BULK_CHECK_TOPIC}" />
+    </label>
+<!-- ENDIF -->
+
+<!-- IF topicrow.S_SUPPORTTRIAGE_STATUS_SHOW -->
+    <span class="supporttriage-status-badge {topicrow.SUPPORTTRIAGE_STATUS_CLASS}" data-supporttriage-status="{topicrow.SUPPORTTRIAGE_STATUS_KEY}" data-supporttriage-stale="<!-- IF topicrow.S_SUPPORTTRIAGE_STALE -->1<!-- ELSE -->0<!-- ENDIF -->">{topicrow.SUPPORTTRIAGE_STATUS_LABEL}</span>
+<!-- ENDIF -->
+
+<!-- IF topicrow.S_SUPPORTTRIAGE_PRIORITY_SHOW -->
+    <span class="supporttriage-status-badge {topicrow.SUPPORTTRIAGE_PRIORITY_CLASS}">{topicrow.SUPPORTTRIAGE_PRIORITY_LABEL}</span>
+<!-- ENDIF -->
+
+<!-- IF topicrow.S_SUPPORTTRIAGE_ALERT_SHOW -->
+    <span class="supporttriage-alert-badge {topicrow.SUPPORTTRIAGE_ALERT_CLASS}">{topicrow.SUPPORTTRIAGE_ALERT_SHORT}</span>
+<!-- ENDIF -->
+
+
+<!-- IF topicrow.S_SUPPORTTRIAGE_MCP_ACTIONS_SHOW -->
+    <span class="supporttriage-mcp-inline-actions">
+        <!-- IF topicrow.SUPPORTTRIAGE_STATUS_KEY neq 'in_progress' -->
+        <a href="#" class="supporttriage-mcp-quick" data-topic-id="{topicrow.SUPPORTTRIAGE_TOPIC_ID}" data-status="in_progress">{L_SUPPORTTRIAGE_MCP_QUICK_IN_PROGRESS}</a>
+        <!-- ENDIF -->
+        <!-- IF topicrow.SUPPORTTRIAGE_STATUS_KEY neq 'waiting_reply' -->
+        <a href="#" class="supporttriage-mcp-quick" data-topic-id="{topicrow.SUPPORTTRIAGE_TOPIC_ID}" data-status="waiting_reply">{L_SUPPORTTRIAGE_MCP_QUICK_WAITING_REPLY}</a>
+        <!-- ENDIF -->
+        <!-- IF topicrow.SUPPORTTRIAGE_STATUS_KEY neq 'solved' -->
+        <a href="#" class="supporttriage-mcp-quick" data-topic-id="{topicrow.SUPPORTTRIAGE_TOPIC_ID}" data-status="solved">{L_SUPPORTTRIAGE_MCP_QUICK_SOLVED}</a>
+        <!-- ENDIF -->
+    </span>
+<!-- ENDIF -->

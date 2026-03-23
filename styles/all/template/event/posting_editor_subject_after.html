@@ -1,0 +1,733 @@
+<!-- IF S_SUPPORTTRIAGE_SHOW -->
+<div id="supporttriage-similar-panel" class="panel bg2 is-hidden">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_SIMILAR_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_SIMILAR_EXPLAIN}</p>
+        <ul id="supporttriage-similar-list"></ul>
+        <p id="supporttriage-similar-empty" class="supporttriage-note is-hidden">{L_SUPPORTTRIAGE_SIMILAR_EMPTY}</p>
+    </div>
+</div>
+<script type="application/json" id="supporttriage-suggestions-data">{SUPPORTTRIAGE_TOPIC_SUGGESTIONS_JSON}</script>
+
+<div id="supporttriage-panel" class="panel bg3"
+    data-auto-insert="{SUPPORTTRIAGE_AUTO_INSERT}"
+    data-title-prefix="{SUPPORTTRIAGE_TITLE_PREFIX}"
+    data-default-board-url="{SUPPORTTRIAGE_FORM_BOARD_URL}"
+    data-report-title="{L_SUPPORTTRIAGE_REPORT_TITLE}"
+    data-specific-title="{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}"
+    data-label-issue-type="{L_SUPPORTTRIAGE_ISSUE_TYPE}"
+    data-label-phpbb="{L_SUPPORTTRIAGE_PHPBB_VERSION}"
+    data-label-php="{L_SUPPORTTRIAGE_PHP_VERSION}"
+    data-label-style="{L_SUPPORTTRIAGE_STYLE}"
+    data-label-extension="{L_SUPPORTTRIAGE_EXTENSION}"
+    data-label-board-url="{L_SUPPORTTRIAGE_BOARD_URL}"
+    data-label-prosilver="{L_SUPPORTTRIAGE_PROSILVER}"
+    data-label-debug="{L_SUPPORTTRIAGE_DEBUG}"
+    data-label-error="{L_SUPPORTTRIAGE_ERROR_TEXT}"
+    data-label-steps="{L_SUPPORTTRIAGE_REPRO_STEPS}"
+    data-label-ext-version="{L_SUPPORTTRIAGE_EXT_VERSION}"
+    data-label-ext-stage="{L_SUPPORTTRIAGE_EXT_STAGE}"
+    data-label-ext-source="{L_SUPPORTTRIAGE_EXT_SOURCE}"
+    data-label-update-from="{L_SUPPORTTRIAGE_UPDATE_FROM}"
+    data-label-update-to="{L_SUPPORTTRIAGE_UPDATE_TO}"
+    data-label-update-method="{L_SUPPORTTRIAGE_UPDATE_METHOD}"
+    data-label-update-db="{L_SUPPORTTRIAGE_UPDATE_DB}"
+    data-label-style-browser="{L_SUPPORTTRIAGE_STYLE_BROWSER}"
+    data-label-style-page="{L_SUPPORTTRIAGE_STYLE_PAGE}"
+    data-label-style-device="{L_SUPPORTTRIAGE_STYLE_DEVICE}"
+    data-label-perm-actor="{L_SUPPORTTRIAGE_PERM_ACTOR}"
+    data-label-perm-action="{L_SUPPORTTRIAGE_PERM_ACTION}"
+    data-label-perm-target="{L_SUPPORTTRIAGE_PERM_TARGET}"
+    data-label-email-transport="{L_SUPPORTTRIAGE_EMAIL_TRANSPORT}"
+    data-label-email-case="{L_SUPPORTTRIAGE_EMAIL_CASE}"
+    data-label-email-log="{L_SUPPORTTRIAGE_EMAIL_LOG}"
+    data-label-similar-last-post="{L_SUPPORTTRIAGE_SIMILAR_LAST_POST}"
+    data-label-priority="{L_SUPPORTTRIAGE_PRIORITY_LABEL}"
+    data-type-label-general="{L_SUPPORTTRIAGE_ISSUE_TYPE_GENERAL}"
+    data-type-label-extension="{L_SUPPORTTRIAGE_ISSUE_TYPE_EXTENSION}"
+    data-type-label-update="{L_SUPPORTTRIAGE_ISSUE_TYPE_UPDATE}"
+    data-type-label-style="{L_SUPPORTTRIAGE_ISSUE_TYPE_STYLE}"
+    data-type-label-permissions="{L_SUPPORTTRIAGE_ISSUE_TYPE_PERMISSIONS}"
+    data-type-label-email="{L_SUPPORTTRIAGE_ISSUE_TYPE_EMAIL}">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_EXPLAIN}</p>
+
+        <div class="supporttriage-grid fields2">
+            <dl>
+                <dt><label for="supporttriage_issue_type">{L_SUPPORTTRIAGE_ISSUE_TYPE}{L_COLON}</label></dt>
+                <dd>
+                    <select name="supporttriage_issue_type" id="supporttriage_issue_type">
+                        <option value="general"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'general' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_GENERAL}</option>
+                        <option value="extension"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'extension' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_EXTENSION}</option>
+                        <option value="update"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'update' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_UPDATE}</option>
+                        <option value="style"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'style' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_STYLE}</option>
+                        <option value="permissions"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'permissions' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_PERMISSIONS}</option>
+                        <option value="email"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'email' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_EMAIL}</option>
+                    </select>
+                </dd>
+            </dl>
+            <!-- IF S_SUPPORTTRIAGE_PRIORITY_SHOW -->
+            <dl>
+                <dt><label for="supporttriage_priority">{L_SUPPORTTRIAGE_PRIORITY_LABEL}{L_COLON}</label></dt>
+                <dd>
+                    <select name="supporttriage_priority" id="supporttriage_priority">
+                        <option value="low"<!-- IF SUPPORTTRIAGE_FORM_PRIORITY eq 'low' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_LOW}</option>
+                        <option value="normal"<!-- IF SUPPORTTRIAGE_FORM_PRIORITY eq 'normal' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_NORMAL}</option>
+                        <option value="high"<!-- IF SUPPORTTRIAGE_FORM_PRIORITY eq 'high' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_HIGH}</option>
+                        <option value="critical"<!-- IF SUPPORTTRIAGE_FORM_PRIORITY eq 'critical' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_CRITICAL}</option>
+                    </select>
+                </dd>
+            </dl>
+            <!-- ENDIF -->
+
+            <dl>
+                <dt><label for="supporttriage_phpbb">{L_SUPPORTTRIAGE_PHPBB_VERSION}{L_COLON}</label></dt>
+                <dd><input type="text" name="supporttriage_phpbb" id="supporttriage_phpbb" value="{SUPPORTTRIAGE_FORM_PHPBB}" placeholder="3.3.x" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_php">{L_SUPPORTTRIAGE_PHP_VERSION}{L_COLON}</label></dt>
+                <dd><input type="text" name="supporttriage_php" id="supporttriage_php" value="{SUPPORTTRIAGE_FORM_PHP}" placeholder="8.1 / 8.2 / 8.3" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_style">{L_SUPPORTTRIAGE_STYLE}{L_COLON}</label></dt>
+                <dd><input type="text" name="supporttriage_style" id="supporttriage_style" value="{SUPPORTTRIAGE_FORM_STYLE}" placeholder="prosilver / Flatboots / outro" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_extension">{L_SUPPORTTRIAGE_EXTENSION}{L_COLON}</label></dt>
+                <dd><input type="text" name="supporttriage_extension" id="supporttriage_extension" value="{SUPPORTTRIAGE_FORM_EXT}" placeholder="Nome da extensão ou estilo" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_board_url">{L_SUPPORTTRIAGE_BOARD_URL}{L_COLON}</label></dt>
+                <dd><input type="text" name="supporttriage_board_url" id="supporttriage_board_url" value="{SUPPORTTRIAGE_FORM_BOARD_URL}" placeholder="https://seu-forum.com" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_prosilver">{L_SUPPORTTRIAGE_PROSILVER}{L_COLON}</label></dt>
+                <dd>
+                    <select name="supporttriage_prosilver" id="supporttriage_prosilver">
+                        <option value=""<!-- IF SUPPORTTRIAGE_FORM_PROSILVER eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                        <option value="yes"<!-- IF SUPPORTTRIAGE_FORM_PROSILVER eq 'yes' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_YES}</option>
+                        <option value="no"<!-- IF SUPPORTTRIAGE_FORM_PROSILVER eq 'no' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_NO}</option>
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_debug">{L_SUPPORTTRIAGE_DEBUG}{L_COLON}</label></dt>
+                <dd>
+                    <select name="supporttriage_debug" id="supporttriage_debug">
+                        <option value=""<!-- IF SUPPORTTRIAGE_FORM_DEBUG eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                        <option value="yes"<!-- IF SUPPORTTRIAGE_FORM_DEBUG eq 'yes' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_YES}</option>
+                        <option value="no"<!-- IF SUPPORTTRIAGE_FORM_DEBUG eq 'no' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_NO}</option>
+                    </select>
+                </dd>
+            </dl>
+        </div>
+
+        <div id="supporttriage-conditional-extension" class="supporttriage-conditional<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'extension' --><!-- ELSE --> is-hidden<!-- ENDIF -->" data-issue-type="extension">
+            <h4>{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}</h4>
+            <p class="supporttriage-section-note">{L_SUPPORTTRIAGE_SPECIFIC_EXPLAIN}</p>
+            <div class="supporttriage-grid fields2">
+                <dl>
+                    <dt><label for="supporttriage_ext_version">{L_SUPPORTTRIAGE_EXT_VERSION}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_ext_version" id="supporttriage_ext_version" value="{SUPPORTTRIAGE_FORM_EXT_VERSION}" placeholder="1.0.0 / dev" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_ext_stage">{L_SUPPORTTRIAGE_EXT_STAGE}{L_COLON}</label></dt>
+                    <dd>
+                        <select name="supporttriage_ext_stage" id="supporttriage_ext_stage">
+                            <option value=""<!-- IF SUPPORTTRIAGE_FORM_EXT_STAGE eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                            <option value="install"<!-- IF SUPPORTTRIAGE_FORM_EXT_STAGE eq 'install' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EXT_STAGE_INSTALL}</option>
+                            <option value="enable"<!-- IF SUPPORTTRIAGE_FORM_EXT_STAGE eq 'enable' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EXT_STAGE_ENABLE}</option>
+                            <option value="migration"<!-- IF SUPPORTTRIAGE_FORM_EXT_STAGE eq 'migration' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EXT_STAGE_MIGRATION}</option>
+                            <option value="runtime"<!-- IF SUPPORTTRIAGE_FORM_EXT_STAGE eq 'runtime' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EXT_STAGE_RUNTIME}</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_ext_source">{L_SUPPORTTRIAGE_EXT_SOURCE}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_ext_source" id="supporttriage_ext_source" value="{SUPPORTTRIAGE_FORM_EXT_SOURCE}" placeholder="phpBB DB / GitHub / pacote próprio" /></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div id="supporttriage-conditional-update" class="supporttriage-conditional<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'update' --><!-- ELSE --> is-hidden<!-- ENDIF -->" data-issue-type="update">
+            <h4>{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}</h4>
+            <p class="supporttriage-section-note">{L_SUPPORTTRIAGE_SPECIFIC_EXPLAIN}</p>
+            <div class="supporttriage-grid fields2">
+                <dl>
+                    <dt><label for="supporttriage_update_from">{L_SUPPORTTRIAGE_UPDATE_FROM}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_update_from" id="supporttriage_update_from" value="{SUPPORTTRIAGE_FORM_UPDATE_FROM}" placeholder="3.3.x" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_update_to">{L_SUPPORTTRIAGE_UPDATE_TO}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_update_to" id="supporttriage_update_to" value="{SUPPORTTRIAGE_FORM_UPDATE_TO}" placeholder="3.3.x" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_update_method">{L_SUPPORTTRIAGE_UPDATE_METHOD}{L_COLON}</label></dt>
+                    <dd>
+                        <select name="supporttriage_update_method" id="supporttriage_update_method">
+                            <option value=""<!-- IF SUPPORTTRIAGE_FORM_UPDATE_METHOD eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                            <option value="auto"<!-- IF SUPPORTTRIAGE_FORM_UPDATE_METHOD eq 'auto' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_UPDATE_METHOD_AUTO}</option>
+                            <option value="package"<!-- IF SUPPORTTRIAGE_FORM_UPDATE_METHOD eq 'package' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_UPDATE_METHOD_PACKAGE}</option>
+                            <option value="manual"<!-- IF SUPPORTTRIAGE_FORM_UPDATE_METHOD eq 'manual' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_UPDATE_METHOD_MANUAL}</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_update_db">{L_SUPPORTTRIAGE_UPDATE_DB}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_update_db" id="supporttriage_update_db" value="{SUPPORTTRIAGE_FORM_UPDATE_DB}" placeholder="Concluiu / travou / exibiu erro" /></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div id="supporttriage-conditional-style" class="supporttriage-conditional<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'style' --><!-- ELSE --> is-hidden<!-- ENDIF -->" data-issue-type="style">
+            <h4>{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}</h4>
+            <p class="supporttriage-section-note">{L_SUPPORTTRIAGE_SPECIFIC_EXPLAIN}</p>
+            <div class="supporttriage-grid fields2">
+                <dl>
+                    <dt><label for="supporttriage_style_browser">{L_SUPPORTTRIAGE_STYLE_BROWSER}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_style_browser" id="supporttriage_style_browser" value="{SUPPORTTRIAGE_FORM_STYLE_BROWSER}" placeholder="Chrome / Firefox / Edge" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_style_page">{L_SUPPORTTRIAGE_STYLE_PAGE}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_style_page" id="supporttriage_style_page" value="{SUPPORTTRIAGE_FORM_STYLE_PAGE}" placeholder="viewtopic / viewforum / UCP / ACP" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_style_device">{L_SUPPORTTRIAGE_STYLE_DEVICE}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_style_device" id="supporttriage_style_device" value="{SUPPORTTRIAGE_FORM_STYLE_DEVICE}" placeholder="Desktop / celular / tablet" /></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div id="supporttriage-conditional-permissions" class="supporttriage-conditional<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'permissions' --><!-- ELSE --> is-hidden<!-- ENDIF -->" data-issue-type="permissions">
+            <h4>{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}</h4>
+            <p class="supporttriage-section-note">{L_SUPPORTTRIAGE_SPECIFIC_EXPLAIN}</p>
+            <div class="supporttriage-grid fields2">
+                <dl>
+                    <dt><label for="supporttriage_perm_actor">{L_SUPPORTTRIAGE_PERM_ACTOR}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_perm_actor" id="supporttriage_perm_actor" value="{SUPPORTTRIAGE_FORM_PERM_ACTOR}" placeholder="Visitante / Registrado / Moderador" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_perm_action">{L_SUPPORTTRIAGE_PERM_ACTION}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_perm_action" id="supporttriage_perm_action" value="{SUPPORTTRIAGE_FORM_PERM_ACTION}" placeholder="Responder / anexar / acessar ACP" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_perm_target">{L_SUPPORTTRIAGE_PERM_TARGET}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_perm_target" id="supporttriage_perm_target" value="{SUPPORTTRIAGE_FORM_PERM_TARGET}" placeholder="Fórum X / UCP / MCP / ACP" /></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div id="supporttriage-conditional-email" class="supporttriage-conditional<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'email' --><!-- ELSE --> is-hidden<!-- ENDIF -->" data-issue-type="email">
+            <h4>{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}</h4>
+            <p class="supporttriage-section-note">{L_SUPPORTTRIAGE_SPECIFIC_EXPLAIN}</p>
+            <div class="supporttriage-grid fields2">
+                <dl>
+                    <dt><label for="supporttriage_email_transport">{L_SUPPORTTRIAGE_EMAIL_TRANSPORT}{L_COLON}</label></dt>
+                    <dd>
+                        <select name="supporttriage_email_transport" id="supporttriage_email_transport">
+                            <option value=""<!-- IF SUPPORTTRIAGE_FORM_EMAIL_TRANSPORT eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                            <option value="php"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_TRANSPORT eq 'php' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_TRANSPORT_PHP}</option>
+                            <option value="smtp"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_TRANSPORT eq 'smtp' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_TRANSPORT_SMTP}</option>
+                            <option value="sendmail"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_TRANSPORT eq 'sendmail' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_TRANSPORT_SENDMAIL}</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_email_case">{L_SUPPORTTRIAGE_EMAIL_CASE}{L_COLON}</label></dt>
+                    <dd>
+                        <select name="supporttriage_email_case" id="supporttriage_email_case">
+                            <option value=""<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                            <option value="activation"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq 'activation' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_CASE_ACTIVATION}</option>
+                            <option value="notification"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq 'notification' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_CASE_NOTIFICATION}</option>
+                            <option value="contact"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq 'contact' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_CASE_CONTACT}</option>
+                            <option value="mass"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq 'mass' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_CASE_MASS}</option>
+                            <option value="test"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq 'test' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_CASE_TEST}</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_email_log">{L_SUPPORTTRIAGE_EMAIL_LOG}{L_COLON}</label></dt>
+                    <dd><textarea name="supporttriage_email_log" id="supporttriage_email_log" rows="3">{SUPPORTTRIAGE_FORM_EMAIL_LOG}</textarea></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="supporttriage-stack fields2">
+            <dl>
+                <dt><label for="supporttriage_error">{L_SUPPORTTRIAGE_ERROR_TEXT}{L_COLON}</label></dt>
+                <dd><textarea name="supporttriage_error" id="supporttriage_error" rows="4">{SUPPORTTRIAGE_FORM_ERROR}</textarea></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_steps">{L_SUPPORTTRIAGE_REPRO_STEPS}{L_COLON}</label></dt>
+                <dd><textarea name="supporttriage_steps" id="supporttriage_steps" rows="4">{SUPPORTTRIAGE_FORM_STEPS}</textarea></dd>
+            </dl>
+        </div>
+
+        <div class="supporttriage-actions">
+            <button type="button" class="button button1" id="supporttriage-insert">{L_SUPPORTTRIAGE_INSERT_BUTTON}</button>
+            <button type="button" class="button button2" id="supporttriage-clear">{L_SUPPORTTRIAGE_CLEAR_BUTTON}</button>
+        </div>
+        <p class="supporttriage-note">{L_ACP_SUPPORTTRIAGE_AUTO_INSERT_EXPLAIN}</p>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var panel = document.getElementById('supporttriage-panel');
+    if (!panel) {
+        return;
+    }
+
+    var form = document.getElementById('postform');
+    var message = document.getElementById('message');
+    var subject = document.getElementById('subject');
+    var similarPanel = document.getElementById('supporttriage-similar-panel');
+    var similarList = document.getElementById('supporttriage-similar-list');
+    var similarEmpty = document.getElementById('supporttriage-similar-empty');
+    var suggestionsData = document.getElementById('supporttriage-suggestions-data');
+    var autoInsert = panel.getAttribute('data-auto-insert') === '1';
+    var prefix = panel.getAttribute('data-title-prefix') || '';
+    var startMarker = '[b]=== ' + panel.getAttribute('data-report-title') + ' ===[/b]';
+    var endMarker = '[b]=== /' + panel.getAttribute('data-report-title') + ' ===[/b]';
+    var conditionalBlocks = panel.querySelectorAll('.supporttriage-conditional');
+    var suggestions = [];
+
+    try {
+        suggestions = suggestionsData ? JSON.parse(suggestionsData.textContent || '[]') : [];
+    } catch (error) {
+        suggestions = [];
+    }
+
+    function getField(id) {
+        return document.getElementById(id);
+    }
+
+    function getValue(id) {
+        var field = getField(id);
+        return field ? field.value.trim() : '';
+    }
+
+    function getDisplayValue(id) {
+        var field = getField(id);
+        if (!field) {
+            return '';
+        }
+
+        if (field.tagName && field.tagName.toLowerCase() === 'select') {
+            if (field.value === '' || field.selectedIndex < 0) {
+                return '';
+            }
+            return field.options[field.selectedIndex].text.trim();
+        }
+
+        return field.value.trim();
+    }
+
+    function setValue(id, value) {
+        var field = getField(id);
+        if (field) {
+            field.value = value;
+        }
+    }
+
+    function sanitizeCode(text) {
+        return text.replace(/\[\/?code\]/gi, '').trim();
+    }
+
+    function currentIssueType() {
+        return getValue('supporttriage_issue_type') || 'general';
+    }
+
+    function hasAnyContent() {
+        return [
+            getValue('supporttriage_issue_type') !== 'general' ? getValue('supporttriage_issue_type') : '',
+            getValue('supporttriage_phpbb'),
+            getValue('supporttriage_php'),
+            getValue('supporttriage_style'),
+            getValue('supporttriage_extension'),
+            getValue('supporttriage_board_url'),
+            getValue('supporttriage_prosilver'),
+            getValue('supporttriage_debug'),
+            getValue('supporttriage_error'),
+            getValue('supporttriage_steps'),
+            getValue('supporttriage_ext_version'),
+            getValue('supporttriage_ext_stage'),
+            getValue('supporttriage_ext_source'),
+            getValue('supporttriage_update_from'),
+            getValue('supporttriage_update_to'),
+            getValue('supporttriage_update_method'),
+            getValue('supporttriage_update_db'),
+            getValue('supporttriage_style_browser'),
+            getValue('supporttriage_style_page'),
+            getValue('supporttriage_style_device'),
+            getValue('supporttriage_perm_actor'),
+            getValue('supporttriage_perm_action'),
+            getValue('supporttriage_perm_target'),
+            getValue('supporttriage_email_transport'),
+            getValue('supporttriage_email_case'),
+            getValue('supporttriage_email_log')
+        ].join('') !== '';
+    }
+
+    function listItem(label, value) {
+        return value ? '[*][b]' + label + ':[/b] ' + value : '';
+    }
+
+    function getIssueTypeLabel(issueType) {
+        return panel.getAttribute('data-type-label-' + issueType) || panel.getAttribute('data-type-label-general') || issueType;
+    }
+
+    function toggleIssueSections() {
+        var issueType = currentIssueType();
+
+        Array.prototype.forEach.call(conditionalBlocks, function (block) {
+            if (block.getAttribute('data-issue-type') === issueType) {
+                block.classList.remove('is-hidden');
+            } else {
+                block.classList.add('is-hidden');
+            }
+        });
+    }
+
+    function normalizeText(text) {
+        return (text || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[̀-ͯ]/g, '')
+            .replace(/[^a-z0-9\s]+/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function getSuggestionQuery() {
+        if (!subject) {
+            return '';
+        }
+
+        var value = subject.value || '';
+        if (prefix && value.indexOf(prefix) === 0) {
+            value = value.slice(prefix.length);
+        }
+
+        return value.trim();
+    }
+
+    function scoreSuggestion(query, topic) {
+        var normalizedQuery = normalizeText(query);
+        var normalizedTitle = normalizeText(topic.title || '');
+
+        if (!normalizedQuery || !normalizedTitle) {
+            return 0;
+        }
+
+        var score = 0;
+        var tokens = normalizedQuery.split(' ').filter(function (token) {
+            return token.length >= 3;
+        });
+
+        if (normalizedTitle === normalizedQuery) {
+            score += 200;
+        }
+
+        if (normalizedTitle.indexOf(normalizedQuery) !== -1) {
+            score += 120;
+        }
+
+        tokens.forEach(function (token, index) {
+            if (normalizedTitle.indexOf(token) !== -1) {
+                score += 28;
+                if (index === 0) {
+                    score += 8;
+                }
+            }
+        });
+
+        if (tokens.length >= 2) {
+            var overlap = tokens.filter(function (token) {
+                return normalizedTitle.indexOf(token) !== -1;
+            }).length;
+
+            if (overlap >= 2) {
+                score += overlap * 12;
+            }
+        }
+
+        return score;
+    }
+
+    function clearSuggestions() {
+        if (similarList) {
+            similarList.innerHTML = '';
+        }
+        if (similarPanel) {
+            similarPanel.classList.add('is-hidden');
+        }
+        if (similarEmpty) {
+            similarEmpty.classList.add('is-hidden');
+        }
+    }
+
+    function renderSuggestions() {
+        if (!similarPanel || !similarList || !subject || !Array.isArray(suggestions) || !suggestions.length) {
+            clearSuggestions();
+            return;
+        }
+
+        var query = getSuggestionQuery();
+        if (normalizeText(query).length < 4) {
+            clearSuggestions();
+            return;
+        }
+
+        var matches = suggestions
+            .map(function (item) {
+                return {
+                    item: item,
+                    score: scoreSuggestion(query, item)
+                };
+            })
+            .filter(function (entry) {
+                return entry.score >= 35;
+            })
+            .sort(function (a, b) {
+                return b.score - a.score;
+            })
+            .slice(0, 5);
+
+        similarList.innerHTML = '';
+        similarPanel.classList.remove('is-hidden');
+
+        if (!matches.length) {
+            if (similarEmpty) {
+                similarEmpty.classList.remove('is-hidden');
+            }
+            return;
+        }
+
+        if (similarEmpty) {
+            similarEmpty.classList.add('is-hidden');
+        }
+
+        matches.forEach(function (entry) {
+            var item = entry.item;
+            var li = document.createElement('li');
+            var link = document.createElement('a');
+            link.href = item.url || '#';
+            link.target = '_blank';
+            link.rel = 'noopener';
+            link.textContent = item.title || '';
+            li.appendChild(link);
+
+            if (item.last_post_time) {
+                var meta = document.createElement('span');
+                meta.className = 'supporttriage-similar-meta';
+                meta.textContent = panel.getAttribute('data-label-similar-last-post') + ': ' + item.last_post_time;
+                li.appendChild(meta);
+            }
+
+            similarList.appendChild(li);
+        });
+    }
+
+    function getSpecificItems(issueType) {
+        if (issueType === 'extension') {
+            return [
+                listItem(panel.getAttribute('data-label-ext-version'), getValue('supporttriage_ext_version')),
+                listItem(panel.getAttribute('data-label-ext-stage'), getDisplayValue('supporttriage_ext_stage')),
+                listItem(panel.getAttribute('data-label-ext-source'), getValue('supporttriage_ext_source'))
+            ];
+        }
+
+        if (issueType === 'update') {
+            return [
+                listItem(panel.getAttribute('data-label-update-from'), getValue('supporttriage_update_from')),
+                listItem(panel.getAttribute('data-label-update-to'), getValue('supporttriage_update_to')),
+                listItem(panel.getAttribute('data-label-update-method'), getDisplayValue('supporttriage_update_method')),
+                listItem(panel.getAttribute('data-label-update-db'), getValue('supporttriage_update_db'))
+            ];
+        }
+
+        if (issueType === 'style') {
+            return [
+                listItem(panel.getAttribute('data-label-style-browser'), getValue('supporttriage_style_browser')),
+                listItem(panel.getAttribute('data-label-style-page'), getValue('supporttriage_style_page')),
+                listItem(panel.getAttribute('data-label-style-device'), getValue('supporttriage_style_device'))
+            ];
+        }
+
+        if (issueType === 'permissions') {
+            return [
+                listItem(panel.getAttribute('data-label-perm-actor'), getValue('supporttriage_perm_actor')),
+                listItem(panel.getAttribute('data-label-perm-action'), getValue('supporttriage_perm_action')),
+                listItem(panel.getAttribute('data-label-perm-target'), getValue('supporttriage_perm_target'))
+            ];
+        }
+
+        if (issueType === 'email') {
+            return [
+                listItem(panel.getAttribute('data-label-email-transport'), getDisplayValue('supporttriage_email_transport')),
+                listItem(panel.getAttribute('data-label-email-case'), getDisplayValue('supporttriage_email_case')),
+                listItem(panel.getAttribute('data-label-email-log'), sanitizeCode(getValue('supporttriage_email_log')))
+            ];
+        }
+
+        return [];
+    }
+
+    function buildReport() {
+        var lines = [];
+        var issueType = currentIssueType();
+        var specificItems = getSpecificItems(issueType).filter(Boolean);
+        var errorText = sanitizeCode(getValue('supporttriage_error'));
+        var stepsText = getValue('supporttriage_steps');
+
+        lines.push(startMarker);
+        lines.push('[list]');
+
+        [
+            [panel.getAttribute('data-label-issue-type'), getIssueTypeLabel(issueType)],
+            [panel.getAttribute('data-label-phpbb'), getValue('supporttriage_phpbb')],
+            [panel.getAttribute('data-label-php'), getValue('supporttriage_php')],
+            [panel.getAttribute('data-label-style'), getValue('supporttriage_style')],
+            [panel.getAttribute('data-label-extension'), getValue('supporttriage_extension')],
+            [panel.getAttribute('data-label-board-url'), getValue('supporttriage_board_url')],
+            [panel.getAttribute('data-label-prosilver'), getDisplayValue('supporttriage_prosilver')],
+            [panel.getAttribute('data-label-debug'), getDisplayValue('supporttriage_debug')]
+        ].forEach(function (item) {
+            var line = listItem(item[0], item[1]);
+            if (line) {
+                lines.push(line);
+            }
+        });
+
+        lines.push('[/list]');
+
+        if (specificItems.length) {
+            lines.push('');
+            lines.push('[b]' + panel.getAttribute('data-specific-title') + '[/b]');
+            lines.push('[list]');
+            specificItems.forEach(function (item) {
+                lines.push(item);
+            });
+            lines.push('[/list]');
+        }
+
+        if (errorText) {
+            lines.push('');
+            lines.push('[b]' + panel.getAttribute('data-label-error') + '[/b]');
+            lines.push('[code]' + errorText + '[/code]');
+        }
+
+        if (stepsText) {
+            lines.push('');
+            lines.push('[b]' + panel.getAttribute('data-label-steps') + '[/b]');
+            lines.push(stepsText);
+        }
+
+        lines.push('');
+        lines.push(endMarker);
+
+        return lines.join('\n');
+    }
+
+    function mergeReportIntoMessage(force) {
+        if (!message) {
+            return;
+        }
+
+        var report = buildReport();
+        var current = message.value || '';
+        var blockRegex = /\[b\]=== .*? ===\[\/b\][\s\S]*?\[b\]=== \/.*? ===\[\/b\]\n*/m;
+
+        if (!force && !hasAnyContent()) {
+            return;
+        }
+
+        if (blockRegex.test(current)) {
+            message.value = current.replace(blockRegex, report + '\n\n');
+        } else if (current.trim() === '') {
+            message.value = report + '\n\n';
+        } else {
+            message.value = report + '\n\n' + current;
+        }
+    }
+
+    function clearFields() {
+        [
+            'supporttriage_phpbb',
+            'supporttriage_php',
+            'supporttriage_style',
+            'supporttriage_extension',
+            'supporttriage_prosilver',
+            'supporttriage_debug',
+            'supporttriage_error',
+            'supporttriage_steps',
+            'supporttriage_ext_version',
+            'supporttriage_ext_stage',
+            'supporttriage_ext_source',
+            'supporttriage_update_from',
+            'supporttriage_update_to',
+            'supporttriage_update_method',
+            'supporttriage_update_db',
+            'supporttriage_style_browser',
+            'supporttriage_style_page',
+            'supporttriage_style_device',
+            'supporttriage_perm_actor',
+            'supporttriage_perm_action',
+            'supporttriage_perm_target',
+            'supporttriage_email_transport',
+            'supporttriage_email_case',
+            'supporttriage_email_log'
+        ].forEach(function (id) {
+            setValue(id, '');
+        });
+
+        setValue('supporttriage_issue_type', 'general');
+        setValue('supporttriage_board_url', panel.getAttribute('data-default-board-url') || '');
+        toggleIssueSections();
+    }
+
+    var issueTypeField = getField('supporttriage_issue_type');
+    if (issueTypeField) {
+        issueTypeField.addEventListener('change', toggleIssueSections);
+    }
+
+    var insertButton = document.getElementById('supporttriage-insert');
+    if (insertButton) {
+        insertButton.addEventListener('click', function () {
+            mergeReportIntoMessage(true);
+        });
+    }
+
+    var clearButton = document.getElementById('supporttriage-clear');
+    if (clearButton) {
+        clearButton.addEventListener('click', function () {
+            clearFields();
+        });
+    }
+
+    if (subject && prefix && subject.value.indexOf(prefix) !== 0) {
+        subject.value = prefix + ' ' + subject.value.replace(/^\s+/, '');
+    }
+
+    if (subject) {
+        subject.addEventListener('input', renderSuggestions);
+        subject.addEventListener('change', renderSuggestions);
+    }
+
+    if (autoInsert && form) {
+        form.addEventListener('submit', function () {
+            mergeReportIntoMessage(hasAnyContent());
+        });
+    }
+
+    toggleIssueSections();
+    renderSuggestions();
+
+    if (autoInsert && message && message.value.trim() === '' && hasAnyContent()) {
+        mergeReportIntoMessage(true);
+    }
+});
+</script>
+<!-- ENDIF -->

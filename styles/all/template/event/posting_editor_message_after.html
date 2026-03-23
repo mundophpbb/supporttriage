@@ -1,0 +1,121 @@
+<!-- IF S_SUPPORTTRIAGE_REPLY_SUGGESTED_SHOW -->
+<div class="panel bg1 supporttriage-snippets-panel supporttriage-snippets-suggested-panel">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_SNIPPETS_SUGGESTED_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_SNIPPETS_SUGGESTED_EXPLAIN}</p>
+        <p class="supporttriage-suggested-reason">{SUPPORTTRIAGE_REPLY_SUGGESTED_REASON}</p>
+
+        <div class="supporttriage-snippets-grid">
+            <!-- BEGIN supporttriage_reply_suggested_snippets -->
+            <div class="supporttriage-snippet-card">
+                <h4>{supporttriage_reply_suggested_snippets.TITLE}</h4>
+                <textarea readonly="readonly" class="supporttriage-snippet-text">{supporttriage_reply_suggested_snippets.TEXT}</textarea>
+                <div class="supporttriage-snippet-actions">
+                    <button type="button" class="button button1 supporttriage-snippet-insert">{L_SUPPORTTRIAGE_SNIPPET_INSERT}</button>
+                    <button type="button" class="button supporttriage-snippet-copy">{L_SUPPORTTRIAGE_SNIPPET_COPY}</button>
+                </div>
+                <p class="supporttriage-snippet-feedback"></p>
+            </div>
+            <!-- END supporttriage_reply_suggested_snippets -->
+        </div>
+    </div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF S_SUPPORTTRIAGE_REPLY_SNIPPETS_SHOW -->
+<div class="panel bg2 supporttriage-snippets-panel">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_SNIPPETS_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_REPLY_SNIPPETS_EXPLAIN}</p>
+
+        <div class="supporttriage-snippets-grid">
+            <!-- BEGIN supporttriage_reply_snippets -->
+            <div class="supporttriage-snippet-card">
+                <h4>{supporttriage_reply_snippets.TITLE}</h4>
+                <textarea readonly="readonly" class="supporttriage-snippet-text">{supporttriage_reply_snippets.TEXT}</textarea>
+                <div class="supporttriage-snippet-actions">
+                    <button type="button" class="button button1 supporttriage-snippet-insert">{L_SUPPORTTRIAGE_SNIPPET_INSERT}</button>
+                    <button type="button" class="button supporttriage-snippet-copy">{L_SUPPORTTRIAGE_SNIPPET_COPY}</button>
+                </div>
+                <p class="supporttriage-snippet-feedback"></p>
+            </div>
+            <!-- END supporttriage_reply_snippets -->
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var panels = document.querySelectorAll('.supporttriage-snippets-panel');
+    if (!panels.length) {
+        return;
+    }
+
+    function findMessageField() {
+        return document.querySelector('textarea[name="message"]') || document.getElementById('message');
+    }
+
+    function copyText(text, sourceField) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text);
+            return true;
+        }
+
+        if (!sourceField) {
+            return false;
+        }
+
+        sourceField.focus();
+        sourceField.select();
+        try {
+            return document.execCommand('copy');
+        } catch (e) {
+            return false;
+        }
+    }
+
+    panels.forEach(function (panel) {
+        panel.querySelectorAll('.supporttriage-snippet-card').forEach(function (card) {
+        var textField = card.querySelector('.supporttriage-snippet-text');
+        var insertButton = card.querySelector('.supporttriage-snippet-insert');
+        var copyButton = card.querySelector('.supporttriage-snippet-copy');
+        var feedback = card.querySelector('.supporttriage-snippet-feedback');
+
+        function setFeedback(message) {
+            if (feedback) {
+                feedback.textContent = message;
+            }
+        }
+
+        if (insertButton) {
+            insertButton.addEventListener('click', function () {
+                var messageField = findMessageField();
+                var text = textField ? textField.value : '';
+
+                if (messageField) {
+                    var prefix = messageField.value && !/\n\s*$/.test(messageField.value) ? '\n\n' : '';
+                    messageField.value += prefix + text;
+                    messageField.focus();
+                    setFeedback('{L_SUPPORTTRIAGE_SNIPPET_INSERTED}');
+                } else if (copyText(text, textField)) {
+                    setFeedback('{L_SUPPORTTRIAGE_SNIPPET_COPIED}');
+                } else {
+                    setFeedback('{L_SUPPORTTRIAGE_SNIPPET_COPY_FALLBACK}');
+                }
+            });
+        }
+
+        if (copyButton) {
+            copyButton.addEventListener('click', function () {
+                var text = textField ? textField.value : '';
+                if (copyText(text, textField)) {
+                    setFeedback('{L_SUPPORTTRIAGE_SNIPPET_COPIED}');
+                } else {
+                    setFeedback('{L_SUPPORTTRIAGE_SNIPPET_COPY_FALLBACK}');
+                }
+            });
+        }
+        });
+    });
+});
+</script>
+<!-- ENDIF -->

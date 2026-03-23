@@ -1,0 +1,20 @@
+permissions:
+    a_supporttriage_manage:
+        lang: ACL_A_SUPPORTTRIAGE_MANAGE
+        cat: misc
+
+    m_supporttriage_status:
+        lang: ACL_M_SUPPORTTRIAGE_STATUS
+        cat: misc
+    m_supporttriage_priority:
+        lang: ACL_M_SUPPORTTRIAGE_PRIORITY
+        cat: misc
+    m_supporttriage_snippets:
+        lang: ACL_M_SUPPORTTRIAGE_SNIPPETS
+        cat: misc
+    m_supporttriage_kb_create:
+        lang: ACL_M_SUPPORTTRIAGE_KB_CREATE
+        cat: misc
+    m_supporttriage_kb_sync:
+        lang: ACL_M_SUPPORTTRIAGE_KB_SYNC
+        cat: misc

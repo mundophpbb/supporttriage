@@ -1,0 +1,46 @@
+<!-- IF S_SUPPORTTRIAGE_REPLY_SUGGESTED_SHOW -->
+<div class="panel bg1 supporttriage-snippets-panel supporttriage-snippets-suggested-panel" data-supporttriage-snippet-inserted="{L_SUPPORTTRIAGE_SNIPPET_INSERTED}" data-supporttriage-snippet-copied="{L_SUPPORTTRIAGE_SNIPPET_COPIED}" data-supporttriage-snippet-copy-fallback="{L_SUPPORTTRIAGE_SNIPPET_COPY_FALLBACK}">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_SNIPPETS_SUGGESTED_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_SNIPPETS_SUGGESTED_EXPLAIN}</p>
+        <p class="supporttriage-suggested-reason">{SUPPORTTRIAGE_REPLY_SUGGESTED_REASON}</p>
+
+        <div class="supporttriage-snippets-grid">
+            <!-- BEGIN supporttriage_reply_suggested_snippets -->
+            <div class="supporttriage-snippet-card">
+                <h4>{supporttriage_reply_suggested_snippets.TITLE}</h4>
+                <textarea readonly="readonly" class="supporttriage-snippet-text">{supporttriage_reply_suggested_snippets.TEXT}</textarea>
+                <div class="supporttriage-snippet-actions">
+                    <button type="button" class="button button1 supporttriage-snippet-insert">{L_SUPPORTTRIAGE_SNIPPET_INSERT}</button>
+                    <button type="button" class="button supporttriage-snippet-copy">{L_SUPPORTTRIAGE_SNIPPET_COPY}</button>
+                </div>
+                <p class="supporttriage-snippet-feedback"></p>
+            </div>
+            <!-- END supporttriage_reply_suggested_snippets -->
+        </div>
+    </div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF S_SUPPORTTRIAGE_REPLY_SNIPPETS_SHOW -->
+<div class="panel bg2 supporttriage-snippets-panel" data-supporttriage-snippet-inserted="{L_SUPPORTTRIAGE_SNIPPET_INSERTED}" data-supporttriage-snippet-copied="{L_SUPPORTTRIAGE_SNIPPET_COPIED}" data-supporttriage-snippet-copy-fallback="{L_SUPPORTTRIAGE_SNIPPET_COPY_FALLBACK}">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_SNIPPETS_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_REPLY_SNIPPETS_EXPLAIN}</p>
+
+        <div class="supporttriage-snippets-grid">
+            <!-- BEGIN supporttriage_reply_snippets -->
+            <div class="supporttriage-snippet-card">
+                <h4>{supporttriage_reply_snippets.TITLE}</h4>
+                <textarea readonly="readonly" class="supporttriage-snippet-text">{supporttriage_reply_snippets.TEXT}</textarea>
+                <div class="supporttriage-snippet-actions">
+                    <button type="button" class="button button1 supporttriage-snippet-insert">{L_SUPPORTTRIAGE_SNIPPET_INSERT}</button>
+                    <button type="button" class="button supporttriage-snippet-copy">{L_SUPPORTTRIAGE_SNIPPET_COPY}</button>
+                </div>
+                <p class="supporttriage-snippet-feedback"></p>
+            </div>
+            <!-- END supporttriage_reply_snippets -->
+        </div>
+    </div>
+</div>
+<!-- ENDIF -->

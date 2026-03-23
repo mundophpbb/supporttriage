@@ -1,0 +1,442 @@
+/*
+ * Support Triage — Flatboots Clean
+ * Visual skin for Flatboots / Bootstrap 3
+ * Load after the extension CSS or append to Flatboots custom.css
+ */
+
+/* Core surfaces */
+.supporttriage-topic-panel,
+.supporttriage-snippets-panel,
+.supporttriage-snippets-suggested-panel,
+.supporttriage-logs-panel,
+.supporttriage-kb-panel,
+.supporttriage-mcp-panel,
+.supporttriage-mcp-bulk-panel,
+.supporttriage-alerts-panel,
+.supporttriage-notifications-panel,
+#supporttriage-panel,
+#supporttriage-similar-panel {
+    background: #fff;
+    border: 1px solid #dde6ee;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    padding: 14px 16px;
+    margin: 0 0 14px;
+}
+
+.supporttriage-topic-panel h3,
+.supporttriage-snippets-panel h3,
+.supporttriage-snippets-suggested-panel h3,
+.supporttriage-logs-panel h3,
+.supporttriage-kb-panel h3,
+.supporttriage-mcp-panel h3,
+.supporttriage-mcp-bulk-panel h3,
+.supporttriage-alerts-panel h3,
+.supporttriage-notifications-panel h3,
+#supporttriage-panel h3,
+#supporttriage-similar-panel h3,
+#supporttriage-panel legend {
+    margin: 0 0 12px;
+    padding: 0 0 8px;
+    border-bottom: 1px solid #eef3f7;
+    color: #2f3e4d;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* Forms */
+#supporttriage-panel .supporttriage-grid,
+#supporttriage-panel .supporttriage-stack {
+    gap: 12px 16px;
+}
+
+#supporttriage-panel .supporttriage-grid.fields2 dl,
+#supporttriage-panel .supporttriage-stack.fields2 dl {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+#supporttriage-panel .supporttriage-grid.fields2 dt,
+#supporttriage-panel .supporttriage-stack.fields2 dt,
+#supporttriage-panel .supporttriage-grid.fields2 dd,
+#supporttriage-panel .supporttriage-stack.fields2 dd {
+    float: none;
+    width: 100%;
+    margin: 0;
+}
+
+#supporttriage-panel .supporttriage-grid.fields2 dt,
+#supporttriage-panel .supporttriage-stack.fields2 dt {
+    margin-bottom: 6px;
+}
+
+#supporttriage-panel label {
+    color: #34495e;
+    font-weight: 700;
+}
+
+#supporttriage-panel input[type="text"],
+#supporttriage-panel textarea,
+#supporttriage-panel select,
+.supporttriage-status-form input[type="text"],
+.supporttriage-status-form textarea,
+.supporttriage-status-form select,
+.supporttriage-mcp-panel input[type="text"],
+.supporttriage-mcp-panel select,
+.supporttriage-mcp-bulk-panel select,
+.supporttriage-snippet-text {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 36px;
+    padding: 8px 10px;
+    border: 1px solid #cfd9e2;
+    border-radius: 4px;
+    background: #fff;
+    color: #34495e;
+}
+
+#supporttriage-panel textarea,
+.supporttriage-status-form textarea,
+.supporttriage-snippet-text {
+    min-height: 110px;
+    resize: vertical;
+}
+
+#supporttriage-panel input[type="text"]:focus,
+#supporttriage-panel textarea:focus,
+#supporttriage-panel select:focus,
+.supporttriage-status-form input[type="text"]:focus,
+.supporttriage-status-form textarea:focus,
+.supporttriage-status-form select:focus,
+.supporttriage-mcp-panel input[type="text"]:focus,
+.supporttriage-mcp-panel select:focus,
+.supporttriage-mcp-bulk-panel select:focus,
+.supporttriage-snippet-text:focus {
+    border-color: #0088cc;
+    box-shadow: 0 0 0 2px rgba(0, 136, 204, 0.12);
+    outline: 0;
+}
+
+#supporttriage-panel .supporttriage-note,
+#supporttriage-panel .supporttriage-section-note,
+#supporttriage-similar-list .supporttriage-similar-meta,
+.supporttriage-log-meta,
+.supporttriage-alert-time,
+.supporttriage-notification-time,
+.supporttriage-muted {
+    color: #738496;
+}
+
+#supporttriage-panel .supporttriage-conditional {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #eef3f7;
+}
+
+#supporttriage-panel .supporttriage-conditional.is-hidden,
+#supporttriage-similar-panel.is-hidden,
+#supporttriage-similar-empty.is-hidden {
+    display: none;
+}
+
+/* Similar topics */
+#supporttriage-similar-list {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+}
+
+#supporttriage-similar-list li {
+    margin: 0;
+    padding: 10px 0;
+    border-top: 1px solid #eef3f7;
+}
+
+#supporttriage-similar-list li:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+#supporttriage-similar-list a {
+    font-weight: 700;
+}
+
+/* Buttons and actions */
+.supporttriage-actions,
+.supporttriage-status-actions,
+.supporttriage-snippet-actions,
+.supporttriage-kb-actions,
+.supporttriage-mcp-actions,
+.supporttriage-mcp-bulk-actions,
+.supporttriage-filter-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.supporttriage-status-form,
+.supporttriage-mcp-filter-form,
+.supporttriage-mcp-bulk-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: end;
+}
+
+.supporttriage-status-form .supporttriage-field,
+.supporttriage-mcp-filter-form .supporttriage-field,
+.supporttriage-mcp-bulk-form .supporttriage-field {
+    min-width: 180px;
+    flex: 1 1 180px;
+}
+
+/* Cards and lists */
+.supporttriage-snippets-grid,
+.supporttriage-mcp-summary,
+.supporttriage-kb-summary,
+.supporttriage-topic-meta,
+.supporttriage-alert-list,
+.supporttriage-notification-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+}
+
+.supporttriage-snippet-card,
+.supporttriage-alert-item,
+.supporttriage-notification-item,
+.supporttriage-meta-card,
+.supporttriage-kb-card,
+.supporttriage-mcp-stat-card {
+    background: #f8fbfd;
+    border: 1px solid #e4edf4;
+    border-radius: 4px;
+    padding: 12px;
+}
+
+.supporttriage-snippet-card h4,
+.supporttriage-alert-item h4,
+.supporttriage-notification-item h4,
+.supporttriage-meta-card h4,
+.supporttriage-kb-card h4,
+.supporttriage-mcp-stat-card h4 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #2f3e4d;
+}
+
+.supporttriage-log-list,
+.supporttriage-check-list {
+    margin: 10px 0 0;
+    padding-left: 18px;
+}
+
+.supporttriage-log-list li,
+.supporttriage-check-list li {
+    margin-bottom: 8px;
+}
+
+/* Badges */
+.supporttriage-status-badge,
+.supporttriage-priority-badge,
+.supporttriage-alert-badge,
+.supporttriage-mcp-stat-chip,
+.supporttriage-mcp-smart-chip,
+.supporttriage-mcp-quick,
+.supporttriage-inline-chip {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    border: 1px solid transparent;
+}
+
+.supporttriage-status-badge,
+.supporttriage-mcp-stat-chip,
+.supporttriage-inline-chip {
+    background: #eef6fb;
+    border-color: #cfe4f2;
+    color: #2f6583;
+}
+
+.supporttriage-priority-badge.priority-low {
+    background: #f4f7fa;
+    border-color: #dde6ee;
+    color: #5f7182;
+}
+
+.supporttriage-priority-badge.priority-normal {
+    background: #eef6fb;
+    border-color: #cfe4f2;
+    color: #2f6583;
+}
+
+.supporttriage-priority-badge.priority-high,
+.supporttriage-alert-badge.alert-warning,
+.supporttriage-mcp-smart-chip.is-warning {
+    background: #fff7e7;
+    border-color: #f4d89a;
+    color: #8a6200;
+}
+
+.supporttriage-priority-badge.priority-critical,
+.supporttriage-alert-badge.alert-danger,
+.supporttriage-mcp-smart-chip.is-danger {
+    background: #fff0f0;
+    border-color: #efc8c8;
+    color: #9f3b3b;
+}
+
+.supporttriage-alert-badge.alert-success,
+.supporttriage-mcp-smart-chip.is-success {
+    background: #ebf8f0;
+    border-color: #c5e3d0;
+    color: #2a7149;
+}
+
+/* MCP */
+.supporttriage-mcp-panel,
+.supporttriage-mcp-bulk-panel {
+    margin-bottom: 12px;
+}
+
+.supporttriage-mcp-toolbar,
+.supporttriage-mcp-summary-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.supporttriage-mcp-queue-note {
+    color: #738496;
+    margin-top: 8px;
+}
+
+.supporttriage-mcp-row.is-stale,
+.supporttriage-has-alerts {
+    background: rgba(255, 248, 230, 0.45);
+}
+
+.supporttriage-mcp-row.is-critical {
+    background: rgba(255, 240, 240, 0.5);
+}
+
+.supporttriage-mcp-row .supporttriage-title-extra,
+.supporttriage-topic-extra {
+    margin-top: 6px;
+}
+
+.supporttriage-mcp-inline-checkbox {
+    margin-right: 8px;
+}
+
+/* Topic actions */
+.supporttriage-topic-panel .supporttriage-status-message,
+.supporttriage-topic-panel .supporttriage-permission-note,
+.supporttriage-kb-panel .supporttriage-kb-message {
+    margin-top: 10px;
+}
+
+/* Alerts and notifications */
+.supporttriage-alert-item,
+.supporttriage-notification-item {
+    border-left: 3px solid #0088cc;
+}
+
+.supporttriage-alert-item.is-warning,
+.supporttriage-notification-item.is-warning {
+    border-left-color: #d7a600;
+}
+
+.supporttriage-alert-item.is-danger,
+.supporttriage-notification-item.is-danger {
+    border-left-color: #d9534f;
+}
+
+.supporttriage-alert-item.is-success,
+.supporttriage-notification-item.is-success {
+    border-left-color: #5cb85c;
+}
+
+/* Tables in ACP / reports */
+.supporttriage-table,
+.supporttriage-report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.supporttriage-table th,
+.supporttriage-table td,
+.supporttriage-report-table th,
+.supporttriage-report-table td {
+    padding: 9px 10px;
+    border: 1px solid #e4edf4;
+    text-align: left;
+    vertical-align: top;
+}
+
+.supporttriage-table th,
+.supporttriage-report-table th {
+    background: #f7fafc;
+    color: #34495e;
+    font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .supporttriage-snippets-grid,
+    .supporttriage-mcp-summary,
+    .supporttriage-kb-summary,
+    .supporttriage-topic-meta,
+    .supporttriage-alert-list,
+    .supporttriage-notification-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .supporttriage-status-form,
+    .supporttriage-mcp-filter-form,
+    .supporttriage-mcp-bulk-form,
+    .supporttriage-actions,
+    .supporttriage-status-actions,
+    .supporttriage-snippet-actions,
+    .supporttriage-kb-actions,
+    .supporttriage-mcp-actions,
+    .supporttriage-mcp-bulk-actions,
+    .supporttriage-filter-actions,
+    .supporttriage-mcp-toolbar,
+    .supporttriage-mcp-summary-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .supporttriage-status-form .supporttriage-field,
+    .supporttriage-mcp-filter-form .supporttriage-field,
+    .supporttriage-mcp-bulk-form .supporttriage-field {
+        min-width: 100%;
+    }
+
+    .supporttriage-topic-panel,
+    .supporttriage-snippets-panel,
+    .supporttriage-snippets-suggested-panel,
+    .supporttriage-logs-panel,
+    .supporttriage-kb-panel,
+    .supporttriage-mcp-panel,
+    .supporttriage-mcp-bulk-panel,
+    .supporttriage-alerts-panel,
+    .supporttriage-notifications-panel,
+    #supporttriage-panel,
+    #supporttriage-similar-panel {
+        padding: 12px;
+    }
+}

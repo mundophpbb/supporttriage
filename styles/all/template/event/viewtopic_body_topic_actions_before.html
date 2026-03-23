@@ -1,0 +1,288 @@
+<!-- IF S_SUPPORTTRIAGE_TOPIC_STATUS_SHOW -->
+<div class="panel bg3 supporttriage-topic-panel">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_STATUS_PANEL_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_STATUS_PANEL_EXPLAIN}</p>
+
+        <div class="supporttriage-status-current">
+            <strong>{L_SUPPORTTRIAGE_STATUS_LABEL}{L_COLON}</strong>
+            <span class="supporttriage-status-badge {SUPPORTTRIAGE_TOPIC_STATUS_CLASS}">{SUPPORTTRIAGE_TOPIC_STATUS_LABEL}</span>
+        </div>
+
+        <!-- IF SUPPORTTRIAGE_TOPIC_STATUS_UPDATED_LINE -->
+        <p class="supporttriage-status-meta">{L_SUPPORTTRIAGE_STATUS_UPDATED}{L_COLON} {SUPPORTTRIAGE_TOPIC_STATUS_UPDATED_LINE}</p>
+        <!-- ENDIF -->
+
+        <!-- IF S_SUPPORTTRIAGE_TOPIC_PRIORITY_SHOW -->
+        <div class="supporttriage-status-current supporttriage-priority-current">
+            <strong>{L_SUPPORTTRIAGE_PRIORITY_LABEL}{L_COLON}</strong>
+            <span class="supporttriage-status-badge {SUPPORTTRIAGE_TOPIC_PRIORITY_CLASS}">{SUPPORTTRIAGE_TOPIC_PRIORITY_LABEL}</span>
+        </div>
+        <!-- ENDIF -->
+
+        <!-- IF S_SUPPORTTRIAGE_PRIORITY_SAVED -->
+        <p class="supporttriage-status-message"><strong>{L_SUPPORTTRIAGE_PRIORITY_SAVED}</strong></p>
+        <!-- ENDIF -->
+
+        <!-- IF S_SUPPORTTRIAGE_CAN_SET_PRIORITY -->
+        <form method="post" action="" class="supporttriage-status-form">
+            <label for="supporttriage_priority"><strong>{L_SUPPORTTRIAGE_PRIORITY_CHANGE}{L_COLON}</strong></label>
+            <select name="supporttriage_priority" id="supporttriage_priority">
+                <!-- BEGIN supporttriage_priority_options -->
+                <option value="{supporttriage_priority_options.VALUE}"<!-- IF supporttriage_priority_options.S_SELECTED --> selected="selected"<!-- ENDIF -->>{supporttriage_priority_options.LABEL}</option>
+                <!-- END supporttriage_priority_options -->
+            </select>
+            <input type="submit" class="button" name="supporttriage_update_priority" value="{L_SUPPORTTRIAGE_PRIORITY_SAVE}" />
+            {SUPPORTTRIAGE_VIEWTOPIC_FORM_TOKEN}
+        </form>
+        <!-- ENDIF -->
+
+        <!-- IF S_SUPPORTTRIAGE_STATUS_SAVED -->
+        <p class="supporttriage-status-message"><strong>{L_SUPPORTTRIAGE_STATUS_SAVED}</strong></p>
+        <!-- ENDIF -->
+        <!-- IF S_SUPPORTTRIAGE_AUTO_STATUS_NOTICE -->
+        <p class="supporttriage-status-message"><strong>{SUPPORTTRIAGE_AUTO_STATUS_NOTICE}</strong></p>
+        <!-- ENDIF -->
+
+        <!-- IF S_SUPPORTTRIAGE_CAN_SET_STATUS -->
+        <form method="post" action="" class="supporttriage-status-form">
+            <label for="supporttriage_status"><strong>{L_SUPPORTTRIAGE_STATUS_CHANGE}{L_COLON}</strong></label>
+            <select name="supporttriage_status" id="supporttriage_status">
+                <!-- BEGIN supporttriage_status_options -->
+                <option value="{supporttriage_status_options.VALUE}"<!-- IF supporttriage_status_options.S_SELECTED --> selected="selected"<!-- ENDIF -->>{supporttriage_status_options.LABEL}</option>
+                <!-- END supporttriage_status_options -->
+            </select>
+            <input type="submit" class="button button1" name="supporttriage_update_status" value="{L_SUPPORTTRIAGE_STATUS_SAVE}" />
+            {SUPPORTTRIAGE_VIEWTOPIC_FORM_TOKEN}
+        </form>
+        <!-- ENDIF -->
+    </div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF S_SUPPORTTRIAGE_NOTICES_SHOW -->
+<div class="panel bg1 supporttriage-alerts-panel">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_NOTICES_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_NOTICES_EXPLAIN}</p>
+
+        <ul class="supporttriage-alert-list">
+            <!-- BEGIN supporttriage_notices -->
+            <li class="supporttriage-alert-item {supporttriage_notices.CLASS}">
+                <span class="supporttriage-alert-badge {supporttriage_notices.CLASS}">{supporttriage_notices.SHORT_LABEL}</span>
+                <span class="supporttriage-alert-text">{supporttriage_notices.MESSAGE}</span>
+                <!-- IF supporttriage_notices.TIME -->
+                <span class="supporttriage-log-meta">{supporttriage_notices.TIME}</span>
+                <!-- ENDIF -->
+            </li>
+            <!-- END supporttriage_notices -->
+        </ul>
+    </div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF S_SUPPORTTRIAGE_ALERTS_SHOW -->
+<div class="panel bg1 supporttriage-alerts-panel">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_ALERTS_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_ALERTS_EXPLAIN}</p>
+
+        <ul class="supporttriage-alert-list">
+            <!-- BEGIN supporttriage_alerts -->
+            <li class="supporttriage-alert-item {supporttriage_alerts.CLASS}">
+                <span class="supporttriage-alert-badge {supporttriage_alerts.CLASS}">{supporttriage_alerts.SHORT_LABEL}</span>
+                <span class="supporttriage-alert-text">{supporttriage_alerts.MESSAGE}</span>
+                <!-- IF supporttriage_alerts.U_LINK -->
+                <span class="supporttriage-alert-link"><a href="{supporttriage_alerts.U_LINK}">{supporttriage_alerts.LINK_LABEL}</a></span>
+                <!-- ENDIF -->
+            </li>
+            <!-- END supporttriage_alerts -->
+        </ul>
+    </div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF S_SUPPORTTRIAGE_LOGS_SHOW -->
+<div class="panel bg1 supporttriage-logs-panel">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_LOGS_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_LOGS_EXPLAIN}</p>
+
+        <ul class="supporttriage-log-list">
+            <!-- BEGIN supporttriage_logs -->
+            <li>
+                <strong>{supporttriage_logs.ACTION_LABEL}</strong>
+                <span class="supporttriage-log-meta">{supporttriage_logs.DETAILS}</span>
+                <span class="supporttriage-log-meta">{supporttriage_logs.USERNAME} &middot; {supporttriage_logs.TIME}</span>
+            </li>
+            <!-- END supporttriage_logs -->
+        </ul>
+    </div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF S_SUPPORTTRIAGE_SUGGESTED_SNIPPETS_SHOW -->
+<div class="panel bg1 supporttriage-snippets-panel supporttriage-snippets-suggested-panel">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_SNIPPETS_SUGGESTED_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_SNIPPETS_SUGGESTED_EXPLAIN}</p>
+        <p class="supporttriage-suggested-reason">{SUPPORTTRIAGE_SUGGESTED_SNIPPETS_REASON}</p>
+
+        <div class="supporttriage-snippets-grid">
+            <!-- BEGIN supporttriage_suggested_snippets -->
+            <div class="supporttriage-snippet-card">
+                <h4>{supporttriage_suggested_snippets.TITLE}</h4>
+                <textarea readonly="readonly" class="supporttriage-snippet-text">{supporttriage_suggested_snippets.TEXT}</textarea>
+                <div class="supporttriage-snippet-actions">
+                    <button type="button" class="button button1 supporttriage-snippet-insert">{L_SUPPORTTRIAGE_SNIPPET_INSERT}</button>
+                    <button type="button" class="button supporttriage-snippet-copy">{L_SUPPORTTRIAGE_SNIPPET_COPY}</button>
+                </div>
+                <p class="supporttriage-snippet-feedback"></p>
+            </div>
+            <!-- END supporttriage_suggested_snippets -->
+        </div>
+    </div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF S_SUPPORTTRIAGE_SNIPPETS_SHOW -->
+<div class="panel bg2 supporttriage-snippets-panel">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_SNIPPETS_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_SNIPPETS_EXPLAIN}</p>
+
+        <div class="supporttriage-snippets-grid">
+            <!-- BEGIN supporttriage_snippets -->
+            <div class="supporttriage-snippet-card">
+                <h4>{supporttriage_snippets.TITLE}</h4>
+                <textarea readonly="readonly" class="supporttriage-snippet-text">{supporttriage_snippets.TEXT}</textarea>
+                <div class="supporttriage-snippet-actions">
+                    <button type="button" class="button button1 supporttriage-snippet-insert">{L_SUPPORTTRIAGE_SNIPPET_INSERT}</button>
+                    <button type="button" class="button supporttriage-snippet-copy">{L_SUPPORTTRIAGE_SNIPPET_COPY}</button>
+                </div>
+                <p class="supporttriage-snippet-feedback"></p>
+            </div>
+            <!-- END supporttriage_snippets -->
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var panels = document.querySelectorAll('.supporttriage-snippets-panel');
+    if (!panels.length) {
+        return;
+    }
+
+    function findMessageField() {
+        return document.querySelector('textarea[name="message"]') || document.getElementById('message');
+    }
+
+    function copyText(text, sourceField) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text);
+            return true;
+        }
+
+        if (!sourceField) {
+            return false;
+        }
+
+        sourceField.focus();
+        sourceField.select();
+        try {
+            return document.execCommand('copy');
+        } catch (e) {
+            return false;
+        }
+    }
+
+    panels.forEach(function (panel) {
+        panel.querySelectorAll('.supporttriage-snippet-card').forEach(function (card) {
+        var textField = card.querySelector('.supporttriage-snippet-text');
+        var insertButton = card.querySelector('.supporttriage-snippet-insert');
+        var copyButton = card.querySelector('.supporttriage-snippet-copy');
+        var feedback = card.querySelector('.supporttriage-snippet-feedback');
+
+        function setFeedback(message) {
+            if (feedback) {
+                feedback.textContent = message;
+            }
+        }
+
+        if (insertButton) {
+            insertButton.addEventListener('click', function () {
+                var messageField = findMessageField();
+                var text = textField ? textField.value : '';
+
+                if (messageField) {
+                    var prefix = messageField.value && !/\n\s*$/.test(messageField.value) ? '\n\n' : '';
+                    messageField.value += prefix + text;
+                    messageField.focus();
+                    setFeedback('{L_SUPPORTTRIAGE_SNIPPET_INSERTED}');
+                } else if (copyText(text, textField)) {
+                    setFeedback('{L_SUPPORTTRIAGE_SNIPPET_COPIED}');
+                } else {
+                    setFeedback('{L_SUPPORTTRIAGE_SNIPPET_COPY_FALLBACK}');
+                }
+            });
+        }
+
+        if (copyButton) {
+            copyButton.addEventListener('click', function () {
+                var text = textField ? textField.value : '';
+                if (copyText(text, textField)) {
+                    setFeedback('{L_SUPPORTTRIAGE_SNIPPET_COPIED}');
+                } else {
+                    setFeedback('{L_SUPPORTTRIAGE_SNIPPET_COPY_FALLBACK}');
+                }
+            });
+        }
+        });
+    });
+});
+</script>
+<!-- ENDIF -->
+
+
+<!-- IF S_SUPPORTTRIAGE_KB_SHOW -->
+<div class="panel bg2 supporttriage-kb-panel">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_KB_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_KB_EXPLAIN}</p>
+
+        <!-- IF S_SUPPORTTRIAGE_KB_CREATED -->
+        <p><strong>{L_SUPPORTTRIAGE_KB_CREATED}</strong></p>
+        <p>{L_SUPPORTTRIAGE_KB_SYNC_EXPLAIN}</p>
+        <p class="supporttriage-kb-link"><a href="{SUPPORTTRIAGE_KB_TOPIC_URL}">{L_SUPPORTTRIAGE_KB_VIEW}</a></p>
+        <!-- ENDIF -->
+
+        <!-- IF S_SUPPORTTRIAGE_CAN_CREATE_KB or S_SUPPORTTRIAGE_CAN_SYNC_KB -->
+        <form method="post" action="" class="supporttriage-kb-actions">
+            <!-- IF S_SUPPORTTRIAGE_CAN_CREATE_KB -->
+            <input type="submit" class="button button1" name="supporttriage_create_kb" value="{L_SUPPORTTRIAGE_KB_CREATE}" />
+            <!-- ENDIF -->
+            <!-- IF S_SUPPORTTRIAGE_CAN_SYNC_KB -->
+            <input type="submit" class="button" name="supporttriage_sync_kb" value="{L_SUPPORTTRIAGE_KB_SYNC}" />
+            <!-- ENDIF -->
+            {SUPPORTTRIAGE_VIEWTOPIC_FORM_TOKEN}
+        </form>
+        <!-- ENDIF -->
+
+        <!-- IF S_SUPPORTTRIAGE_KB_SAVED -->
+        <p class="supporttriage-kb-message"><strong>{L_SUPPORTTRIAGE_KB_CREATED_SUCCESS}</strong></p>
+        <!-- ENDIF -->
+        <!-- IF S_SUPPORTTRIAGE_KB_SYNCED -->
+        <p class="supporttriage-kb-message"><strong>{L_SUPPORTTRIAGE_KB_SYNC_SUCCESS}</strong></p>
+        <!-- ENDIF -->
+        <!-- IF S_SUPPORTTRIAGE_KB_EXISTS -->
+        <p class="supporttriage-kb-message"><strong>{L_SUPPORTTRIAGE_KB_ALREADY_EXISTS}</strong></p>
+        <!-- ENDIF -->
+        <!-- IF S_SUPPORTTRIAGE_KB_ERROR -->
+        <p class="supporttriage-kb-message"><strong>{L_SUPPORTTRIAGE_KB_CREATE_ERROR}</strong></p>
+        <!-- ENDIF -->
+        <!-- IF S_SUPPORTTRIAGE_KB_SYNC_ERROR -->
+        <p class="supporttriage-kb-message"><strong>{L_SUPPORTTRIAGE_KB_SYNC_ERROR}</strong></p>
+        <!-- ENDIF -->
+    </div>
+</div>
+<!-- ENDIF -->

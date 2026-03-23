@@ -1,0 +1,741 @@
+/*
+ * Support Triage — Flatboots Premium Skin
+ * Designed for SiteSplat Flatboots / Bootstrap 3.
+ * Load after the extension CSS, preferably through Flatboots custom.css.
+ * Scoped to .supporttriage-* blocks to avoid leaking into the forum.
+ */
+
+/* --------------------------------------------------------------
+   Theme tokens
+   -------------------------------------------------------------- */
+:root {
+    --st-accent: #0088cc;
+    --st-accent-dark: #005580;
+    --st-accent-soft: #eef8fd;
+    --st-text: #2a3b4c;
+    --st-text-muted: #6f8090;
+    --st-border: #d9e5ef;
+    --st-border-strong: #c7d7e5;
+    --st-surface: #ffffff;
+    --st-surface-alt: #f7fafc;
+    --st-shadow-sm: 0 8px 20px rgba(17, 49, 80, 0.08);
+    --st-shadow-md: 0 14px 34px rgba(17, 49, 80, 0.12);
+    --st-radius: 8px;
+    --st-radius-sm: 6px;
+    --st-success-bg: #ebf8f1;
+    --st-success-border: #bfe2cf;
+    --st-success-text: #1f6f46;
+    --st-warning-bg: #fff7e8;
+    --st-warning-border: #f2d69a;
+    --st-warning-text: #8d5d00;
+    --st-danger-bg: #fff0f0;
+    --st-danger-border: #edc3c3;
+    --st-danger-text: #a13737;
+    --st-muted-bg: #f4f7fa;
+    --st-muted-border: #dbe4ec;
+    --st-muted-text: #607181;
+}
+
+/* --------------------------------------------------------------
+   Core panels
+   -------------------------------------------------------------- */
+.supporttriage-topic-panel,
+.supporttriage-snippets-panel,
+.supporttriage-snippets-suggested-panel,
+.supporttriage-logs-panel,
+.supporttriage-kb-panel,
+.supporttriage-mcp-panel,
+.supporttriage-mcp-bulk-panel,
+.supporttriage-alerts-panel,
+#supporttriage-panel,
+#supporttriage-similar-panel {
+    position: relative;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid var(--st-border);
+    border-radius: var(--st-radius);
+    box-shadow: var(--st-shadow-sm);
+    padding: 18px 20px;
+    margin: 0 0 18px;
+    overflow: hidden;
+}
+
+.supporttriage-topic-panel:before,
+.supporttriage-snippets-panel:before,
+.supporttriage-snippets-suggested-panel:before,
+.supporttriage-logs-panel:before,
+.supporttriage-kb-panel:before,
+.supporttriage-mcp-panel:before,
+.supporttriage-mcp-bulk-panel:before,
+.supporttriage-alerts-panel:before,
+#supporttriage-panel:before,
+#supporttriage-similar-panel:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--st-accent) 0%, #27a2df 100%);
+}
+
+.supporttriage-topic-panel:hover,
+.supporttriage-snippets-panel:hover,
+.supporttriage-snippets-suggested-panel:hover,
+.supporttriage-logs-panel:hover,
+.supporttriage-kb-panel:hover,
+.supporttriage-mcp-panel:hover,
+.supporttriage-mcp-bulk-panel:hover,
+.supporttriage-alerts-panel:hover,
+#supporttriage-panel:hover,
+#supporttriage-similar-panel:hover {
+    box-shadow: var(--st-shadow-md);
+}
+
+.supporttriage-topic-panel h3,
+.supporttriage-snippets-panel h3,
+.supporttriage-snippets-suggested-panel h3,
+.supporttriage-logs-panel h3,
+.supporttriage-kb-panel h3,
+.supporttriage-mcp-panel h3,
+.supporttriage-mcp-bulk-panel h3,
+.supporttriage-alerts-panel h3,
+#supporttriage-panel h3,
+#supporttriage-similar-panel h3,
+#supporttriage-panel legend {
+    margin: 0 0 14px;
+    padding: 0 0 12px;
+    color: var(--st-text);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    border-bottom: 1px solid #edf3f8;
+}
+
+.supporttriage-topic-panel h3:after,
+.supporttriage-snippets-panel h3:after,
+.supporttriage-snippets-suggested-panel h3:after,
+.supporttriage-logs-panel h3:after,
+.supporttriage-kb-panel h3:after,
+.supporttriage-mcp-panel h3:after,
+.supporttriage-mcp-bulk-panel h3:after,
+.supporttriage-alerts-panel h3:after,
+#supporttriage-panel h3:after,
+#supporttriage-similar-panel h3:after {
+    content: "";
+    display: block;
+    width: 46px;
+    height: 3px;
+    margin-top: 8px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--st-accent) 0%, #27a2df 100%);
+}
+
+/* --------------------------------------------------------------
+   Typography and meta
+   -------------------------------------------------------------- */
+.supporttriage-topic-panel,
+.supporttriage-snippets-panel,
+.supporttriage-snippets-suggested-panel,
+.supporttriage-logs-panel,
+.supporttriage-kb-panel,
+.supporttriage-mcp-panel,
+.supporttriage-mcp-bulk-panel,
+.supporttriage-alerts-panel,
+#supporttriage-panel,
+#supporttriage-similar-panel {
+    color: var(--st-text);
+}
+
+.supporttriage-note,
+.supporttriage-section-note,
+.supporttriage-status-meta,
+.supporttriage-log-meta,
+.supporttriage-mcp-visible-meta,
+.supporttriage-mcp-hint,
+.supporttriage-similar-meta,
+.supporttriage-suggested-reason,
+.supporttriage-kb-message,
+.supporttriage-status-message,
+.supporttriage-mcp-message,
+.supporttriage-snippet-feedback {
+    color: var(--st-text-muted);
+}
+
+.supporttriage-title {
+    font-weight: 700;
+    color: var(--st-text);
+}
+
+/* --------------------------------------------------------------
+   Links and quick actions
+   -------------------------------------------------------------- */
+.supporttriage-topic-panel a,
+.supporttriage-snippets-panel a,
+.supporttriage-snippets-suggested-panel a,
+.supporttriage-logs-panel a,
+.supporttriage-kb-panel a,
+.supporttriage-mcp-panel a,
+.supporttriage-mcp-bulk-panel a,
+.supporttriage-alerts-panel a,
+#supporttriage-panel a,
+#supporttriage-similar-panel a {
+    color: var(--st-accent);
+}
+
+.supporttriage-topic-panel a:hover,
+.supporttriage-snippets-panel a:hover,
+.supporttriage-snippets-suggested-panel a:hover,
+.supporttriage-logs-panel a:hover,
+.supporttriage-kb-panel a:hover,
+.supporttriage-mcp-panel a:hover,
+.supporttriage-mcp-bulk-panel a:hover,
+.supporttriage-alerts-panel a:hover,
+#supporttriage-panel a:hover,
+#supporttriage-similar-panel a:hover {
+    color: var(--st-accent-dark);
+    text-decoration: none;
+}
+
+.supporttriage-actions a,
+.supporttriage-kb-actions a,
+.supporttriage-snippet-actions a,
+.supporttriage-mcp-inline-actions a,
+.supporttriage-mcp-quick,
+.supporttriage-set-filter,
+.supporttriage-set-workflow,
+.supporttriage-mcp-select-visible,
+.supporttriage-mcp-clear-selection {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 6px 12px;
+    border: 1px solid var(--st-border-strong);
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f8fb 100%);
+    color: var(--st-text);
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 1.2;
+    transition: all .18s ease;
+    box-shadow: 0 2px 8px rgba(17, 49, 80, 0.04);
+}
+
+.supporttriage-actions a:hover,
+.supporttriage-kb-actions a:hover,
+.supporttriage-snippet-actions a:hover,
+.supporttriage-mcp-inline-actions a:hover,
+.supporttriage-mcp-quick:hover,
+.supporttriage-set-filter:hover,
+.supporttriage-set-workflow:hover,
+.supporttriage-mcp-select-visible:hover,
+.supporttriage-mcp-clear-selection:hover {
+    border-color: #9ccce5;
+    background: linear-gradient(180deg, #ffffff 0%, #ecf6fb 100%);
+    color: var(--st-accent-dark);
+    box-shadow: 0 6px 16px rgba(0, 136, 204, 0.12);
+    transform: translateY(-1px);
+}
+
+.supporttriage-actions input[type="submit"],
+.supporttriage-kb-actions input[type="submit"],
+.supporttriage-mcp-controls input[type="submit"],
+.supporttriage-mcp-bulk-actions input[type="submit"],
+.supporttriage-mcp-bulk-apply,
+#supporttriage-panel input[type="submit"],
+#supporttriage-panel button,
+#supporttriage-similar-panel button {
+    border: 0;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #0f97da 0%, var(--st-accent) 100%);
+    color: #fff;
+    font-weight: 700;
+    padding: 8px 16px;
+    box-shadow: 0 8px 18px rgba(0, 136, 204, 0.22);
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.supporttriage-actions input[type="submit"]:hover,
+.supporttriage-kb-actions input[type="submit"]:hover,
+.supporttriage-mcp-controls input[type="submit"]:hover,
+.supporttriage-mcp-bulk-actions input[type="submit"]:hover,
+.supporttriage-mcp-bulk-apply:hover,
+#supporttriage-panel input[type="submit"]:hover,
+#supporttriage-panel button:hover,
+#supporttriage-similar-panel button:hover {
+    background: linear-gradient(180deg, #1aa0e1 0%, #0077b4 100%);
+    box-shadow: 0 12px 24px rgba(0, 136, 204, 0.28);
+    transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------
+   Badges and status pills
+   -------------------------------------------------------------- */
+.supporttriage-status-badge,
+.supporttriage-alert-badge,
+.supporttriage-priority,
+.supporttriage-priority-current,
+.supporttriage-mcp-stat-chip,
+.supporttriage-mcp-smart-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-height: 28px;
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+}
+
+.supporttriage-status-badge { margin-left: 6px; }
+
+.supporttriage-status-new,
+.supporttriage-priority-normal,
+.supporttriage-mcp-stat-chip.is-primary,
+.supporttriage-mcp-smart-chip.is-primary {
+    background: linear-gradient(180deg, #f0f9ff 0%, #dff2fc 100%);
+    border-color: #b9def0;
+    color: #005f8f;
+}
+
+.supporttriage-status-progress,
+.supporttriage-priority-high,
+.supporttriage-alert-warning,
+.supporttriage-mcp-stat-chip.is-warning,
+.supporttriage-mcp-smart-chip.is-warning {
+    background: linear-gradient(180deg, #fff9ee 0%, #ffefcc 100%);
+    border-color: #f0d091;
+    color: #8b5c00;
+}
+
+.supporttriage-status-waiting,
+.supporttriage-priority-critical,
+.supporttriage-alert-danger,
+.supporttriage-mcp-stat-chip.is-danger,
+.supporttriage-mcp-smart-chip.is-danger {
+    background: linear-gradient(180deg, #fff5f5 0%, #ffdede 100%);
+    border-color: #efbdbd;
+    color: #a13232;
+}
+
+.supporttriage-status-solved,
+.supporttriage-alert-success,
+.supporttriage-mcp-stat-chip.is-success,
+.supporttriage-mcp-smart-chip.is-success {
+    background: linear-gradient(180deg, #f0fbf5 0%, #d9f1e3 100%);
+    border-color: #b6dfc7;
+    color: #1e6c44;
+}
+
+.supporttriage-status-muted,
+.supporttriage-status-none,
+.supporttriage-alert-muted,
+.supporttriage-priority-low,
+.supporttriage-mcp-stat-chip.is-muted,
+.supporttriage-mcp-smart-chip.is-muted {
+    background: linear-gradient(180deg, #f8fafc 0%, #edf3f7 100%);
+    border-color: #d9e2ea;
+    color: #607181;
+}
+
+/* --------------------------------------------------------------
+   Posting assistant / form layout
+   -------------------------------------------------------------- */
+#supporttriage-panel {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbfe 100%);
+}
+
+#supporttriage-panel .supporttriage-grid,
+#supporttriage-panel .supporttriage-stack {
+    display: grid;
+    gap: 12px;
+}
+
+#supporttriage-panel .supporttriage-grid.fields2 {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+#supporttriage-panel .supporttriage-grid.fields2 dl,
+#supporttriage-panel .supporttriage-stack.fields2 dl {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 14px;
+    border: 1px solid #e2ebf2;
+    border-radius: var(--st-radius-sm);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+}
+
+#supporttriage-panel .supporttriage-grid.fields2 dt,
+#supporttriage-panel .supporttriage-stack.fields2 dt,
+#supporttriage-panel .supporttriage-grid.fields2 dd,
+#supporttriage-panel .supporttriage-stack.fields2 dd {
+    width: 100%;
+    float: none;
+    margin: 0;
+}
+
+#supporttriage-panel label,
+#supporttriage-panel legend {
+    color: var(--st-text);
+    font-weight: 700;
+}
+
+#supporttriage-panel select,
+#supporttriage-panel input[type="text"],
+#supporttriage-panel input[type="number"],
+#supporttriage-panel textarea,
+.supporttriage-mcp-search,
+.supporttriage-mcp-filter,
+.supporttriage-mcp-sort,
+.supporttriage-mcp-workflow,
+.supporttriage-mcp-attention,
+.supporttriage-mcp-priority,
+.supporttriage-mcp-bulk-status,
+.supporttriage-mcp-bulk-priority,
+.supporttriage-snippet-text {
+    width: 100%;
+    min-height: 38px;
+    border: 1px solid #cddae5;
+    border-radius: 7px;
+    background: #fff;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.03);
+    transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+#supporttriage-panel select:focus,
+#supporttriage-panel input[type="text"]:focus,
+#supporttriage-panel input[type="number"]:focus,
+#supporttriage-panel textarea:focus,
+.supporttriage-mcp-search:focus,
+.supporttriage-mcp-filter:focus,
+.supporttriage-mcp-sort:focus,
+.supporttriage-mcp-workflow:focus,
+.supporttriage-mcp-attention:focus,
+.supporttriage-mcp-priority:focus,
+.supporttriage-mcp-bulk-status:focus,
+.supporttriage-mcp-bulk-priority:focus,
+.supporttriage-snippet-text:focus {
+    border-color: #8fc7e4;
+    box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.12);
+    outline: none;
+}
+
+#supporttriage-panel textarea,
+.supporttriage-snippet-text {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.supporttriage-conditional {
+    margin-top: 12px;
+}
+
+/* --------------------------------------------------------------
+   Similar topics / alerts / logs
+   -------------------------------------------------------------- */
+#supporttriage-similar-list,
+.supporttriage-alert-list,
+.supporttriage-log-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#supporttriage-similar-list li,
+.supporttriage-alert-item,
+.supporttriage-log-list li {
+    margin: 0;
+    padding: 12px 0;
+    border-top: 1px solid #ecf2f7;
+}
+
+#supporttriage-similar-list li:first-child,
+.supporttriage-alert-list li:first-child,
+.supporttriage-log-list li:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.supporttriage-alert-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.supporttriage-alert {
+    flex: 0 0 auto;
+    width: 10px;
+    height: 10px;
+    margin-top: 6px;
+    border-radius: 50%;
+    background: var(--st-accent);
+    box-shadow: 0 0 0 4px rgba(0,136,204,.10);
+}
+
+.supporttriage-primary-alert .supporttriage-alert { background: #cc2f52; box-shadow: 0 0 0 4px rgba(204,47,82,.10); }
+.supporttriage-alert-warning .supporttriage-alert { background: #d19a17; box-shadow: 0 0 0 4px rgba(209,154,23,.10); }
+.supporttriage-alert-danger .supporttriage-alert { background: #cf4b4b; box-shadow: 0 0 0 4px rgba(207,75,75,.10); }
+.supporttriage-alert-success .supporttriage-alert { background: #2d9b63; box-shadow: 0 0 0 4px rgba(45,155,99,.10); }
+
+/* --------------------------------------------------------------
+   Snippets cards
+   -------------------------------------------------------------- */
+.supporttriage-snippets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+.supporttriage-snippet-card {
+    position: relative;
+    border: 1px solid #e0eaf2;
+    border-radius: var(--st-radius-sm);
+    background: linear-gradient(180deg, #ffffff 0%, #f7fbfd 100%);
+    padding: 15px;
+    box-shadow: 0 5px 14px rgba(17, 49, 80, 0.05);
+}
+
+.supporttriage-snippet-card:before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    top: 0;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--st-accent) 0%, #6fc8ef 100%);
+}
+
+.supporttriage-snippet-card h4 {
+    margin: 4px 0 8px;
+    font-size: 14px;
+    color: var(--st-text);
+    font-weight: 700;
+}
+
+.supporttriage-suggested-reason {
+    margin: 0 0 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: var(--st-accent-soft);
+    color: #005f8f;
+    border: 1px solid #cfe7f4;
+    font-size: 12px;
+}
+
+/* --------------------------------------------------------------
+   Topic rows / forum list markers
+   -------------------------------------------------------------- */
+.supporttriage-topic-marker {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+li.row.supporttriage-row-critical,
+tr.supporttriage-row-critical td {
+    box-shadow: inset 4px 0 0 #c94444;
+}
+
+li.row.supporttriage-row-action-now,
+tr.supporttriage-row-action-now td {
+    background: linear-gradient(90deg, rgba(255, 245, 245, .95) 0%, rgba(255,255,255,0) 36%);
+}
+
+li.row.supporttriage-row-author-return,
+tr.supporttriage-row-author-return td {
+    background: linear-gradient(90deg, rgba(238, 248, 253, .95) 0%, rgba(255,255,255,0) 36%);
+}
+
+li.row.supporttriage-row-stale,
+tr.supporttriage-row-stale td {
+    background: linear-gradient(90deg, rgba(255, 248, 234, .92) 0%, rgba(255,255,255,0) 36%);
+}
+
+/* --------------------------------------------------------------
+   MCP premium layout
+   -------------------------------------------------------------- */
+.supporttriage-mcp-panel,
+.supporttriage-mcp-bulk-panel {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbfe 100%);
+}
+
+.supporttriage-mcp-stats,
+.supporttriage-mcp-smart-stats,
+.supporttriage-mcp-controls,
+.supporttriage-mcp-bulk-actions,
+.supporttriage-mcp-bulk-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.supporttriage-mcp-stat-chip,
+.supporttriage-mcp-smart-chip {
+    min-height: 32px;
+    padding-inline: 12px;
+    text-decoration: none;
+}
+
+.supporttriage-mcp-stat-chip.active,
+.supporttriage-mcp-smart-chip.active,
+.supporttriage-current-filter,
+.supporttriage-current-workflow,
+.supporttriage-current-priority,
+.supporttriage-current-sort,
+.supporttriage-current-attention {
+    background: linear-gradient(180deg, #0f97da 0%, var(--st-accent) 100%);
+    color: #fff;
+    border-color: #0077b3;
+    box-shadow: 0 8px 18px rgba(0, 136, 204, 0.24);
+}
+
+.supporttriage-mcp-bulk-panel {
+    border-style: dashed;
+}
+
+.supporttriage-mcp-bulk-checkbox {
+    transform: scale(1.08);
+}
+
+.supporttriage-mcp-bulk-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: var(--st-accent-soft);
+    color: var(--st-accent-dark);
+    font-weight: 800;
+    border: 1px solid #cfe6f3;
+}
+
+.supporttriage-mcp-message,
+.supporttriage-status-message,
+.supporttriage-kb-message,
+.supporttriage-snippet-feedback {
+    margin-top: 12px;
+    padding: 11px 13px;
+    border-radius: 7px;
+    border: 1px solid #dcebf4;
+    background: linear-gradient(180deg, #fafdff 0%, #f1f8fc 100%);
+}
+
+/* --------------------------------------------------------------
+   Topic controls / info blocks
+   -------------------------------------------------------------- */
+.supporttriage-status-current,
+.supporttriage-status-form,
+.supporttriage-kb-actions,
+.supporttriage-snippet-actions,
+.supporttriage-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.supporttriage-status-current,
+.supporttriage-priority-current {
+    margin-bottom: 10px;
+}
+
+.supporttriage-current-priority,
+.supporttriage-current-status {
+    font-weight: 700;
+}
+
+/* --------------------------------------------------------------
+   Mobile
+   -------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .supporttriage-topic-panel,
+    .supporttriage-snippets-panel,
+    .supporttriage-snippets-suggested-panel,
+    .supporttriage-logs-panel,
+    .supporttriage-kb-panel,
+    .supporttriage-mcp-panel,
+    .supporttriage-mcp-bulk-panel,
+    .supporttriage-alerts-panel,
+    #supporttriage-panel,
+    #supporttriage-similar-panel {
+        padding: 15px;
+        border-radius: 7px;
+    }
+
+    .supporttriage-snippets-grid,
+    #supporttriage-panel .supporttriage-grid.fields2 {
+        grid-template-columns: 1fr;
+    }
+
+    .supporttriage-mcp-stats,
+    .supporttriage-mcp-smart-stats,
+    .supporttriage-mcp-controls,
+    .supporttriage-mcp-bulk-actions,
+    .supporttriage-status-current,
+    .supporttriage-status-form,
+    .supporttriage-kb-actions,
+    .supporttriage-snippet-actions,
+    .supporttriage-actions {
+        align-items: stretch;
+    }
+
+    .supporttriage-actions a,
+    .supporttriage-kb-actions a,
+    .supporttriage-snippet-actions a,
+    .supporttriage-mcp-inline-actions a,
+    .supporttriage-mcp-quick,
+    .supporttriage-set-filter,
+    .supporttriage-set-workflow,
+    .supporttriage-mcp-select-visible,
+    .supporttriage-mcp-clear-selection,
+    .supporttriage-actions input[type="submit"],
+    .supporttriage-kb-actions input[type="submit"],
+    .supporttriage-mcp-controls input[type="submit"],
+    .supporttriage-mcp-bulk-actions input[type="submit"],
+    .supporttriage-mcp-bulk-apply,
+    #supporttriage-panel input[type="submit"],
+    #supporttriage-panel button,
+    #supporttriage-similar-panel button {
+        width: 100%;
+    }
+
+    .supporttriage-topic-marker {
+        display: flex;
+        margin: 8px 0 0;
+    }
+}
+
+/* BBpreview modal integration */
+#bbtpreview #author_rank .supporttriage-preview-badges {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 7px;
+    vertical-align: middle;
+}
+
+#bbtpreview #author_rank .supporttriage-preview-badges .supporttriage-status-badge,
+#bbtpreview #author_rank .supporttriage-preview-badges .supporttriage-alert-badge {
+    margin: 0;
+    min-height: 22px;
+    padding: 2px 8px;
+    font-size: 10px;
+    line-height: 1.15;
+    letter-spacing: .03em;
+    box-shadow: none;
+}

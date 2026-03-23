@@ -1,0 +1,13 @@
+services:
+    mundophpbb.supporttriage.listener:
+        class: mundophpbb\supporttriage\event\listener
+        arguments:
+            - '@config'
+            - '@template'
+            - '@request'
+            - '@user'
+            - '@dbal.conn'
+            - '@auth'
+            - '%core.table_prefix%'
+        tags:
+            - { name: event.listener }

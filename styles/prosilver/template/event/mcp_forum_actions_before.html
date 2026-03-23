@@ -1,0 +1,183 @@
+<!-- IF S_SUPPORTTRIAGE_MCP_QUEUE_SHOW -->
+<div class="panel supporttriage-mcp-panel" data-supporttriage-bulk-selected-label="{L_SUPPORTTRIAGE_MCP_BULK_SELECTED}" data-supporttriage-visible-label="{L_SUPPORTTRIAGE_MCP_VISIBLE}">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_MCP_QUEUE_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_MCP_QUEUE_EXPLAIN}</p>
+
+        <!-- IF S_SUPPORTTRIAGE_MCP_STATUS_SAVED -->
+        <p class="supporttriage-mcp-message successbox">{L_SUPPORTTRIAGE_MCP_STATUS_SAVED}</p>
+        <!-- ENDIF -->
+        <!-- IF S_SUPPORTTRIAGE_MCP_STATUS_SAVE_ERROR -->
+        <p class="supporttriage-mcp-message errorbox">{L_SUPPORTTRIAGE_MCP_STATUS_SAVE_ERROR}</p>
+        <!-- ENDIF -->
+
+        <div class="supporttriage-mcp-stats">
+            <button type="button" class="supporttriage-mcp-stat-chip supporttriage-status-badge supporttriage-status-new" data-supporttriage-set-filter="new">{L_SUPPORTTRIAGE_STATUS_NEW}: {SUPPORTTRIAGE_MCP_COUNT_NEW}</button>
+            <button type="button" class="supporttriage-mcp-stat-chip supporttriage-status-badge supporttriage-status-progress" data-supporttriage-set-filter="in_progress">{L_SUPPORTTRIAGE_STATUS_IN_PROGRESS}: {SUPPORTTRIAGE_MCP_COUNT_IN_PROGRESS}</button>
+            <button type="button" class="supporttriage-mcp-stat-chip supporttriage-status-badge supporttriage-status-waiting" data-supporttriage-set-filter="waiting_reply">{L_SUPPORTTRIAGE_STATUS_WAITING_REPLY}: {SUPPORTTRIAGE_MCP_COUNT_WAITING_REPLY}</button>
+            <button type="button" class="supporttriage-mcp-stat-chip supporttriage-status-badge supporttriage-status-solved" data-supporttriage-set-filter="solved">{L_SUPPORTTRIAGE_STATUS_SOLVED}: {SUPPORTTRIAGE_MCP_COUNT_SOLVED}</button>
+            <button type="button" class="supporttriage-mcp-stat-chip supporttriage-status-badge supporttriage-status-muted" data-supporttriage-set-filter="no_reply">{L_SUPPORTTRIAGE_STATUS_NO_REPLY}: {SUPPORTTRIAGE_MCP_COUNT_NO_REPLY}</button>
+        </div>
+
+        <div class="supporttriage-mcp-smart-stats">
+            <button type="button" class="supporttriage-mcp-smart-chip supporttriage-alert-badge supporttriage-alert-danger" data-supporttriage-set-workflow="action_now">{L_SUPPORTTRIAGE_MCP_WORKFLOW_ACTION_NOW}: <span id="supporttriage-mcp-count-action-now">0</span></button>
+            <button type="button" class="supporttriage-mcp-smart-chip supporttriage-alert-badge supporttriage-alert-warning" data-supporttriage-set-workflow="awaiting_team">{L_SUPPORTTRIAGE_MCP_WORKFLOW_AWAITING_TEAM}: <span id="supporttriage-mcp-count-awaiting-team">0</span></button>
+            <button type="button" class="supporttriage-mcp-smart-chip supporttriage-alert-badge supporttriage-alert-muted" data-supporttriage-set-workflow="awaiting_author">{L_SUPPORTTRIAGE_MCP_WORKFLOW_AWAITING_AUTHOR}: <span id="supporttriage-mcp-count-awaiting-author">0</span></button>
+            <span class="supporttriage-mcp-visible-meta" id="supporttriage-mcp-visible-meta">{L_SUPPORTTRIAGE_MCP_VISIBLE}: 0/0</span>
+        </div>
+
+        <div class="supporttriage-mcp-controls">
+            <div class="supporttriage-mcp-control">
+                <label for="supporttriage-mcp-workflow"><strong>{L_SUPPORTTRIAGE_MCP_WORKFLOW}{L_COLON}</strong></label>
+                <select id="supporttriage-mcp-workflow" class="supporttriage-mcp-workflow" data-supporttriage-current-workflow="{SUPPORTTRIAGE_MCP_WORKFLOW_FILTER}">
+                    <option value="all">{L_SUPPORTTRIAGE_MCP_WORKFLOW_ALL}</option>
+                    <option value="action_now">{L_SUPPORTTRIAGE_MCP_WORKFLOW_ACTION_NOW}</option>
+                    <option value="awaiting_team">{L_SUPPORTTRIAGE_MCP_WORKFLOW_AWAITING_TEAM}</option>
+                    <option value="awaiting_author">{L_SUPPORTTRIAGE_MCP_WORKFLOW_AWAITING_AUTHOR}</option>
+                </select>
+            </div>
+
+            <div class="supporttriage-mcp-control">
+                <label for="supporttriage-mcp-filter"><strong>{L_SUPPORTTRIAGE_MCP_FILTER}{L_COLON}</strong></label>
+                <select id="supporttriage-mcp-filter" class="supporttriage-mcp-filter" data-supporttriage-current-filter="{SUPPORTTRIAGE_MCP_FILTER}">
+                    <option value="all">{L_SUPPORTTRIAGE_MCP_FILTER_ALL}</option>
+                    <option value="new">{L_SUPPORTTRIAGE_STATUS_NEW}</option>
+                    <option value="in_progress">{L_SUPPORTTRIAGE_STATUS_IN_PROGRESS}</option>
+                    <option value="waiting_reply">{L_SUPPORTTRIAGE_STATUS_WAITING_REPLY}</option>
+                    <option value="no_reply">{L_SUPPORTTRIAGE_STATUS_NO_REPLY}</option>
+                    <option value="solved">{L_SUPPORTTRIAGE_STATUS_SOLVED}</option>
+                    <!-- IF SUPPORTTRIAGE_MCP_STALE_DAYS -->
+                    <option value="stale">{L_SUPPORTTRIAGE_MCP_FILTER_STALE}</option>
+                    <!-- ENDIF -->
+                </select>
+            </div>
+
+            <div class="supporttriage-mcp-control">
+                <label for="supporttriage-mcp-attention"><strong>{L_SUPPORTTRIAGE_MCP_ATTENTION}{L_COLON}</strong></label>
+                <select id="supporttriage-mcp-attention" class="supporttriage-mcp-attention" data-supporttriage-current-attention="{SUPPORTTRIAGE_MCP_ATTENTION_FILTER}">
+                    <option value="all">{L_SUPPORTTRIAGE_MCP_ATTENTION_ALL}</option>
+                    <option value="alerts">{L_SUPPORTTRIAGE_MCP_ATTENTION_ALERTS}</option>
+                    <!-- IF SUPPORTTRIAGE_MCP_STALE_DAYS -->
+                    <option value="stale">{L_SUPPORTTRIAGE_MCP_ATTENTION_STALE}</option>
+                    <!-- ENDIF -->
+                    <option value="attention">{L_SUPPORTTRIAGE_MCP_ATTENTION_NEEDS_WORK}</option>
+                    <option value="clean">{L_SUPPORTTRIAGE_MCP_ATTENTION_CLEAN}</option>
+                </select>
+            </div>
+
+            <!-- IF S_SUPPORTTRIAGE_PRIORITY_SUPPORTED -->
+            <div class="supporttriage-mcp-control">
+                <label for="supporttriage-mcp-priority"><strong>{L_SUPPORTTRIAGE_MCP_PRIORITY}{L_COLON}</strong></label>
+                <select id="supporttriage-mcp-priority" class="supporttriage-mcp-priority" data-supporttriage-current-priority="{SUPPORTTRIAGE_MCP_PRIORITY_FILTER}">
+                    <option value="all">{L_SUPPORTTRIAGE_MCP_PRIORITY_ALL}</option>
+                    <option value="low">{L_SUPPORTTRIAGE_PRIORITY_LOW}</option>
+                    <option value="normal">{L_SUPPORTTRIAGE_PRIORITY_NORMAL}</option>
+                    <option value="high">{L_SUPPORTTRIAGE_PRIORITY_HIGH}</option>
+                    <option value="critical">{L_SUPPORTTRIAGE_PRIORITY_CRITICAL}</option>
+                </select>
+            </div>
+            <!-- ENDIF -->
+
+            <div class="supporttriage-mcp-control">
+                <label for="supporttriage-mcp-sort"><strong>{L_SUPPORTTRIAGE_MCP_SORT}{L_COLON}</strong></label>
+                <select id="supporttriage-mcp-sort" class="supporttriage-mcp-sort" data-supporttriage-current-sort="{SUPPORTTRIAGE_MCP_SORT}">
+                    <option value="urgency">{L_SUPPORTTRIAGE_MCP_SORT_URGENCY}</option>
+                    <option value="oldest_update">{L_SUPPORTTRIAGE_MCP_SORT_OLDEST_UPDATE}</option>
+                    <option value="newest_update">{L_SUPPORTTRIAGE_MCP_SORT_NEWEST_UPDATE}</option>
+                    <option value="priority">{L_SUPPORTTRIAGE_MCP_SORT_PRIORITY}</option>
+                    <option value="title">{L_SUPPORTTRIAGE_MCP_SORT_TITLE}</option>
+                </select>
+            </div>
+
+            <div class="supporttriage-mcp-control supporttriage-mcp-control-search">
+                <label for="supporttriage-mcp-search"><strong>{L_SUPPORTTRIAGE_MCP_SEARCH}{L_COLON}</strong></label>
+                <input type="text" id="supporttriage-mcp-search" class="inputbox supporttriage-mcp-search" value="{SUPPORTTRIAGE_MCP_SEARCH}" placeholder="{L_SUPPORTTRIAGE_MCP_SEARCH_PLACEHOLDER}" autocomplete="off" />
+            </div>
+
+            <!-- IF SUPPORTTRIAGE_MCP_STALE_DAYS -->
+            <span class="supporttriage-mcp-hint">{SUPPORTTRIAGE_MCP_STALE_HINT}</span>
+            <!-- ENDIF -->
+        </div>
+
+        <!-- IF S_SUPPORTTRIAGE_MCP_NOTICES_SHOW -->
+        <div class="supporttriage-mcp-stale-list">
+            <h4>{L_SUPPORTTRIAGE_MCP_NOTICES_TITLE}</h4>
+            <p>{L_SUPPORTTRIAGE_MCP_NOTICES_EXPLAIN}</p>
+            <ul>
+                <!-- BEGIN supporttriage_mcp_notice_rows -->
+                <li>
+                    <a href="{supporttriage_mcp_notice_rows.U_TOPIC}">{supporttriage_mcp_notice_rows.TITLE}</a>
+                    <span class="supporttriage-alert-badge {supporttriage_mcp_notice_rows.CLASS}">{supporttriage_mcp_notice_rows.SHORT_LABEL}</span>
+                    <span class="supporttriage-mcp-stale-meta">{supporttriage_mcp_notice_rows.MESSAGE}</span>
+                </li>
+                <!-- END supporttriage_mcp_notice_rows -->
+            </ul>
+        </div>
+        <!-- ENDIF -->
+
+        <!-- IF .supporttriage_mcp_stale_topics -->
+        <div class="supporttriage-mcp-stale-list">
+            <h4>{L_SUPPORTTRIAGE_MCP_STALE_TOPICS}</h4>
+            <ul>
+                <!-- BEGIN supporttriage_mcp_stale_topics -->
+                <li>
+                    <a href="{supporttriage_mcp_stale_topics.U_TOPIC}">{supporttriage_mcp_stale_topics.TITLE}</a>
+                    <span class="supporttriage-status-badge {supporttriage_mcp_stale_topics.STATUS_CLASS}">{supporttriage_mcp_stale_topics.STATUS_LABEL}</span>
+                    <span class="supporttriage-mcp-stale-meta">{supporttriage_mcp_stale_topics.UPDATED}</span>
+                </li>
+                <!-- END supporttriage_mcp_stale_topics -->
+            </ul>
+        </div>
+        <!-- ENDIF -->
+
+        <!-- IF S_SUPPORTTRIAGE_MCP_BULK_SHOW -->
+        <div class="supporttriage-mcp-bulk-bar" id="supporttriage-mcp-bulk-panel" data-empty-selection="{L_SUPPORTTRIAGE_MCP_BULK_EMPTY}" data-empty-action="{L_SUPPORTTRIAGE_MCP_BULK_EMPTY_ACTION}" data-confirm="{L_SUPPORTTRIAGE_MCP_BULK_CONFIRM}">
+            <div class="supporttriage-mcp-bulk-summary">
+                <strong>{L_SUPPORTTRIAGE_MCP_BULK_TITLE}</strong>
+                <span id="supporttriage-mcp-bulk-count" class="supporttriage-mcp-bulk-count">{L_SUPPORTTRIAGE_MCP_BULK_SELECTED}: 0</span>
+            </div>
+            <div class="supporttriage-mcp-bulk-actions">
+                <label>
+                    <span>{L_SUPPORTTRIAGE_MCP_BULK_STATUS}{L_COLON}</span>
+                    <select id="supporttriage-mcp-bulk-status" class="inputbox">
+                        <option value="">{L_SUPPORTTRIAGE_MCP_BULK_STATUS_NONE}</option>
+                        <option value="new">{L_SUPPORTTRIAGE_STATUS_NEW}</option>
+                        <option value="in_progress">{L_SUPPORTTRIAGE_STATUS_IN_PROGRESS}</option>
+                        <option value="waiting_reply">{L_SUPPORTTRIAGE_STATUS_WAITING_REPLY}</option>
+                        <option value="no_reply">{L_SUPPORTTRIAGE_STATUS_NO_REPLY}</option>
+                        <option value="solved">{L_SUPPORTTRIAGE_STATUS_SOLVED}</option>
+                    </select>
+                </label>
+                <!-- IF S_SUPPORTTRIAGE_PRIORITY_SUPPORTED -->
+                <label>
+                    <span>{L_SUPPORTTRIAGE_MCP_BULK_PRIORITY}{L_COLON}</span>
+                    <select id="supporttriage-mcp-bulk-priority" class="inputbox">
+                        <option value="">{L_SUPPORTTRIAGE_MCP_BULK_PRIORITY_NONE}</option>
+                        <option value="low">{L_SUPPORTTRIAGE_PRIORITY_LOW}</option>
+                        <option value="normal">{L_SUPPORTTRIAGE_PRIORITY_NORMAL}</option>
+                        <option value="high">{L_SUPPORTTRIAGE_PRIORITY_HIGH}</option>
+                        <option value="critical">{L_SUPPORTTRIAGE_PRIORITY_CRITICAL}</option>
+                    </select>
+                </label>
+                <!-- ENDIF -->
+                <button type="button" class="button button-secondary" id="supporttriage-mcp-select-visible">{L_SUPPORTTRIAGE_MCP_BULK_SELECT_VISIBLE}</button>
+                <button type="button" class="button button-secondary" id="supporttriage-mcp-clear-selection">{L_SUPPORTTRIAGE_MCP_BULK_CLEAR_SELECTION}</button>
+                <button type="button" class="button1" id="supporttriage-mcp-bulk-apply">{L_SUPPORTTRIAGE_MCP_BULK_APPLY}</button>
+            </div>
+        </div>
+
+        <form id="supporttriage-mcp-quick-form" class="supporttriage-hidden-form" method="post" action="{SUPPORTTRIAGE_MCP_ACTION_URL}">
+            <input type="hidden" name="supporttriage_mcp_quick_status" value="0" />
+            <input type="hidden" name="supporttriage_mcp_bulk_apply" value="0" />
+            <input type="hidden" name="supporttriage_topic_id" value="0" />
+            <input type="hidden" name="supporttriage_quick_status" value="" />
+            <input type="hidden" name="supporttriage_bulk_status" value="" />
+            <input type="hidden" name="supporttriage_bulk_priority" value="" />
+            <div id="supporttriage-mcp-bulk-topic-ids"></div>
+            {SUPPORTTRIAGE_MCP_FORM_TOKEN}
+        </form>
+        <!-- ENDIF -->
+    </div>
+</div>
+
+<!-- ENDIF -->

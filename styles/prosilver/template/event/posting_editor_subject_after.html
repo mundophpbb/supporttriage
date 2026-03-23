@@ -1,0 +1,275 @@
+<!-- IF S_SUPPORTTRIAGE_SHOW -->
+<div id="supporttriage-similar-panel" class="panel bg2 is-hidden">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_SIMILAR_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_SIMILAR_EXPLAIN}</p>
+        <ul id="supporttriage-similar-list"></ul>
+        <p id="supporttriage-similar-empty" class="supporttriage-note is-hidden">{L_SUPPORTTRIAGE_SIMILAR_EMPTY}</p>
+    </div>
+</div>
+<script type="application/json" id="supporttriage-suggestions-data">{SUPPORTTRIAGE_TOPIC_SUGGESTIONS_JSON}</script>
+
+<div id="supporttriage-panel" class="panel bg3"
+    data-auto-insert="{SUPPORTTRIAGE_AUTO_INSERT}"
+    data-title-prefix="{SUPPORTTRIAGE_TITLE_PREFIX}"
+    data-default-board-url="{SUPPORTTRIAGE_FORM_BOARD_URL}"
+    data-report-title="{L_SUPPORTTRIAGE_REPORT_TITLE}"
+    data-specific-title="{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}"
+    data-label-issue-type="{L_SUPPORTTRIAGE_ISSUE_TYPE}"
+    data-label-phpbb="{L_SUPPORTTRIAGE_PHPBB_VERSION}"
+    data-label-php="{L_SUPPORTTRIAGE_PHP_VERSION}"
+    data-label-style="{L_SUPPORTTRIAGE_STYLE}"
+    data-label-extension="{L_SUPPORTTRIAGE_EXTENSION}"
+    data-label-board-url="{L_SUPPORTTRIAGE_BOARD_URL}"
+    data-label-prosilver="{L_SUPPORTTRIAGE_PROSILVER}"
+    data-label-debug="{L_SUPPORTTRIAGE_DEBUG}"
+    data-label-error="{L_SUPPORTTRIAGE_ERROR_TEXT}"
+    data-label-steps="{L_SUPPORTTRIAGE_REPRO_STEPS}"
+    data-label-ext-version="{L_SUPPORTTRIAGE_EXT_VERSION}"
+    data-label-ext-stage="{L_SUPPORTTRIAGE_EXT_STAGE}"
+    data-label-ext-source="{L_SUPPORTTRIAGE_EXT_SOURCE}"
+    data-label-update-from="{L_SUPPORTTRIAGE_UPDATE_FROM}"
+    data-label-update-to="{L_SUPPORTTRIAGE_UPDATE_TO}"
+    data-label-update-method="{L_SUPPORTTRIAGE_UPDATE_METHOD}"
+    data-label-update-db="{L_SUPPORTTRIAGE_UPDATE_DB}"
+    data-label-style-browser="{L_SUPPORTTRIAGE_STYLE_BROWSER}"
+    data-label-style-page="{L_SUPPORTTRIAGE_STYLE_PAGE}"
+    data-label-style-device="{L_SUPPORTTRIAGE_STYLE_DEVICE}"
+    data-label-perm-actor="{L_SUPPORTTRIAGE_PERM_ACTOR}"
+    data-label-perm-action="{L_SUPPORTTRIAGE_PERM_ACTION}"
+    data-label-perm-target="{L_SUPPORTTRIAGE_PERM_TARGET}"
+    data-label-email-transport="{L_SUPPORTTRIAGE_EMAIL_TRANSPORT}"
+    data-label-email-case="{L_SUPPORTTRIAGE_EMAIL_CASE}"
+    data-label-email-log="{L_SUPPORTTRIAGE_EMAIL_LOG}"
+    data-label-similar-last-post="{L_SUPPORTTRIAGE_SIMILAR_LAST_POST}"
+    data-label-priority="{L_SUPPORTTRIAGE_PRIORITY_LABEL}"
+    data-type-label-general="{L_SUPPORTTRIAGE_ISSUE_TYPE_GENERAL}"
+    data-type-label-extension="{L_SUPPORTTRIAGE_ISSUE_TYPE_EXTENSION}"
+    data-type-label-update="{L_SUPPORTTRIAGE_ISSUE_TYPE_UPDATE}"
+    data-type-label-style="{L_SUPPORTTRIAGE_ISSUE_TYPE_STYLE}"
+    data-type-label-permissions="{L_SUPPORTTRIAGE_ISSUE_TYPE_PERMISSIONS}"
+    data-type-label-email="{L_SUPPORTTRIAGE_ISSUE_TYPE_EMAIL}">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_EXPLAIN}</p>
+
+        <div class="supporttriage-grid fields2">
+            <dl>
+                <dt><label for="supporttriage_issue_type">{L_SUPPORTTRIAGE_ISSUE_TYPE}{L_COLON}</label></dt>
+                <dd>
+                    <select name="supporttriage_issue_type" id="supporttriage_issue_type">
+                        <option value="general"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'general' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_GENERAL}</option>
+                        <option value="extension"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'extension' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_EXTENSION}</option>
+                        <option value="update"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'update' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_UPDATE}</option>
+                        <option value="style"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'style' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_STYLE}</option>
+                        <option value="permissions"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'permissions' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_PERMISSIONS}</option>
+                        <option value="email"<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'email' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_ISSUE_TYPE_EMAIL}</option>
+                    </select>
+                </dd>
+            </dl>
+            <!-- IF S_SUPPORTTRIAGE_PRIORITY_SHOW -->
+            <dl>
+                <dt><label for="supporttriage_priority">{L_SUPPORTTRIAGE_PRIORITY_LABEL}{L_COLON}</label></dt>
+                <dd>
+                    <select name="supporttriage_priority" id="supporttriage_priority">
+                        <option value="low"<!-- IF SUPPORTTRIAGE_FORM_PRIORITY eq 'low' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_LOW}</option>
+                        <option value="normal"<!-- IF SUPPORTTRIAGE_FORM_PRIORITY eq 'normal' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_NORMAL}</option>
+                        <option value="high"<!-- IF SUPPORTTRIAGE_FORM_PRIORITY eq 'high' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_HIGH}</option>
+                        <option value="critical"<!-- IF SUPPORTTRIAGE_FORM_PRIORITY eq 'critical' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_CRITICAL}</option>
+                    </select>
+                </dd>
+            </dl>
+            <!-- ENDIF -->
+
+            <dl>
+                <dt><label for="supporttriage_phpbb">{L_SUPPORTTRIAGE_PHPBB_VERSION}{L_COLON}</label></dt>
+                <dd><input type="text" name="supporttriage_phpbb" id="supporttriage_phpbb" value="{SUPPORTTRIAGE_FORM_PHPBB}" placeholder="3.3.x" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_php">{L_SUPPORTTRIAGE_PHP_VERSION}{L_COLON}</label></dt>
+                <dd><input type="text" name="supporttriage_php" id="supporttriage_php" value="{SUPPORTTRIAGE_FORM_PHP}" placeholder="8.1 / 8.2 / 8.3" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_style">{L_SUPPORTTRIAGE_STYLE}{L_COLON}</label></dt>
+                <dd><input type="text" name="supporttriage_style" id="supporttriage_style" value="{SUPPORTTRIAGE_FORM_STYLE}" placeholder="prosilver / Flatboots / outro" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_extension">{L_SUPPORTTRIAGE_EXTENSION}{L_COLON}</label></dt>
+                <dd><input type="text" name="supporttriage_extension" id="supporttriage_extension" value="{SUPPORTTRIAGE_FORM_EXT}" placeholder="Nome da extensão ou estilo" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_board_url">{L_SUPPORTTRIAGE_BOARD_URL}{L_COLON}</label></dt>
+                <dd><input type="text" name="supporttriage_board_url" id="supporttriage_board_url" value="{SUPPORTTRIAGE_FORM_BOARD_URL}" placeholder="https://seu-forum.com" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_prosilver">{L_SUPPORTTRIAGE_PROSILVER}{L_COLON}</label></dt>
+                <dd>
+                    <select name="supporttriage_prosilver" id="supporttriage_prosilver">
+                        <option value=""<!-- IF SUPPORTTRIAGE_FORM_PROSILVER eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                        <option value="yes"<!-- IF SUPPORTTRIAGE_FORM_PROSILVER eq 'yes' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_YES}</option>
+                        <option value="no"<!-- IF SUPPORTTRIAGE_FORM_PROSILVER eq 'no' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_NO}</option>
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_debug">{L_SUPPORTTRIAGE_DEBUG}{L_COLON}</label></dt>
+                <dd>
+                    <select name="supporttriage_debug" id="supporttriage_debug">
+                        <option value=""<!-- IF SUPPORTTRIAGE_FORM_DEBUG eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                        <option value="yes"<!-- IF SUPPORTTRIAGE_FORM_DEBUG eq 'yes' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_YES}</option>
+                        <option value="no"<!-- IF SUPPORTTRIAGE_FORM_DEBUG eq 'no' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_NO}</option>
+                    </select>
+                </dd>
+            </dl>
+        </div>
+
+        <div id="supporttriage-conditional-extension" class="supporttriage-conditional<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'extension' --><!-- ELSE --> is-hidden<!-- ENDIF -->" data-issue-type="extension">
+            <h4>{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}</h4>
+            <p class="supporttriage-section-note">{L_SUPPORTTRIAGE_SPECIFIC_EXPLAIN}</p>
+            <div class="supporttriage-grid fields2">
+                <dl>
+                    <dt><label for="supporttriage_ext_version">{L_SUPPORTTRIAGE_EXT_VERSION}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_ext_version" id="supporttriage_ext_version" value="{SUPPORTTRIAGE_FORM_EXT_VERSION}" placeholder="1.0.0 / dev" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_ext_stage">{L_SUPPORTTRIAGE_EXT_STAGE}{L_COLON}</label></dt>
+                    <dd>
+                        <select name="supporttriage_ext_stage" id="supporttriage_ext_stage">
+                            <option value=""<!-- IF SUPPORTTRIAGE_FORM_EXT_STAGE eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                            <option value="install"<!-- IF SUPPORTTRIAGE_FORM_EXT_STAGE eq 'install' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EXT_STAGE_INSTALL}</option>
+                            <option value="enable"<!-- IF SUPPORTTRIAGE_FORM_EXT_STAGE eq 'enable' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EXT_STAGE_ENABLE}</option>
+                            <option value="migration"<!-- IF SUPPORTTRIAGE_FORM_EXT_STAGE eq 'migration' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EXT_STAGE_MIGRATION}</option>
+                            <option value="runtime"<!-- IF SUPPORTTRIAGE_FORM_EXT_STAGE eq 'runtime' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EXT_STAGE_RUNTIME}</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_ext_source">{L_SUPPORTTRIAGE_EXT_SOURCE}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_ext_source" id="supporttriage_ext_source" value="{SUPPORTTRIAGE_FORM_EXT_SOURCE}" placeholder="phpBB DB / GitHub / pacote próprio" /></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div id="supporttriage-conditional-update" class="supporttriage-conditional<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'update' --><!-- ELSE --> is-hidden<!-- ENDIF -->" data-issue-type="update">
+            <h4>{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}</h4>
+            <p class="supporttriage-section-note">{L_SUPPORTTRIAGE_SPECIFIC_EXPLAIN}</p>
+            <div class="supporttriage-grid fields2">
+                <dl>
+                    <dt><label for="supporttriage_update_from">{L_SUPPORTTRIAGE_UPDATE_FROM}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_update_from" id="supporttriage_update_from" value="{SUPPORTTRIAGE_FORM_UPDATE_FROM}" placeholder="3.3.x" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_update_to">{L_SUPPORTTRIAGE_UPDATE_TO}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_update_to" id="supporttriage_update_to" value="{SUPPORTTRIAGE_FORM_UPDATE_TO}" placeholder="3.3.x" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_update_method">{L_SUPPORTTRIAGE_UPDATE_METHOD}{L_COLON}</label></dt>
+                    <dd>
+                        <select name="supporttriage_update_method" id="supporttriage_update_method">
+                            <option value=""<!-- IF SUPPORTTRIAGE_FORM_UPDATE_METHOD eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                            <option value="auto"<!-- IF SUPPORTTRIAGE_FORM_UPDATE_METHOD eq 'auto' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_UPDATE_METHOD_AUTO}</option>
+                            <option value="package"<!-- IF SUPPORTTRIAGE_FORM_UPDATE_METHOD eq 'package' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_UPDATE_METHOD_PACKAGE}</option>
+                            <option value="manual"<!-- IF SUPPORTTRIAGE_FORM_UPDATE_METHOD eq 'manual' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_UPDATE_METHOD_MANUAL}</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_update_db">{L_SUPPORTTRIAGE_UPDATE_DB}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_update_db" id="supporttriage_update_db" value="{SUPPORTTRIAGE_FORM_UPDATE_DB}" placeholder="Concluiu / travou / exibiu erro" /></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div id="supporttriage-conditional-style" class="supporttriage-conditional<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'style' --><!-- ELSE --> is-hidden<!-- ENDIF -->" data-issue-type="style">
+            <h4>{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}</h4>
+            <p class="supporttriage-section-note">{L_SUPPORTTRIAGE_SPECIFIC_EXPLAIN}</p>
+            <div class="supporttriage-grid fields2">
+                <dl>
+                    <dt><label for="supporttriage_style_browser">{L_SUPPORTTRIAGE_STYLE_BROWSER}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_style_browser" id="supporttriage_style_browser" value="{SUPPORTTRIAGE_FORM_STYLE_BROWSER}" placeholder="Chrome / Firefox / Edge" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_style_page">{L_SUPPORTTRIAGE_STYLE_PAGE}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_style_page" id="supporttriage_style_page" value="{SUPPORTTRIAGE_FORM_STYLE_PAGE}" placeholder="viewtopic / viewforum / UCP / ACP" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_style_device">{L_SUPPORTTRIAGE_STYLE_DEVICE}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_style_device" id="supporttriage_style_device" value="{SUPPORTTRIAGE_FORM_STYLE_DEVICE}" placeholder="Desktop / celular / tablet" /></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div id="supporttriage-conditional-permissions" class="supporttriage-conditional<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'permissions' --><!-- ELSE --> is-hidden<!-- ENDIF -->" data-issue-type="permissions">
+            <h4>{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}</h4>
+            <p class="supporttriage-section-note">{L_SUPPORTTRIAGE_SPECIFIC_EXPLAIN}</p>
+            <div class="supporttriage-grid fields2">
+                <dl>
+                    <dt><label for="supporttriage_perm_actor">{L_SUPPORTTRIAGE_PERM_ACTOR}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_perm_actor" id="supporttriage_perm_actor" value="{SUPPORTTRIAGE_FORM_PERM_ACTOR}" placeholder="Visitante / Registrado / Moderador" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_perm_action">{L_SUPPORTTRIAGE_PERM_ACTION}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_perm_action" id="supporttriage_perm_action" value="{SUPPORTTRIAGE_FORM_PERM_ACTION}" placeholder="Responder / anexar / acessar ACP" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_perm_target">{L_SUPPORTTRIAGE_PERM_TARGET}{L_COLON}</label></dt>
+                    <dd><input type="text" name="supporttriage_perm_target" id="supporttriage_perm_target" value="{SUPPORTTRIAGE_FORM_PERM_TARGET}" placeholder="Fórum X / UCP / MCP / ACP" /></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div id="supporttriage-conditional-email" class="supporttriage-conditional<!-- IF SUPPORTTRIAGE_FORM_ISSUE_TYPE eq 'email' --><!-- ELSE --> is-hidden<!-- ENDIF -->" data-issue-type="email">
+            <h4>{L_SUPPORTTRIAGE_SPECIFIC_DETAILS}</h4>
+            <p class="supporttriage-section-note">{L_SUPPORTTRIAGE_SPECIFIC_EXPLAIN}</p>
+            <div class="supporttriage-grid fields2">
+                <dl>
+                    <dt><label for="supporttriage_email_transport">{L_SUPPORTTRIAGE_EMAIL_TRANSPORT}{L_COLON}</label></dt>
+                    <dd>
+                        <select name="supporttriage_email_transport" id="supporttriage_email_transport">
+                            <option value=""<!-- IF SUPPORTTRIAGE_FORM_EMAIL_TRANSPORT eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                            <option value="php"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_TRANSPORT eq 'php' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_TRANSPORT_PHP}</option>
+                            <option value="smtp"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_TRANSPORT eq 'smtp' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_TRANSPORT_SMTP}</option>
+                            <option value="sendmail"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_TRANSPORT eq 'sendmail' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_TRANSPORT_SENDMAIL}</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_email_case">{L_SUPPORTTRIAGE_EMAIL_CASE}{L_COLON}</label></dt>
+                    <dd>
+                        <select name="supporttriage_email_case" id="supporttriage_email_case">
+                            <option value=""<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq '' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_OPTION_UNKNOWN}</option>
+                            <option value="activation"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq 'activation' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_CASE_ACTIVATION}</option>
+                            <option value="notification"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq 'notification' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_CASE_NOTIFICATION}</option>
+                            <option value="contact"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq 'contact' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_CASE_CONTACT}</option>
+                            <option value="mass"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq 'mass' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_CASE_MASS}</option>
+                            <option value="test"<!-- IF SUPPORTTRIAGE_FORM_EMAIL_CASE eq 'test' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_EMAIL_CASE_TEST}</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="supporttriage_email_log">{L_SUPPORTTRIAGE_EMAIL_LOG}{L_COLON}</label></dt>
+                    <dd><textarea name="supporttriage_email_log" id="supporttriage_email_log" rows="3">{SUPPORTTRIAGE_FORM_EMAIL_LOG}</textarea></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="supporttriage-stack fields2">
+            <dl>
+                <dt><label for="supporttriage_error">{L_SUPPORTTRIAGE_ERROR_TEXT}{L_COLON}</label></dt>
+                <dd><textarea name="supporttriage_error" id="supporttriage_error" rows="4">{SUPPORTTRIAGE_FORM_ERROR}</textarea></dd>
+            </dl>
+            <dl>
+                <dt><label for="supporttriage_steps">{L_SUPPORTTRIAGE_REPRO_STEPS}{L_COLON}</label></dt>
+                <dd><textarea name="supporttriage_steps" id="supporttriage_steps" rows="4">{SUPPORTTRIAGE_FORM_STEPS}</textarea></dd>
+            </dl>
+        </div>
+
+        <div class="supporttriage-actions">
+            <button type="button" class="button button1" id="supporttriage-insert">{L_SUPPORTTRIAGE_INSERT_BUTTON}</button>
+            <button type="button" class="button button2" id="supporttriage-clear">{L_SUPPORTTRIAGE_CLEAR_BUTTON}</button>
+        </div>
+        <p class="supporttriage-note">{L_ACP_SUPPORTTRIAGE_AUTO_INSERT_EXPLAIN}</p>
+    </div>
+</div>
+
+<!-- ENDIF -->

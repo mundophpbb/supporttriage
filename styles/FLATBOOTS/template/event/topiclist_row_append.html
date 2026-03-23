@@ -1,0 +1,15 @@
+<!-- IF topicrow.S_SUPPORTTRIAGE_STATUS_SHOW or topicrow.S_SUPPORTTRIAGE_PRIORITY_SHOW or topicrow.S_SUPPORTTRIAGE_ALERT_SHOW -->
+<span class="supporttriage-topic-fallback" data-supporttriage-topic-id="{topicrow.SUPPORTTRIAGE_TOPIC_ID}">
+    <!-- IF topicrow.S_SUPPORTTRIAGE_STATUS_SHOW -->
+        <span class="supporttriage-status-badge {topicrow.SUPPORTTRIAGE_STATUS_CLASS}" data-supporttriage-status="{topicrow.SUPPORTTRIAGE_STATUS_KEY}" data-supporttriage-stale="<!-- IF topicrow.S_SUPPORTTRIAGE_STALE -->1<!-- ELSE -->0<!-- ENDIF -->">{topicrow.SUPPORTTRIAGE_STATUS_LABEL}</span>
+    <!-- ENDIF -->
+
+    <!-- IF topicrow.S_SUPPORTTRIAGE_PRIORITY_SHOW -->
+        <span class="supporttriage-status-badge {topicrow.SUPPORTTRIAGE_PRIORITY_CLASS}">{topicrow.SUPPORTTRIAGE_PRIORITY_LABEL}</span>
+    <!-- ENDIF -->
+
+    <!-- IF topicrow.S_SUPPORTTRIAGE_ALERT_SHOW -->
+        <span class="supporttriage-alert-badge {topicrow.SUPPORTTRIAGE_ALERT_CLASS}">{topicrow.SUPPORTTRIAGE_ALERT_SHORT}</span>
+    <!-- ENDIF -->
+</span>
+<!-- ENDIF -->
