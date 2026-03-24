@@ -1,0 +1,24 @@
+<!-- IF postrow.S_FIRST_ROW and S_SUPPORTTRIAGE_KB_HELPER -->
+<div class="supporttriage-kb-panel panel bg2" id="supporttriage-kb-helper">
+    <div class="inner">
+        <h3>{L_SUPPORTTRIAGE_KB_HELPER_TITLE}</h3>
+        <p>{L_SUPPORTTRIAGE_KB_HELPER_EXPLAIN}</p>
+        <dl>
+            <dt><label for="supporttriage-kb-solution">{L_SUPPORTTRIAGE_KB_SOURCE_REPLY}{L_COLON}</label></dt>
+            <dd>
+                <textarea id="supporttriage-kb-solution" class="supporttriage-snippet-text" rows="5"></textarea>
+                <p class="supporttriage-note">{L_SUPPORTTRIAGE_KB_SOURCE_REPLY_EXPLAIN}</p>
+            </dd>
+        </dl>
+        <div class="supporttriage-kb-actions">
+            <button type="button" class="button1" id="supporttriage-kb-generate">{L_SUPPORTTRIAGE_KB_GENERATE}</button>
+            <button type="button" class="button2" id="supporttriage-kb-copy">{L_SUPPORTTRIAGE_KB_COPY}</button>
+        </div>
+        <dl>
+            <dt><label for="supporttriage-kb-draft">{L_SUPPORTTRIAGE_KB_DRAFT}{L_COLON}</label></dt>
+            <dd><textarea id="supporttriage-kb-draft" class="supporttriage-snippet-text" rows="14"></textarea></dd>
+        </dl>
+        <p id="supporttriage-kb-message" class="supporttriage-kb-message"></p>
+    </div>
+</div>
+<!-- ENDIF -->

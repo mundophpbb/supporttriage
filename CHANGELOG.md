@@ -1,5 +1,27 @@
 # Changelog
 
+# Changelog
+
+## [3.4.2] - 24/03/2026
+
+### Corrigido
+- Corrigida a geração do rascunho de KB, que em alguns casos estava saindo genérico demais ao marcar um tópico como resolvido.
+- Corrigida a extração da descrição original do problema a partir da primeira mensagem do tópico.
+- Corrigida a captura dos sintomas confirmados com base no relatório técnico e em blocos de erro/código.
+- Corrigida a montagem da solução aplicada, para aproveitar melhor a resposta resolutiva em vez de manter texto vazio ou genérico.
+- Corrigido o caso comum relacionado à pasta `install` ainda presente após a instalação do phpBB.
+
+### Melhorado
+- Melhorada a lógica de criação do rascunho de KB no arquivo `event/listener.php`.
+- Melhorado o tratamento e a limpeza do conteúdo em BBCode antes da geração do rascunho.
+- Melhorada a organização automática das seções:
+  - Relato original
+  - Sintomas confirmados
+  - Causa raiz
+  - Solução aplicada
+- Melhorado o comportamento de fallback quando a resposta final do tópico é curta, mas válida como solução.
+- Melhorados os textos de idioma em `pt_br` e `en` relacionados ao assistente de KB.
+
 ## 3.4.1 - 2026-03-22
 - revisão final da documentação para release candidate;
 - README reorganizado e limpo;

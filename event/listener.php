@@ -3216,7 +3216,8 @@ class listener implements EventSubscriberInterface
         }
 
         $sql = 'SELECT t.topic_id, t.forum_id, t.topic_title, t.topic_first_post_id,
-                p.post_subject, p.post_text
+                p.post_subject, p.post_text, p.bbcode_uid, p.bbcode_bitfield,
+                p.enable_bbcode, p.enable_smilies, p.enable_magic_url
             FROM ' . TOPICS_TABLE . ' t
             LEFT JOIN ' . POSTS_TABLE . ' p
                 ON p.post_id = t.topic_first_post_id
@@ -3252,8 +3253,22 @@ class listener implements EventSubscriberInterface
 
     protected function build_kb_post_body(array $source, $existing_text = '')
     {
+        global $phpbb_root_path, $phpEx;
+
+        if (!function_exists('generate_text_for_edit'))
+        {
+            include($phpbb_root_path . 'includes/functions_content.' . $phpEx);
+        }
+
         $status_row = $this->get_topic_status((int) $source['topic_id'], true);
-        $context = $this->extract_triage_context(isset($source['post_text']) ? (string) $source['post_text'] : '');
+        $source_text = $this->decode_post_for_edit($source);
+        if ($source_text === '')
+        {
+            $source_text = isset($source['post_text']) ? $this->normalize_newlines($source['post_text']) : '';
+        }
+
+        $context = $this->extract_triage_context($source_text);
+        $autofill = $this->build_kb_autofill_data($source, $source_text, $status_row);
         $source_url = append_sid('viewtopic.php', 'f=' . (int) $source['forum_id'] . '&t=' . (int) $source['topic_id']);
 
         $lines = [];
@@ -3286,20 +3301,21 @@ class listener implements EventSubscriberInterface
 
         $lines[] = '';
         $lines[] = '[b]' . $this->user->lang('SUPPORTTRIAGE_KB_ORIGINAL_REPORT') . '[/b]';
-        $lines[] = $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
+        $lines[] = !empty($autofill['original_report']) ? $autofill['original_report'] : $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
         $lines[] = '';
 
         $manual_section = $this->extract_kb_manual_section($existing_text);
         if ($manual_section === '')
         {
-            $lines[] = $this->default_kb_manual_section();
+            $lines[] = $this->default_kb_manual_section($autofill);
         }
         else
         {
             $lines[] = $manual_section;
         }
 
-        return implode("\n", $lines);
+        return implode("
+", $lines);
     }
 
     protected function decode_post_for_edit(array $target)
@@ -3349,22 +3365,299 @@ class listener implements EventSubscriberInterface
         return '';
     }
 
-    protected function default_kb_manual_section()
+    protected function default_kb_manual_section(array $autofill = [])
     {
         $lines = [];
         $lines[] = '[b]' . $this->user->lang('SUPPORTTRIAGE_KB_SYMPTOMS') . '[/b]';
-        $lines[] = $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
+        $lines[] = !empty($autofill['symptoms']) ? $autofill['symptoms'] : $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
         $lines[] = '';
         $lines[] = '[b]' . $this->user->lang('SUPPORTTRIAGE_KB_CAUSE') . '[/b]';
-        $lines[] = $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
+        $lines[] = !empty($autofill['cause']) ? $autofill['cause'] : $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
         $lines[] = '';
         $lines[] = '[b]' . $this->user->lang('SUPPORTTRIAGE_KB_SOLUTION') . '[/b]';
-        $lines[] = $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
+        $lines[] = !empty($autofill['solution']) ? $autofill['solution'] : $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
         $lines[] = '';
         $lines[] = '[b]' . $this->user->lang('SUPPORTTRIAGE_KB_NOTES') . '[/b]';
-        $lines[] = $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
+        $lines[] = !empty($autofill['notes']) ? $autofill['notes'] : $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
 
-        return implode("\n", $lines);
+        return implode("
+", $lines);
+    }
+
+    protected function build_kb_autofill_data(array $source, $source_text, $status_row = null)
+    {
+        $status_updated = !empty($status_row['status_updated']) ? (int) $status_row['status_updated'] : 0;
+        $reply = $this->load_source_solution_post((int) $source['topic_id'], !empty($source['topic_first_post_id']) ? (int) $source['topic_first_post_id'] : 0, $status_updated);
+        $reply_text = '';
+
+        if (!empty($reply))
+        {
+            $reply_text = $this->decode_post_for_edit($reply);
+            if ($reply_text === '')
+            {
+                $reply_text = isset($reply['post_text']) ? $this->normalize_newlines($reply['post_text']) : '';
+            }
+        }
+
+        return [
+            'original_report' => $this->build_kb_original_report($source_text),
+            'symptoms' => $this->build_kb_symptoms($source_text),
+            'cause' => $this->build_kb_cause($source_text, $reply_text),
+            'solution' => $this->build_kb_solution($reply_text, $source_text),
+            'notes' => $this->build_kb_notes($source_text, $reply_text),
+        ];
+    }
+
+    protected function load_source_solution_post($topic_id, $first_post_id = 0, $status_updated = 0)
+    {
+        $topic_id = (int) $topic_id;
+        $first_post_id = (int) $first_post_id;
+        $status_updated = (int) $status_updated;
+
+        if ($topic_id <= 0)
+        {
+            return null;
+        }
+
+        $conditions = [
+            'topic_id = ' . $topic_id,
+            'post_visibility = ' . ITEM_APPROVED,
+        ];
+
+        if ($first_post_id > 0)
+        {
+            $conditions[] = 'post_id <> ' . $first_post_id;
+        }
+
+        $preferred_conditions = $conditions;
+        if ($status_updated > 0)
+        {
+            $preferred_conditions[] = 'post_time <= ' . $status_updated;
+        }
+
+        $sql = 'SELECT post_id, post_subject, post_text, bbcode_uid, bbcode_bitfield,
+                enable_bbcode, enable_smilies, enable_magic_url, post_time
+            FROM ' . POSTS_TABLE . '
+            WHERE ' . implode(' AND ', $preferred_conditions) . '
+            ORDER BY post_time DESC, post_id DESC';
+        $result = $this->db->sql_query_limit($sql, 1);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+
+        if ($row)
+        {
+            return $row;
+        }
+
+        $sql = 'SELECT post_id, post_subject, post_text, bbcode_uid, bbcode_bitfield,
+                enable_bbcode, enable_smilies, enable_magic_url, post_time
+            FROM ' . POSTS_TABLE . '
+            WHERE ' . implode(' AND ', $conditions) . '
+            ORDER BY post_time DESC, post_id DESC';
+        $result = $this->db->sql_query_limit($sql, 1);
+        $row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+
+        return $row ?: null;
+    }
+
+    protected function build_kb_original_report($source_text)
+    {
+        $text = $this->normalize_newlines($source_text);
+        $text = preg_replace('~\[b\]\s*=+\s*(?:Relatório técnico|Technical report)\s*=+\s*\[/b\].*?\[b\]\s*=+\s*/(?:Relatório técnico|Technical report)\s*=+\s*\[/b\]~isu', "\n", $text);
+        $text = preg_replace('~\[b\]\s*(?:Erro exibido|Error shown)\s*\[/b\].*?(?=(?:\n\s*\[b\])|$)~isu', "\n", $text);
+        $plain = $this->kb_plain_text($text);
+
+        if ($plain !== '')
+        {
+            return $this->truncate_kb_plain_text($plain, 420);
+        }
+
+        if ($this->build_kb_symptoms($source_text) !== '')
+        {
+            return $this->user->lang('SUPPORTTRIAGE_KB_AUTO_ORIGINAL_FROM_SYMPTOMS');
+        }
+
+        return $this->user->lang('SUPPORTTRIAGE_KB_FILL_HINT');
+    }
+
+    protected function build_kb_symptoms($source_text)
+    {
+        $text = $this->normalize_newlines($source_text);
+
+        if (preg_match('~\[b\]\s*(?:Erro exibido|Error shown)\s*\[/b\]\s*(.+?)(?=(?:
+\s*\[b\])|$)~isu', $text, $match))
+        {
+            $section = trim($match[1]);
+            if ($section !== '')
+            {
+                return $section;
+            }
+        }
+
+        if (preg_match('~(\[code\].+?\[/code\])~isu', $text, $match))
+        {
+            return trim($match[1]);
+        }
+
+        $plain = $this->kb_plain_text($text);
+        return $plain !== '' ? $this->truncate_kb_plain_text($plain, 420) : '';
+    }
+
+    protected function build_kb_cause($source_text, $reply_text)
+    {
+        if ($this->kb_is_install_case($source_text, $reply_text))
+        {
+            return $this->user->lang('SUPPORTTRIAGE_KB_AUTO_CAUSE_INSTALL');
+        }
+
+        if ($this->kb_plain_text($reply_text) !== '')
+        {
+            return $this->user->lang('SUPPORTTRIAGE_KB_AUTO_CAUSE_GENERIC');
+        }
+
+        return '';
+    }
+
+    protected function build_kb_solution($reply_text, $source_text = '')
+    {
+        $plain = $this->kb_plain_text($reply_text);
+        if ($plain !== '')
+        {
+            return $this->truncate_kb_plain_text($plain, 500);
+        }
+
+        if ($this->kb_is_install_case($source_text, $reply_text))
+        {
+            return $this->user->lang('SUPPORTTRIAGE_KB_AUTO_SOLUTION_INSTALL');
+        }
+
+        return '';
+    }
+
+    protected function build_kb_notes($source_text, $reply_text)
+    {
+        if ($this->kb_is_install_case($source_text, $reply_text))
+        {
+            return $this->user->lang('SUPPORTTRIAGE_KB_AUTO_NOTES_INSTALL');
+        }
+
+        if ($this->kb_plain_text($reply_text) !== '')
+        {
+            return $this->user->lang('SUPPORTTRIAGE_KB_AUTO_NOTES_GENERIC');
+        }
+
+        return '';
+    }
+
+    protected function kb_is_install_case($source_text, $reply_text)
+    {
+        $haystack = $this->kb_search_text($source_text . "
+" . $reply_text);
+        if ($haystack === '')
+        {
+            return false;
+        }
+
+        $mentions_install = strpos($haystack, 'install') !== false
+            || strpos($haystack, 'instalacao') !== false
+            || strpos($haystack, 'installation') !== false;
+
+        $mentions_removal = strpos($haystack, 'renome') !== false
+            || strpos($haystack, 'rename') !== false
+            || strpos($haystack, 'exclu') !== false
+            || strpos($haystack, 'delete') !== false
+            || strpos($haystack, 'mova') !== false
+            || strpos($haystack, 'move ') !== false
+            || strpos($haystack, 'mova ou renomeie') !== false;
+
+        return $mentions_install && $mentions_removal;
+    }
+
+    protected function kb_search_text($text)
+    {
+        $text = $this->kb_plain_text($text);
+        if ($text === '')
+        {
+            return '';
+        }
+
+        $text = utf8_strtolower($text);
+        $map = [
+            'á' => 'a', 'à' => 'a', 'ã' => 'a', 'â' => 'a', 'ä' => 'a',
+            'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
+            'í' => 'i', 'ì' => 'i', 'î' => 'i', 'ï' => 'i',
+            'ó' => 'o', 'ò' => 'o', 'õ' => 'o', 'ô' => 'o', 'ö' => 'o',
+            'ú' => 'u', 'ù' => 'u', 'û' => 'u', 'ü' => 'u',
+            'ç' => 'c',
+        ];
+
+        return strtr($text, $map);
+    }
+
+    protected function kb_plain_text($text)
+    {
+        $text = html_entity_decode($this->normalize_newlines($text), ENT_QUOTES, 'UTF-8');
+        $text = str_replace(['[list]', '[/list]'], "
+", $text);
+        $text = preg_replace('/\[\*\]/u', "
+- ", $text);
+        $text = preg_replace('~\[(?:/?)(?:quote|code|b|i|u|url|img|email|color|size|font|center|left|right|justify|attachment|media|flash|spoiler)(?:=[^\]]+)?(?::[a-z0-9]+)?\]~iu', '', $text);
+        $text = preg_replace('/
+{3,}/u', "
+
+", $text);
+
+        $lines = preg_split('/
+/u', $text);
+        $clean = [];
+        foreach ($lines as $line)
+        {
+            $line = trim(preg_replace('/\s+/u', ' ', $line));
+            if ($line !== '')
+            {
+                $clean[] = $line;
+            }
+        }
+
+        return trim(implode("
+", $clean));
+    }
+
+    protected function truncate_kb_plain_text($text, $limit = 420)
+    {
+        $text = trim((string) $text);
+        $limit = max(80, (int) $limit);
+
+        if ($text === '')
+        {
+            return '';
+        }
+
+        if (function_exists('mb_strlen') && function_exists('mb_substr'))
+        {
+            if (mb_strlen($text, 'UTF-8') <= $limit)
+            {
+                return $text;
+            }
+
+            $cut = mb_substr($text, 0, $limit, 'UTF-8');
+            $cut = preg_replace('/\s+\S*$/u', '', $cut);
+            return rtrim($cut, " 	
+
+ .,;:-") . '…';
+        }
+
+        if (strlen($text) <= $limit)
+        {
+            return $text;
+        }
+
+        $cut = substr($text, 0, $limit);
+        $cut = preg_replace('/\s+\S*$/', '', $cut);
+        return rtrim($cut, " 	
+
+ .,;:-") . '...';
     }
 
     protected function kb_manual_section_headings()

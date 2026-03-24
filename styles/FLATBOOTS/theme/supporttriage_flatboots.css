@@ -1,0 +1,153 @@
+.supporttriage-topic-panel,
+.supporttriage-snippets-panel,
+.supporttriage-kb-panel,
+#supporttriage-panel,
+#supporttriage-similar-panel {
+    background: #fff;
+    border: 1px solid #dde6ee;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    padding: 14px 16px;
+    margin: 0 0 14px;
+}
+
+.supporttriage-status-badge,
+.supporttriage-priority-badge,
+.supporttriage-alert-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    border: 1px solid transparent;
+}
+
+#supporttriage-panel .supporttriage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px 18px;
+}
+
+#supporttriage-panel .supporttriage-grid dl,
+#supporttriage-panel .supporttriage-stack dl {
+    margin: 0;
+}
+
+#supporttriage-panel .supporttriage-grid.fields2 dl,
+#supporttriage-panel .supporttriage-stack.fields2 dl {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#supporttriage-panel .supporttriage-grid.fields2 dt,
+#supporttriage-panel .supporttriage-grid.fields2 dd,
+#supporttriage-panel .supporttriage-stack.fields2 dt,
+#supporttriage-panel .supporttriage-stack.fields2 dd {
+    float: none;
+    width: auto;
+    margin: 0;
+}
+
+#supporttriage-panel .supporttriage-stack {
+    margin-top: 14px;
+}
+
+#supporttriage-panel .supporttriage-actions,
+.supporttriage-kb-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+#supporttriage-panel .supporttriage-conditional {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #eef2f5;
+}
+
+#supporttriage-panel .supporttriage-conditional.is-hidden {
+    display: none;
+}
+
+#supporttriage-panel label {
+    display: block;
+    margin: 0;
+    color: #344250;
+    font-weight: 700;
+}
+
+#supporttriage-panel input[type="text"],
+#supporttriage-panel select,
+#supporttriage-panel textarea,
+.supporttriage-snippet-text {
+    width: 100%;
+    min-height: 34px;
+    padding: 6px 10px;
+    color: #555;
+    background: #fff;
+    border: 1px solid #ccd6dd;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    box-sizing: border-box;
+}
+
+#supporttriage-panel textarea,
+.supporttriage-snippet-text {
+    min-height: 110px;
+    resize: vertical;
+}
+
+#supporttriage-panel input[type="text"]:focus,
+#supporttriage-panel select:focus,
+#supporttriage-panel textarea:focus,
+.supporttriage-snippet-text:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 6px rgba(102, 175, 233, 0.45);
+}
+
+.supporttriage-kb-message,
+#supporttriage-panel .supporttriage-note {
+    color: #6f7f8e;
+}
+
+.supporttriage-topic-panel .button1,
+.supporttriage-kb-panel .button1,
+#supporttriage-panel .button1 {
+    background: #0088cc;
+    border-color: #0088cc;
+    color: #fff;
+}
+
+.supporttriage-topic-panel .button1:hover,
+.supporttriage-kb-panel .button1:hover,
+#supporttriage-panel .button1:hover,
+.supporttriage-topic-panel .button1:focus,
+.supporttriage-kb-panel .button1:focus,
+#supporttriage-panel .button1:focus {
+    background: #006a9f;
+    border-color: #006a9f;
+    color: #fff;
+}
+
+@media (max-width: 767px) {
+    #supporttriage-panel .supporttriage-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #supporttriage-panel,
+    .supporttriage-kb-panel {
+        padding: 12px;
+    }
+
+    #supporttriage-panel .supporttriage-actions,
+    .supporttriage-kb-actions {
+        align-items: stretch;
+    }
+}

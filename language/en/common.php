@@ -165,6 +165,12 @@ $lang = array_merge($lang, [
     'SUPPORTTRIAGE_KB_SYNC_SUCCESS' => 'KB draft synchronized successfully.',
     'SUPPORTTRIAGE_KB_SYNC_ERROR' => 'The KB draft could not be synchronized automatically.',
     'SUPPORTTRIAGE_KB_FILL_HINT' => 'Fill this section based on the diagnosis made in the original topic.',
+    'SUPPORTTRIAGE_KB_AUTO_ORIGINAL_FROM_SYMPTOMS' => 'When accessing the board, the message described under “Confirmed symptoms” was displayed.',
+    'SUPPORTTRIAGE_KB_AUTO_CAUSE_GENERIC' => 'Based on the resolving reply, the issue was tied to the configuration or state described in the original topic and required the adjustment listed under “Applied solution”.',
+    'SUPPORTTRIAGE_KB_AUTO_SOLUTION_INSTALL' => 'Rename, move, or delete the [code]install[/code] directory to restore normal access to the board.',
+    'SUPPORTTRIAGE_KB_AUTO_CAUSE_INSTALL' => 'The [code]install[/code] directory was still present in the phpBB root after installation.',
+    'SUPPORTTRIAGE_KB_AUTO_NOTES_GENERIC' => 'Review the wording before publishing and adjust the final text to match the accepted reply from the original topic.',
+    'SUPPORTTRIAGE_KB_AUTO_NOTES_INSTALL' => 'This is normal phpBB security behavior. After finishing the installation, the [code]install[/code] directory should no longer remain accessible.',
 
     'ACP_SUPPORTTRIAGE_SNIPPETS_SETTINGS' => 'Staff canned replies',
     'ACP_SUPPORTTRIAGE_SNIPPETS_ENABLE' => 'Enable canned replies',
