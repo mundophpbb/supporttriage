@@ -142,7 +142,7 @@ $lang = array_merge($lang, [
     'ACP_SUPPORTTRIAGE_KB_LINKS_TOTAL' => 'Rascunhos KB criados',
 
     'SUPPORTTRIAGE_KB_TITLE' => 'Base de conhecimento',
-    'SUPPORTTRIAGE_KB_EXPLAIN' => 'Quando o tópico estiver resolvido, a equipe pode gerar um rascunho de base de conhecimento com link para o caso original.',
+    'SUPPORTTRIAGE_KB_EXPLAIN' => 'Após a resolução do tópico, a equipe poderá gerar um rascunho de artigo para a base de conhecimento, mantendo referência ao caso original.',
     'SUPPORTTRIAGE_KB_CREATE' => 'Criar rascunho KB',
     'SUPPORTTRIAGE_KB_CREATED' => 'Rascunho KB já criado',
     'SUPPORTTRIAGE_KB_CREATED_EXPLAIN' => 'Este tópico já gerou um rascunho/artigo de base de conhecimento.',
@@ -165,12 +165,9 @@ $lang = array_merge($lang, [
     'SUPPORTTRIAGE_KB_SYNC_SUCCESS' => 'Rascunho KB sincronizado com sucesso.',
     'SUPPORTTRIAGE_KB_SYNC_ERROR' => 'Não foi possível sincronizar o rascunho KB automaticamente.',
     'SUPPORTTRIAGE_KB_FILL_HINT' => 'Preencha esta seção com base no diagnóstico realizado no tópico original.',
-    'SUPPORTTRIAGE_KB_AUTO_ORIGINAL_FROM_SYMPTOMS' => 'Ao acessar o fórum, foi exibida a mensagem descrita em “Sintomas confirmados”.',
-    'SUPPORTTRIAGE_KB_AUTO_CAUSE_GENERIC' => 'Com base na resposta resolutiva, o problema estava ligado à configuração ou ao estado descrito no tópico original e exigiu o ajuste informado em “Solução aplicada”.',
-    'SUPPORTTRIAGE_KB_AUTO_SOLUTION_INSTALL' => 'Renomear, mover ou excluir a pasta [code]install[/code] para liberar o acesso normal ao fórum.',
+    'SUPPORTTRIAGE_KB_AUTO_REPORT_FROM_ERROR' => 'Ao acessar o fórum, foi exibida a mensagem abaixo.',
     'SUPPORTTRIAGE_KB_AUTO_CAUSE_INSTALL' => 'A pasta [code]install[/code] ainda estava presente na raiz do phpBB após a instalação.',
-    'SUPPORTTRIAGE_KB_AUTO_NOTES_GENERIC' => 'Revise o texto antes de publicar e ajuste a redação final conforme a resposta aceita no tópico original.',
-    'SUPPORTTRIAGE_KB_AUTO_NOTES_INSTALL' => 'Esse comportamento é normal no phpBB por segurança. Após concluir a instalação, a pasta [code]install[/code] não deve permanecer acessível.',
+    'SUPPORTTRIAGE_KB_AUTO_NOTES_INSTALL' => 'Esse comportamento é padrão no phpBB por segurança. Após concluir a instalação, a pasta [code]install[/code] não deve permanecer acessível.',
 
     'ACP_SUPPORTTRIAGE_SNIPPETS_SETTINGS' => 'Respostas prontas da equipe',
     'ACP_SUPPORTTRIAGE_SNIPPETS_ENABLE' => 'Ativar respostas prontas',

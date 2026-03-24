@@ -142,7 +142,7 @@ $lang = array_merge($lang, [
     'ACP_SUPPORTTRIAGE_KB_LINKS_TOTAL' => 'KB drafts created',
 
     'SUPPORTTRIAGE_KB_TITLE' => 'Knowledge base',
-    'SUPPORTTRIAGE_KB_EXPLAIN' => 'Once the topic is solved, the team can generate a knowledge-base draft linked to the original case.',
+    'SUPPORTTRIAGE_KB_EXPLAIN' => 'After the topic is resolved, the team can generate a knowledge base article draft while keeping a reference to the original case.',
     'SUPPORTTRIAGE_KB_CREATE' => 'Create KB draft',
     'SUPPORTTRIAGE_KB_CREATED' => 'KB draft already created',
     'SUPPORTTRIAGE_KB_CREATED_EXPLAIN' => 'This topic already generated a knowledge-base draft/article.',
@@ -165,12 +165,9 @@ $lang = array_merge($lang, [
     'SUPPORTTRIAGE_KB_SYNC_SUCCESS' => 'KB draft synchronized successfully.',
     'SUPPORTTRIAGE_KB_SYNC_ERROR' => 'The KB draft could not be synchronized automatically.',
     'SUPPORTTRIAGE_KB_FILL_HINT' => 'Fill this section based on the diagnosis made in the original topic.',
-    'SUPPORTTRIAGE_KB_AUTO_ORIGINAL_FROM_SYMPTOMS' => 'When accessing the board, the message described under “Confirmed symptoms” was displayed.',
-    'SUPPORTTRIAGE_KB_AUTO_CAUSE_GENERIC' => 'Based on the resolving reply, the issue was tied to the configuration or state described in the original topic and required the adjustment listed under “Applied solution”.',
-    'SUPPORTTRIAGE_KB_AUTO_SOLUTION_INSTALL' => 'Rename, move, or delete the [code]install[/code] directory to restore normal access to the board.',
+    'SUPPORTTRIAGE_KB_AUTO_REPORT_FROM_ERROR' => 'When accessing the board, the message below was displayed.',
     'SUPPORTTRIAGE_KB_AUTO_CAUSE_INSTALL' => 'The [code]install[/code] directory was still present in the phpBB root after installation.',
-    'SUPPORTTRIAGE_KB_AUTO_NOTES_GENERIC' => 'Review the wording before publishing and adjust the final text to match the accepted reply from the original topic.',
-    'SUPPORTTRIAGE_KB_AUTO_NOTES_INSTALL' => 'This is normal phpBB security behavior. After finishing the installation, the [code]install[/code] directory should no longer remain accessible.',
+    'SUPPORTTRIAGE_KB_AUTO_NOTES_INSTALL' => 'This behavior is expected in phpBB for security reasons. After installation is complete, the [code]install[/code] directory should not remain accessible.',
 
     'ACP_SUPPORTTRIAGE_SNIPPETS_SETTINGS' => 'Staff canned replies',
     'ACP_SUPPORTTRIAGE_SNIPPETS_ENABLE' => 'Enable canned replies',
