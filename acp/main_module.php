@@ -40,7 +40,7 @@ class main_module
 
         $export_filters = $this->get_export_filters($request);
 
-        $this->handle_export_request(
+        if ($this->handle_export_request(
             $db,
             $table_prefix,
             $user,
@@ -49,7 +49,10 @@ class main_module
             $kb_supported,
             $queue_supported,
             $export_filters
-        );
+        ))
+        {
+            return;
+        }
 
         $this->handle_clear_logs_request($db, $table_prefix, $user, $request, $logs_supported);
         $this->handle_clear_notices_request($db, $table_prefix, $user, $request);
@@ -296,8 +299,8 @@ class main_module
         {
             $template->assign_block_vars('supporttriage_snippet_rows', [
                 'ROW_INDEX' => (int) $index,
-                'TITLE' => htmlspecialchars((string) $snippet['snippet_title'], ENT_COMPAT, 'UTF-8'),
-                'TEXT' => htmlspecialchars((string) $snippet['snippet_text'], ENT_COMPAT, 'UTF-8'),
+                'TITLE' => $this->html($snippet['snippet_title']),
+                'TEXT' => $this->html($snippet['snippet_text']),
                 'SORT_ORDER' => (int) $snippet['sort_order'],
                 'S_ACTIVE' => !empty($snippet['is_active']),
             ]);
@@ -342,9 +345,9 @@ class main_module
         $template->assign_vars([
             'U_ACTION' => $this->u_action,
             'SUPPORTTRIAGE_ENABLE' => !empty($config['mundophpbb_supporttriage_enable']),
-            'SUPPORTTRIAGE_FORUMS' => htmlspecialchars((string) $config['mundophpbb_supporttriage_forums'], ENT_COMPAT, 'UTF-8'),
+            'SUPPORTTRIAGE_FORUMS' => $this->html($config['mundophpbb_supporttriage_forums']),
             'SUPPORTTRIAGE_AUTO_INSERT' => !empty($config['mundophpbb_supporttriage_auto_insert']),
-            'SUPPORTTRIAGE_PREFIX' => htmlspecialchars((string) $config['mundophpbb_supporttriage_prefix'], ENT_COMPAT, 'UTF-8'),
+            'SUPPORTTRIAGE_PREFIX' => $this->html($config['mundophpbb_supporttriage_prefix']),
             'SUPPORTTRIAGE_STATUS_ENABLE' => !empty($config['mundophpbb_supporttriage_status_enable']),
             'SUPPORTTRIAGE_DEFAULT_STATUS' => (string) $config['mundophpbb_supporttriage_default_status'],
             'S_SUPPORTTRIAGE_PRIORITY_SUPPORTED' => isset($config['mundophpbb_supporttriage_priority_enable']),
@@ -354,9 +357,9 @@ class main_module
             'SUPPORTTRIAGE_PRIORITY_AUTO_ENABLE' => isset($config['mundophpbb_supporttriage_priority_auto_enable']) ? !empty($config['mundophpbb_supporttriage_priority_auto_enable']) : false,
             'SUPPORTTRIAGE_PRIORITY_AUTO_STALE_DAYS' => isset($config['mundophpbb_supporttriage_priority_auto_stale_days']) ? (int) $config['mundophpbb_supporttriage_priority_auto_stale_days'] : 3,
             'SUPPORTTRIAGE_PRIORITY_AUTO_STALE_TARGET' => isset($config['mundophpbb_supporttriage_priority_auto_stale_target']) ? (string) $config['mundophpbb_supporttriage_priority_auto_stale_target'] : 'high',
-            'SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS' => isset($config['mundophpbb_supporttriage_priority_auto_forums']) ? htmlspecialchars((string) $config['mundophpbb_supporttriage_priority_auto_forums'], ENT_COMPAT, 'UTF-8') : '',
+            'SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS' => isset($config['mundophpbb_supporttriage_priority_auto_forums']) ? $this->html($config['mundophpbb_supporttriage_priority_auto_forums']) : '',
             'SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS_TARGET' => isset($config['mundophpbb_supporttriage_priority_auto_forums_target']) ? (string) $config['mundophpbb_supporttriage_priority_auto_forums_target'] : 'critical',
-            'SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TYPES' => isset($config['mundophpbb_supporttriage_priority_auto_issue_types']) ? htmlspecialchars((string) $config['mundophpbb_supporttriage_priority_auto_issue_types'], ENT_COMPAT, 'UTF-8') : 'permissions,email',
+            'SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TYPES' => isset($config['mundophpbb_supporttriage_priority_auto_issue_types']) ? $this->html($config['mundophpbb_supporttriage_priority_auto_issue_types']) : 'permissions,email',
             'SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TARGET' => isset($config['mundophpbb_supporttriage_priority_auto_issue_target']) ? (string) $config['mundophpbb_supporttriage_priority_auto_issue_target'] : 'high',
             'SUPPORTTRIAGE_COUNT_PRIORITY_LOW' => $priority_counts['low'],
             'SUPPORTTRIAGE_COUNT_PRIORITY_NORMAL' => $priority_counts['normal'],
@@ -384,8 +387,8 @@ class main_module
             'SUPPORTTRIAGE_ALERT_KB_LINKED' => isset($config['mundophpbb_supporttriage_alert_kb_linked']) ? !empty($config['mundophpbb_supporttriage_alert_kb_linked']) : true,
             'S_SUPPORTTRIAGE_KB_SUPPORTED' => isset($config['mundophpbb_supporttriage_kb_enable']),
             'SUPPORTTRIAGE_KB_ENABLE' => isset($config['mundophpbb_supporttriage_kb_enable']) ? !empty($config['mundophpbb_supporttriage_kb_enable']) : false,
-            'SUPPORTTRIAGE_KB_FORUM' => isset($config['mundophpbb_supporttriage_kb_forum']) ? htmlspecialchars((string) $config['mundophpbb_supporttriage_kb_forum'], ENT_COMPAT, 'UTF-8') : '',
-            'SUPPORTTRIAGE_KB_PREFIX' => isset($config['mundophpbb_supporttriage_kb_prefix']) ? htmlspecialchars((string) $config['mundophpbb_supporttriage_kb_prefix'], ENT_COMPAT, 'UTF-8') : '[KB Draft]',
+            'SUPPORTTRIAGE_KB_FORUM' => isset($config['mundophpbb_supporttriage_kb_forum']) ? $this->html($config['mundophpbb_supporttriage_kb_forum']) : '',
+            'SUPPORTTRIAGE_KB_PREFIX' => isset($config['mundophpbb_supporttriage_kb_prefix']) ? $this->html($config['mundophpbb_supporttriage_kb_prefix']) : '[KB Draft]',
             'SUPPORTTRIAGE_KB_LOCK' => isset($config['mundophpbb_supporttriage_kb_lock']) ? !empty($config['mundophpbb_supporttriage_kb_lock']) : true,
             'SUPPORTTRIAGE_KB_LINKS_COUNT' => $kb_links_count,
             'S_SUPPORTTRIAGE_SNIPPETS_SUPPORTED' => $snippets_supported,
@@ -425,7 +428,7 @@ class main_module
             'SUPPORTTRIAGE_EXPORT_ACTION' => $export_filters['action'],
             'SUPPORTTRIAGE_EXPORT_STATUS' => $export_filters['status'],
             'SUPPORTTRIAGE_EXPORT_PRIORITY' => $export_filters['priority'],
-            'SUPPORTTRIAGE_EXPORT_FORUMS' => htmlspecialchars($export_filters['forums_csv'], ENT_COMPAT, 'UTF-8'),
+            'SUPPORTTRIAGE_EXPORT_FORUMS' => $this->html($export_filters['forums_csv']),
             'SUPPORTTRIAGE_EXPORT_STALLED_ONLY' => !empty($export_filters['stalled_only']),
         ]);
     }
@@ -636,7 +639,7 @@ class main_module
 '
             . '    WHERE topic_moved_id = 0
 '
-            . '        AND topic_visibility = ' . $unapproved_value . '
+            . '        AND ' . $db->sql_in_set('topic_visibility', [(int) $unapproved_value]) . '
 '
             . '        AND ' . $db->sql_in_set('forum_id', array_map('intval', $forum_ids)) . '
 '
@@ -653,7 +656,7 @@ class main_module
 '
             . '    FROM ' . POSTS_TABLE . '
 '
-            . '    WHERE post_visibility = ' . $unapproved_value . '
+            . '    WHERE ' . $db->sql_in_set('post_visibility', [(int) $unapproved_value]) . '
 '
             . '        AND ' . $db->sql_in_set('forum_id', array_map('intval', $forum_ids)) . '
 '
@@ -793,7 +796,7 @@ class main_module
     {
         if (!$request->is_set_post('supporttriage_export'))
         {
-            return;
+            return false;
         }
 
         if (!check_form_key('mundophpbb_supporttriage'))
@@ -868,6 +871,8 @@ class main_module
                 $this->send_csv_download('supporttriage_open_queue_' . gmdate('Ymd_His') . '.csv', $headers, $rows);
             break;
         }
+
+        return true;
     }
 
     protected function get_export_filters($request)
@@ -1094,7 +1099,7 @@ class main_module
         $sql = 'SELECT COUNT(DISTINCT l.topic_id) AS total
             FROM ' . $this->logs_table($table_prefix) . ' l
             WHERE l.topic_id > 0
-                AND l.new_value = ' . "'" . $db->sql_escape('solved') . "'" . '
+                AND ' . $db->sql_in_set('l.new_value', ['solved']) . '
                 AND l.log_time >= ' . (int) $since;
         $result = $db->sql_query($sql);
         $row = $db->sql_fetchrow($result);
@@ -1222,7 +1227,7 @@ class main_module
         {
             $updated = !empty($row['status_updated']) ? (int) $row['status_updated'] : (int) $row['topic_time'];
             $rows[] = [
-                'TITLE' => htmlspecialchars((string) $row['topic_title'], ENT_COMPAT, 'UTF-8'),
+                'TITLE' => $this->html($row['topic_title']),
                 'TOPIC_URL' => append_sid('viewtopic.php', 'f=' . (int) $row['forum_id'] . '&t=' . (int) $row['topic_id']),
                 'STATUS_LABEL' => $this->status_label($user, $row['status_key']),
                 'UPDATED' => $updated > 0 ? $user->format_date($updated) : '',
@@ -1707,6 +1712,11 @@ class main_module
         }
 
         $filename = preg_replace('/[^a-zA-Z0-9._-]/', '_', (string) $filename);
+        if (ob_get_level())
+        {
+            @ob_end_clean();
+        }
+
         $handle = fopen('php://temp', 'w+');
         if ($handle === false)
         {
@@ -1728,9 +1738,8 @@ class main_module
         header('Pragma: no-cache');
         header('Expires: 0');
 
-        echo "\xEF\xBB\xBF";
-        echo $csv;
-        exit;
+        file_put_contents('php://output', "\xEF\xBB\xBF" . $csv);
+        return;
     }
 
     protected function sanitize_line($value, $max_length)
@@ -1756,5 +1765,16 @@ class main_module
             $value = utf8_normalize_nfc($value);
         }
         return $value;
+    }
+
+
+    protected function html($value)
+    {
+        return utf8_htmlspecialchars((string) $value);
+    }
+
+    protected function sql_int_equals($db, $column, $value)
+    {
+        return $db->sql_in_set($column, [(int) $value]);
     }
 }

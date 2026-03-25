@@ -915,7 +915,7 @@ class listener implements EventSubscriberInterface
 
         $sql = 'SELECT topic_poster
             FROM ' . TOPICS_TABLE . '
-            WHERE topic_id = ' . $topic_id;
+            WHERE ' . $this->sql_int_equals('topic_id', $topic_id);
         $result = $this->db->sql_query_limit($sql, 1);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
@@ -961,7 +961,7 @@ class listener implements EventSubscriberInterface
 
         $sql = 'UPDATE ' . $this->status_table() . '
             SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
-            WHERE topic_id = ' . $topic_id;
+            WHERE ' . $this->sql_int_equals('topic_id', $topic_id);
         $this->db->sql_query($sql);
 
         unset($this->topic_status_cache[$topic_id . ':0'], $this->topic_status_cache[$topic_id . ':1'], $this->automation_check_cache[$topic_id]);
@@ -1258,10 +1258,14 @@ class listener implements EventSubscriberInterface
         }
 
         $sql = 'SELECT *
-            FROM ' . $this->status_table() . '
-            WHERE forum_id = ' . $forum_id . "
-                AND status_key IN ('in_progress', 'waiting_reply', 'no_reply')
-            ORDER BY status_updated DESC, topic_id DESC";
+'
+            . 'FROM ' . $this->status_table() . '
+'
+            . 'WHERE ' . $this->sql_int_equals('forum_id', $forum_id) . '
+'
+            . "    AND status_key IN ('in_progress', 'waiting_reply', 'no_reply')
+"
+            . 'ORDER BY status_updated DESC, topic_id DESC';
         $result = $this->db->sql_query_limit($sql, 100);
         while ($row = $this->db->sql_fetchrow($result))
         {
@@ -1325,10 +1329,13 @@ class listener implements EventSubscriberInterface
         }
 
         $sql = 'SELECT notice_id, is_active
-            FROM ' . $this->notices_table() . "
-            WHERE topic_id = " . $topic_id . "
-                AND notice_key = '" . $this->db->sql_escape($notice_key) . "'
-            ORDER BY notice_id DESC";
+            FROM ' . $this->notices_table() . '
+'
+            . 'WHERE ' . $this->sql_int_equals('topic_id', $topic_id) . '
+'
+            . '    AND ' . $this->sql_string_equals('notice_key', $notice_key) . '
+'
+            . 'ORDER BY notice_id DESC';
         $result = $this->db->sql_query_limit($sql, 1);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
@@ -1353,7 +1360,7 @@ class listener implements EventSubscriberInterface
             {
                 $sql = 'UPDATE ' . $this->notices_table() . '
                     SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
-                    WHERE notice_id = ' . (int) $row['notice_id'];
+                    WHERE ' . $this->sql_int_equals('notice_id', (int) $row['notice_id']);
                 $this->db->sql_query($sql);
             }
             else
@@ -1366,7 +1373,7 @@ class listener implements EventSubscriberInterface
         {
             $sql = 'UPDATE ' . $this->notices_table() . '
                 SET is_active = 0
-                WHERE notice_id = ' . (int) $row['notice_id'];
+                WHERE ' . $this->sql_int_equals('notice_id', (int) $row['notice_id']);
             $this->db->sql_query($sql);
         }
 
@@ -1406,7 +1413,7 @@ class listener implements EventSubscriberInterface
 
         $sql = 'SELECT n.*
             FROM ' . $this->notices_table() . ' n
-            WHERE n.topic_id = ' . $topic_id . '
+            WHERE ' . $this->sql_int_equals('n.topic_id', $topic_id) . '
                 AND n.is_active = 1
             ORDER BY n.notice_time DESC, n.notice_id DESC';
         $result = $this->db->sql_query($sql);
@@ -1440,7 +1447,7 @@ class listener implements EventSubscriberInterface
             FROM ' . $this->notices_table() . ' n
             LEFT JOIN ' . TOPICS_TABLE . ' t
                 ON t.topic_id = n.topic_id
-            WHERE n.forum_id = ' . $forum_id . '
+            WHERE ' . $this->sql_int_equals('n.forum_id', $forum_id) . '
                 AND n.is_active = 1
             ORDER BY n.notice_time DESC, n.notice_id DESC';
         $result = $this->db->sql_query_limit($sql, $limit);
@@ -1754,7 +1761,7 @@ class listener implements EventSubscriberInterface
 
         $sql = 'SELECT forum_id
             FROM ' . TOPICS_TABLE . '
-            WHERE topic_id = ' . $topic_id;
+            WHERE ' . $this->sql_int_equals('topic_id', $topic_id);
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
@@ -1867,7 +1874,7 @@ class listener implements EventSubscriberInterface
 
         $sql = 'SELECT status_key, COUNT(topic_id) AS total
             FROM ' . $this->status_table() . '
-            WHERE forum_id = ' . $forum_id . '
+            WHERE ' . $this->sql_int_equals('forum_id', $forum_id) . '
             GROUP BY status_key';
         $result = $this->db->sql_query($sql);
         while ($row = $this->db->sql_fetchrow($result))
@@ -1898,16 +1905,26 @@ class listener implements EventSubscriberInterface
         {
             $threshold = time() - ($stale_days * 86400);
             $sql = 'SELECT st.topic_id, st.forum_id, st.status_key, st.status_updated, t.topic_title
-                FROM ' . $this->status_table() . ' st
-                LEFT JOIN ' . TOPICS_TABLE . ' t
-                    ON t.topic_id = st.topic_id
-                WHERE st.forum_id = ' . $forum_id . "
-                    AND st.status_key <> '" . $this->db->sql_escape('solved') . "'
-                    AND st.status_updated > 0
-                    AND st.status_updated <= " . (int) $threshold . "
-                    AND t.topic_moved_id = 0
-                    AND t.topic_visibility = 1
-                ORDER BY st.status_updated ASC, st.topic_id ASC";
+'
+                . 'FROM ' . $this->status_table() . ' st
+'
+                . 'LEFT JOIN ' . TOPICS_TABLE . ' t
+'
+                . '    ON t.topic_id = st.topic_id
+'
+                . 'WHERE ' . $this->sql_int_equals('st.forum_id', $forum_id) . '
+'
+                . '    AND ' . $this->db->sql_in_set('st.status_key', ['solved'], true) . '
+'
+                . '    AND st.status_updated > 0
+'
+                . '    AND st.status_updated <= ' . (int) $threshold . '
+'
+                . '    AND t.topic_moved_id = 0
+'
+                . '    AND t.topic_visibility = 1
+'
+                . 'ORDER BY st.status_updated ASC, st.topic_id ASC';
             $result = $this->db->sql_query_limit($sql, 6);
             while ($row = $this->db->sql_fetchrow($result))
             {
@@ -2334,13 +2351,13 @@ class listener implements EventSubscriberInterface
                 FROM ' . $status_table . ' st
                 LEFT JOIN ' . USERS_TABLE . ' u
                     ON u.user_id = st.status_user_id
-                WHERE st.topic_id = ' . $topic_id;
+                WHERE ' . $this->sql_int_equals('st.topic_id', $topic_id);
         }
         else
         {
             $sql = 'SELECT *
                 FROM ' . $status_table . '
-                WHERE topic_id = ' . $topic_id;
+                WHERE ' . $this->sql_int_equals('topic_id', $topic_id);
         }
 
         $result = $this->db->sql_query($sql);
@@ -2392,7 +2409,7 @@ class listener implements EventSubscriberInterface
         {
             $sql = 'UPDATE ' . $this->status_table() . '
                 SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
-                WHERE topic_id = ' . $topic_id;
+                WHERE ' . $this->sql_int_equals('topic_id', $topic_id);
             $this->db->sql_query($sql);
         }
         else
@@ -2429,9 +2446,13 @@ class listener implements EventSubscriberInterface
             return;
         }
 
-        $sql = 'UPDATE ' . $this->status_table() . "
-            SET priority_key = '" . $this->db->sql_escape($priority_key) . "'
-            WHERE topic_id = " . $topic_id;
+        $sql = 'UPDATE ' . $this->status_table() . '
+'
+            . 'SET ' . $this->db->sql_build_array('UPDATE', [
+                'priority_key' => $priority_key,
+            ]) . '
+'
+            . 'WHERE ' . $this->sql_int_equals('topic_id', $topic_id);
         $this->db->sql_query($sql);
 
         unset($this->topic_status_cache[$topic_id . ':0'], $this->topic_status_cache[$topic_id . ':1']);
@@ -2869,7 +2890,7 @@ class listener implements EventSubscriberInterface
             FROM ' . $this->logs_table() . ' l
             LEFT JOIN ' . USERS_TABLE . ' u
                 ON u.user_id = l.user_id
-            WHERE l.topic_id = ' . $topic_id . '
+            WHERE ' . $this->sql_int_equals('l.topic_id', $topic_id) . '
             ORDER BY l.log_time DESC, l.log_id DESC';
         $result = $this->db->sql_query_limit($sql, $limit);
 
@@ -3000,7 +3021,7 @@ class listener implements EventSubscriberInterface
 
         $sql = 'SELECT *
             FROM ' . $this->kb_links_table() . '
-            WHERE source_topic_id = ' . $source_topic_id;
+            WHERE ' . $this->sql_int_equals('source_topic_id', $source_topic_id);
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
@@ -3029,7 +3050,7 @@ class listener implements EventSubscriberInterface
         {
             $sql = 'UPDATE ' . $this->kb_links_table() . '
                 SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
-                WHERE source_topic_id = ' . (int) $source_topic_id;
+                WHERE ' . $this->sql_int_equals('source_topic_id', (int) $source_topic_id);
             $this->db->sql_query($sql);
         }
         else
@@ -3126,7 +3147,7 @@ class listener implements EventSubscriberInterface
         {
             $sql = 'UPDATE ' . TOPICS_TABLE . '
                 SET topic_status = ' . ITEM_LOCKED . '
-                WHERE topic_id = ' . $kb_topic_id;
+                WHERE ' . $this->sql_int_equals('topic_id', $kb_topic_id);
             $this->db->sql_query($sql);
         }
 
@@ -3197,7 +3218,7 @@ class listener implements EventSubscriberInterface
 
         $sql = 'UPDATE ' . POSTS_TABLE . '
             SET ' . $this->db->sql_build_array('UPDATE', $post_sql_ary) . '
-            WHERE post_id = ' . (int) $target['post_id'];
+            WHERE ' . $this->sql_int_equals('post_id', (int) $target['post_id']);
         $this->db->sql_query($sql);
 
         $topic_sql_ary = [
@@ -3211,7 +3232,7 @@ class listener implements EventSubscriberInterface
 
         $sql = 'UPDATE ' . TOPICS_TABLE . '
             SET ' . $this->db->sql_build_array('UPDATE', $topic_sql_ary) . '
-            WHERE topic_id = ' . (int) $target['topic_id'];
+            WHERE ' . $this->sql_int_equals('topic_id', (int) $target['topic_id']);
         $this->db->sql_query($sql);
 
         update_post_information('topic', (int) $target['topic_id']);
@@ -3236,7 +3257,7 @@ class listener implements EventSubscriberInterface
             FROM ' . TOPICS_TABLE . ' t
             LEFT JOIN ' . POSTS_TABLE . ' p
                 ON p.post_id = t.topic_first_post_id
-            WHERE t.topic_id = ' . $source_topic_id;
+            WHERE ' . $this->sql_int_equals('t.topic_id', $source_topic_id);
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
@@ -3258,7 +3279,7 @@ class listener implements EventSubscriberInterface
             FROM ' . TOPICS_TABLE . ' t
             LEFT JOIN ' . POSTS_TABLE . ' p
                 ON p.post_id = t.topic_first_post_id
-            WHERE t.topic_id = ' . $kb_topic_id;
+            WHERE ' . $this->sql_int_equals('t.topic_id', $kb_topic_id);
         $result = $this->db->sql_query($sql);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
@@ -3371,7 +3392,7 @@ class listener implements EventSubscriberInterface
         $sql = 'SELECT post_id, topic_id, forum_id, poster_id, post_subject, post_text, bbcode_uid, bbcode_bitfield,
                 enable_bbcode, enable_smilies, enable_magic_url, post_time
             FROM ' . POSTS_TABLE . '
-            WHERE topic_id = ' . $source_topic_id . '
+            WHERE ' . $this->sql_int_equals('topic_id', $source_topic_id) . '
                 AND post_visibility = 1
             ORDER BY post_time ASC, post_id ASC';
         $result = $this->db->sql_query($sql);
@@ -3767,7 +3788,7 @@ class listener implements EventSubscriberInterface
 
         $sql = 'SELECT topic_id, forum_id, topic_title, topic_last_post_time
             FROM ' . TOPICS_TABLE . '
-            WHERE forum_id = ' . $forum_id . '
+            WHERE ' . $this->sql_int_equals('forum_id', $forum_id) . '
                 AND topic_moved_id = 0
                 AND topic_visibility = 1
             ORDER BY topic_last_post_time DESC';
@@ -3830,6 +3851,16 @@ class listener implements EventSubscriberInterface
 
     protected function escape($value)
     {
-        return htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8');
+        return utf8_htmlspecialchars((string) $value);
+    }
+
+    protected function sql_int_equals($column, $value)
+    {
+        return $this->db->sql_in_set($column, [(int) $value]);
+    }
+
+    protected function sql_string_equals($column, $value)
+    {
+        return $this->db->sql_in_set($column, [(string) $value]);
     }
 }

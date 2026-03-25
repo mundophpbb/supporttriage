@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Support Triage Assistant for phpBB. Helps moderators and support teams efficiently categorize, tag and manage technical support topics.",
     "homepage": "https://github.com/mundophpbb/supporttriage",
-    "version": "3.4.3",
-    "license": "GPL-2.0-or-later",
+    "version": "3.4.5",
+    "license": "GPL-2.0-only",
     "authors": [
         {
             "name": "Chico Gois",
@@ -32,7 +32,7 @@
         "phpbb/epv": "dev-master"
     },
     "extra": {
-        "display-name": "MundoPHPBB Support Triage",
+        "display-name": "Support Triage",
         "soft-require": {
             "phpbb/phpbb": ">=3.3.0,<4.0.0@dev"
         },
