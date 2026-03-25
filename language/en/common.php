@@ -17,6 +17,16 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
     'ACP_SUPPORTTRIAGE_TITLE' => 'Support Triage',
     'ACP_SUPPORTTRIAGE_SETTINGS' => 'Support Triage settings',
+
+'ACP_SUPPORTTRIAGE_DASHBOARD_TAB' => 'Dashboard',
+'ACP_SUPPORTTRIAGE_GENERAL_TAB' => 'General settings',
+'ACP_SUPPORTTRIAGE_GENERAL_EXPLAIN' => 'Configure the core assistant, tracked forums, triage statuses, queue view, priorities and visual alerts.',
+'ACP_SUPPORTTRIAGE_AUTOMATION_TAB' => 'Automation',
+'ACP_SUPPORTTRIAGE_AUTOMATION_EXPLAIN_TAB' => 'Control workflow automations and the automatic priority escalation rules.',
+'ACP_SUPPORTTRIAGE_CONTENT_TAB' => 'Content and KB',
+'ACP_SUPPORTTRIAGE_CONTENT_EXPLAIN' => 'Manage knowledge-base integration and the canned reply library used by the support team.',
+'ACP_SUPPORTTRIAGE_DIAGNOSTICS_TAB' => 'Diagnostics and reports',
+'ACP_SUPPORTTRIAGE_DIAGNOSTICS_EXPLAIN_TAB' => 'Review permissions, health checks, approval diagnostics, metrics, logs and CSV exports.',
     'ACP_SUPPORTTRIAGE_EXPLAIN' => 'Adds a guided support report panel when users open new topics and a triage status layer for technical follow-up.',
     'ACP_SUPPORTTRIAGE_ENABLE' => 'Enable triage assistant',
     'ACP_SUPPORTTRIAGE_FORUMS' => 'Forum IDs',

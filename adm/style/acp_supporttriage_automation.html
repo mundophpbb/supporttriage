@@ -1,0 +1,113 @@
+<!-- INCLUDE overall_header.html -->
+
+<h1>{PAGE_TITLE}</h1>
+<p>{PAGE_EXPLAIN}</p>
+
+<form id="acp_supporttriage" method="post" action="{U_ACTION}">
+    <!-- IF S_SUPPORTTRIAGE_PRIORITY_AUTOMATION_SUPPORTED -->
+    <fieldset>
+        <legend>{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTOMATION_SETTINGS}</legend>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_priority_auto_enable">{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_ENABLE}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_ENABLE_EXPLAIN}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="mundophpbb_supporttriage_priority_auto_enable" name="mundophpbb_supporttriage_priority_auto_enable" value="1"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_ENABLE --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+                <label><input type="radio" class="radio" name="mundophpbb_supporttriage_priority_auto_enable" value="0"<!-- IF not SUPPORTTRIAGE_PRIORITY_AUTO_ENABLE --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_priority_auto_stale_days">{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_STALE_DAYS}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_STALE_DAYS_EXPLAIN}</span></dt>
+            <dd><input type="number" min="0" id="mundophpbb_supporttriage_priority_auto_stale_days" name="mundophpbb_supporttriage_priority_auto_stale_days" value="{SUPPORTTRIAGE_PRIORITY_AUTO_STALE_DAYS}" style="width: 90px;" /></dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_priority_auto_stale_target">{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_STALE_TARGET}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_STALE_TARGET_EXPLAIN}</span></dt>
+            <dd>
+                <select id="mundophpbb_supporttriage_priority_auto_stale_target" name="mundophpbb_supporttriage_priority_auto_stale_target">
+                    <option value="low"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_STALE_TARGET eq 'low' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_LOW}</option>
+                    <option value="normal"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_STALE_TARGET eq 'normal' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_NORMAL}</option>
+                    <option value="high"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_STALE_TARGET eq 'high' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_HIGH}</option>
+                    <option value="critical"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_STALE_TARGET eq 'critical' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_CRITICAL}</option>
+                </select>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_priority_auto_forums">{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS_EXPLAIN}</span></dt>
+            <dd><input type="text" id="mundophpbb_supporttriage_priority_auto_forums" name="mundophpbb_supporttriage_priority_auto_forums" value="{SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS}" size="40" maxlength="255" /></dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_priority_auto_forums_target">{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS_TARGET}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS_TARGET_EXPLAIN}</span></dt>
+            <dd>
+                <select id="mundophpbb_supporttriage_priority_auto_forums_target" name="mundophpbb_supporttriage_priority_auto_forums_target">
+                    <option value="low"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS_TARGET eq 'low' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_LOW}</option>
+                    <option value="normal"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS_TARGET eq 'normal' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_NORMAL}</option>
+                    <option value="high"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS_TARGET eq 'high' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_HIGH}</option>
+                    <option value="critical"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_FORUMS_TARGET eq 'critical' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_CRITICAL}</option>
+                </select>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_priority_auto_issue_types">{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TYPES}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TYPES_EXPLAIN}</span></dt>
+            <dd><input type="text" id="mundophpbb_supporttriage_priority_auto_issue_types" name="mundophpbb_supporttriage_priority_auto_issue_types" value="{SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TYPES}" size="40" maxlength="255" /></dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_priority_auto_issue_target">{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TARGET}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TARGET_EXPLAIN}</span></dt>
+            <dd>
+                <select id="mundophpbb_supporttriage_priority_auto_issue_target" name="mundophpbb_supporttriage_priority_auto_issue_target">
+                    <option value="low"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TARGET eq 'low' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_LOW}</option>
+                    <option value="normal"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TARGET eq 'normal' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_NORMAL}</option>
+                    <option value="high"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TARGET eq 'high' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_HIGH}</option>
+                    <option value="critical"<!-- IF SUPPORTTRIAGE_PRIORITY_AUTO_ISSUE_TARGET eq 'critical' --> selected="selected"<!-- ENDIF -->>{L_SUPPORTTRIAGE_PRIORITY_CRITICAL}</option>
+                </select>
+            </dd>
+        </dl>
+    </fieldset>
+    <!-- ENDIF -->
+
+    <!-- IF S_SUPPORTTRIAGE_AUTOMATION_SUPPORTED -->
+    <fieldset>
+        <legend>{L_ACP_SUPPORTTRIAGE_AUTOMATION_SETTINGS}</legend>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_automation_enable">{L_ACP_SUPPORTTRIAGE_AUTOMATION_ENABLE}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_AUTOMATION_ENABLE_EXPLAIN}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="mundophpbb_supporttriage_automation_enable" name="mundophpbb_supporttriage_automation_enable" value="1"<!-- IF SUPPORTTRIAGE_AUTOMATION_ENABLE --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+                <label><input type="radio" class="radio" name="mundophpbb_supporttriage_automation_enable" value="0"<!-- IF not SUPPORTTRIAGE_AUTOMATION_ENABLE --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_auto_waiting_reply">{L_ACP_SUPPORTTRIAGE_AUTO_WAITING_REPLY}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_AUTO_WAITING_REPLY_EXPLAIN}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="mundophpbb_supporttriage_auto_waiting_reply" name="mundophpbb_supporttriage_auto_waiting_reply" value="1"<!-- IF SUPPORTTRIAGE_AUTO_WAITING_REPLY --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+                <label><input type="radio" class="radio" name="mundophpbb_supporttriage_auto_waiting_reply" value="0"<!-- IF not SUPPORTTRIAGE_AUTO_WAITING_REPLY --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_auto_in_progress">{L_ACP_SUPPORTTRIAGE_AUTO_IN_PROGRESS}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_AUTO_IN_PROGRESS_EXPLAIN}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="mundophpbb_supporttriage_auto_in_progress" name="mundophpbb_supporttriage_auto_in_progress" value="1"<!-- IF SUPPORTTRIAGE_AUTO_IN_PROGRESS --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+                <label><input type="radio" class="radio" name="mundophpbb_supporttriage_auto_in_progress" value="0"<!-- IF not SUPPORTTRIAGE_AUTO_IN_PROGRESS --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_auto_no_reply_days">{L_ACP_SUPPORTTRIAGE_AUTO_NO_REPLY_DAYS}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_AUTO_NO_REPLY_DAYS_EXPLAIN}</span></dt>
+            <dd><input type="number" min="0" id="mundophpbb_supporttriage_auto_no_reply_days" name="mundophpbb_supporttriage_auto_no_reply_days" value="{SUPPORTTRIAGE_AUTO_NO_REPLY_DAYS}" style="width: 90px;" /></dd>
+        </dl>
+    </fieldset>
+    <!-- ENDIF -->
+    <fieldset class="submit-buttons">
+        <input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+        <input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+        {S_FORM_TOKEN}
+    </fieldset>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

@@ -23,8 +23,15 @@ class main_module
 
         $this->config = $config;
 
-        $this->tpl_name = 'acp_supporttriage_body';
-        $this->page_title = $user->lang('ACP_SUPPORTTRIAGE_SETTINGS');
+        if ($mode === 'settings')
+        {
+            $mode = 'dashboard';
+        }
+
+        $page_meta = $this->get_page_meta($user, $mode);
+
+        $this->tpl_name = $page_meta['template'];
+        $this->page_title = $page_meta['title'];
 
         add_form_key('mundophpbb_supporttriage');
 
@@ -58,127 +65,26 @@ class main_module
         $this->handle_clear_notices_request($db, $table_prefix, $user, $request);
         $this->handle_repair_topics_request($db, $table_prefix, $user, $request);
 
-        if ($request->is_set_post('submit'))
+        if ($page_meta['show_submit'] && $request->is_set_post('submit'))
         {
             if (!check_form_key('mundophpbb_supporttriage'))
             {
                 trigger_error('FORM_INVALID');
             }
 
-            $forums = preg_replace('/[^0-9,\s]/', '', $request->variable('mundophpbb_supporttriage_forums', '', true));
-            $prefix = trim($request->variable('mundophpbb_supporttriage_prefix', '', true));
-            $default_status = $request->variable('mundophpbb_supporttriage_default_status', 'new', true);
-            $allowed_statuses = ['new', 'in_progress', 'waiting_reply', 'solved', 'no_reply'];
-
-            if (!in_array($default_status, $allowed_statuses, true))
+            switch ($mode)
             {
-                $default_status = 'new';
-            }
+                case 'general':
+                    $this->save_general_settings($config, $request);
+                break;
 
-            $config->set('mundophpbb_supporttriage_enable', $request->variable('mundophpbb_supporttriage_enable', 0));
-            $config->set('mundophpbb_supporttriage_forums', trim($forums));
-            $config->set('mundophpbb_supporttriage_auto_insert', $request->variable('mundophpbb_supporttriage_auto_insert', 0));
-            $config->set('mundophpbb_supporttriage_prefix', $prefix);
-            $config->set('mundophpbb_supporttriage_status_enable', $request->variable('mundophpbb_supporttriage_status_enable', 0));
-            $config->set('mundophpbb_supporttriage_default_status', $default_status);
+                case 'automation':
+                    $this->save_automation_settings($config, $request);
+                break;
 
-            if (isset($config['mundophpbb_supporttriage_priority_enable']))
-            {
-                $default_priority = $request->variable('mundophpbb_supporttriage_default_priority', 'normal', true);
-                $allowed_priorities = ['low', 'normal', 'high', 'critical'];
-
-                if (!in_array($default_priority, $allowed_priorities, true))
-                {
-                    $default_priority = 'normal';
-                }
-
-                $config->set('mundophpbb_supporttriage_priority_enable', $request->variable('mundophpbb_supporttriage_priority_enable', 0));
-                $config->set('mundophpbb_supporttriage_default_priority', $default_priority);
-            }
-
-            if (isset($config['mundophpbb_supporttriage_priority_auto_enable']))
-            {
-                $auto_stale_days = max(0, (int) $request->variable('mundophpbb_supporttriage_priority_auto_stale_days', 3));
-                $auto_forums = preg_replace('/[^0-9,\s]/', '', $request->variable('mundophpbb_supporttriage_priority_auto_forums', '', true));
-                $auto_issue_types = $this->normalize_issue_type_csv($request->variable('mundophpbb_supporttriage_priority_auto_issue_types', '', true));
-                $allowed_priorities = ['low', 'normal', 'high', 'critical'];
-                $auto_stale_target = $request->variable('mundophpbb_supporttriage_priority_auto_stale_target', 'high', true);
-                $auto_forums_target = $request->variable('mundophpbb_supporttriage_priority_auto_forums_target', 'critical', true);
-                $auto_issue_target = $request->variable('mundophpbb_supporttriage_priority_auto_issue_target', 'high', true);
-
-                if (!in_array($auto_stale_target, $allowed_priorities, true))
-                {
-                    $auto_stale_target = 'high';
-                }
-
-                if (!in_array($auto_forums_target, $allowed_priorities, true))
-                {
-                    $auto_forums_target = 'critical';
-                }
-
-                if (!in_array($auto_issue_target, $allowed_priorities, true))
-                {
-                    $auto_issue_target = 'high';
-                }
-
-                $config->set('mundophpbb_supporttriage_priority_auto_enable', $request->variable('mundophpbb_supporttriage_priority_auto_enable', 0));
-                $config->set('mundophpbb_supporttriage_priority_auto_stale_days', $auto_stale_days);
-                $config->set('mundophpbb_supporttriage_priority_auto_stale_target', $auto_stale_target);
-                $config->set('mundophpbb_supporttriage_priority_auto_forums', trim($auto_forums));
-                $config->set('mundophpbb_supporttriage_priority_auto_forums_target', $auto_forums_target);
-                $config->set('mundophpbb_supporttriage_priority_auto_issue_types', $auto_issue_types);
-                $config->set('mundophpbb_supporttriage_priority_auto_issue_target', $auto_issue_target);
-            }
-
-            if (isset($config['mundophpbb_supporttriage_automation_enable']))
-            {
-                $auto_days = max(0, (int) $request->variable('mundophpbb_supporttriage_auto_no_reply_days', 7));
-
-                $config->set('mundophpbb_supporttriage_automation_enable', $request->variable('mundophpbb_supporttriage_automation_enable', 0));
-                $config->set('mundophpbb_supporttriage_auto_waiting_reply', $request->variable('mundophpbb_supporttriage_auto_waiting_reply', 0));
-                $config->set('mundophpbb_supporttriage_auto_in_progress', $request->variable('mundophpbb_supporttriage_auto_in_progress', 0));
-                $config->set('mundophpbb_supporttriage_auto_no_reply_days', $auto_days);
-            }
-
-            if (isset($config['mundophpbb_supporttriage_queue_enable']))
-            {
-                $queue_stale_days = max(0, (int) $request->variable('mundophpbb_supporttriage_queue_stale_days', 5));
-
-                $config->set('mundophpbb_supporttriage_queue_enable', $request->variable('mundophpbb_supporttriage_queue_enable', 0));
-                $config->set('mundophpbb_supporttriage_queue_stale_days', $queue_stale_days);
-            }
-
-            if (isset($config['mundophpbb_supporttriage_notifications_enable']))
-            {
-                $sla_hours = max(1, (int) $request->variable('mundophpbb_supporttriage_alert_sla_hours', 24));
-
-                $config->set('mundophpbb_supporttriage_notifications_enable', $request->variable('mundophpbb_supporttriage_notifications_enable', 0));
-                $config->set('mundophpbb_supporttriage_alert_author_return', $request->variable('mundophpbb_supporttriage_alert_author_return', 0));
-                $config->set('mundophpbb_supporttriage_alert_no_reply', $request->variable('mundophpbb_supporttriage_alert_no_reply', 0));
-                $config->set('mundophpbb_supporttriage_alert_sla_warning', $request->variable('mundophpbb_supporttriage_alert_sla_warning', 0));
-                $config->set('mundophpbb_supporttriage_alert_sla_hours', $sla_hours);
-                $config->set('mundophpbb_supporttriage_alert_kb_linked', $request->variable('mundophpbb_supporttriage_alert_kb_linked', 0));
-            }
-
-            if (isset($config['mundophpbb_supporttriage_kb_enable']))
-            {
-                $kb_forum = preg_replace('/[^0-9]/', '', $request->variable('mundophpbb_supporttriage_kb_forum', '', true));
-                $kb_prefix = trim($request->variable('mundophpbb_supporttriage_kb_prefix', '', true));
-                if ($kb_prefix === '')
-                {
-                    $kb_prefix = '[KB Draft]';
-                }
-
-                $config->set('mundophpbb_supporttriage_kb_enable', $request->variable('mundophpbb_supporttriage_kb_enable', 0));
-                $config->set('mundophpbb_supporttriage_kb_forum', $kb_forum);
-                $config->set('mundophpbb_supporttriage_kb_prefix', $kb_prefix);
-                $config->set('mundophpbb_supporttriage_kb_lock', $request->variable('mundophpbb_supporttriage_kb_lock', 0));
-            }
-
-            if ($snippets_supported)
-            {
-                $config->set('mundophpbb_supporttriage_snippets_enable', $request->variable('mundophpbb_supporttriage_snippets_enable', 0));
-                $this->save_snippets($db, $table_prefix, $user, $request);
+                case 'content':
+                    $this->save_content_settings($config, $request, $db, $table_prefix, $user, $snippets_supported);
+                break;
             }
 
             trigger_error($user->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
@@ -343,6 +249,13 @@ class main_module
         }
 
         $template->assign_vars([
+            'PAGE_TITLE' => $this->page_title,
+            'PAGE_EXPLAIN' => $page_meta['explain'],
+            'U_SUPPORTTRIAGE_PAGE_DASHBOARD' => $this->build_mode_url($this->u_action, 'dashboard'),
+            'U_SUPPORTTRIAGE_PAGE_GENERAL' => $this->build_mode_url($this->u_action, 'general'),
+            'U_SUPPORTTRIAGE_PAGE_AUTOMATION' => $this->build_mode_url($this->u_action, 'automation'),
+            'U_SUPPORTTRIAGE_PAGE_CONTENT' => $this->build_mode_url($this->u_action, 'content'),
+            'U_SUPPORTTRIAGE_PAGE_DIAGNOSTICS' => $this->build_mode_url($this->u_action, 'diagnostics'),
             'U_ACTION' => $this->u_action,
             'SUPPORTTRIAGE_ENABLE' => !empty($config['mundophpbb_supporttriage_enable']),
             'SUPPORTTRIAGE_FORUMS' => $this->html($config['mundophpbb_supporttriage_forums']),
@@ -431,6 +344,195 @@ class main_module
             'SUPPORTTRIAGE_EXPORT_FORUMS' => $this->html($export_filters['forums_csv']),
             'SUPPORTTRIAGE_EXPORT_STALLED_ONLY' => !empty($export_filters['stalled_only']),
         ]);
+    }
+
+
+    protected function get_page_meta($user, $mode)
+    {
+        switch ($mode)
+        {
+            case 'general':
+                return [
+                    'title' => $user->lang('ACP_SUPPORTTRIAGE_GENERAL_TAB'),
+                    'explain' => $user->lang('ACP_SUPPORTTRIAGE_GENERAL_EXPLAIN'),
+                    'show_submit' => true,
+                    'template' => 'acp_supporttriage_general',
+                ];
+
+            case 'automation':
+                return [
+                    'title' => $user->lang('ACP_SUPPORTTRIAGE_AUTOMATION_TAB'),
+                    'explain' => $user->lang('ACP_SUPPORTTRIAGE_AUTOMATION_EXPLAIN_TAB'),
+                    'show_submit' => true,
+                    'template' => 'acp_supporttriage_automation',
+                ];
+
+            case 'content':
+                return [
+                    'title' => $user->lang('ACP_SUPPORTTRIAGE_CONTENT_TAB'),
+                    'explain' => $user->lang('ACP_SUPPORTTRIAGE_CONTENT_EXPLAIN'),
+                    'show_submit' => true,
+                    'template' => 'acp_supporttriage_content',
+                ];
+
+            case 'diagnostics':
+                return [
+                    'title' => $user->lang('ACP_SUPPORTTRIAGE_DIAGNOSTICS_TAB'),
+                    'explain' => $user->lang('ACP_SUPPORTTRIAGE_DIAGNOSTICS_EXPLAIN_TAB'),
+                    'show_submit' => false,
+                    'template' => 'acp_supporttriage_diagnostics',
+                ];
+
+            case 'dashboard':
+            default:
+                return [
+                    'title' => $user->lang('ACP_SUPPORTTRIAGE_DASHBOARD_TAB'),
+                    'explain' => $user->lang('ACP_SUPPORTTRIAGE_DASHBOARD_EXPLAIN'),
+                    'show_submit' => false,
+                    'template' => 'acp_supporttriage_dashboard',
+                ];
+        }
+    }
+
+    protected function build_mode_url($url, $mode)
+    {
+        $url = html_entity_decode((string) $url, ENT_QUOTES, 'UTF-8');
+
+        if (preg_match('/([?&])mode=[^&]+/', $url))
+        {
+            $url = preg_replace('/([?&])mode=[^&]+/', '$1mode=' . $mode, $url, 1);
+        }
+        else
+        {
+            $url .= ((strpos($url, '?') === false) ? '?' : '&') . 'mode=' . $mode;
+        }
+
+        return str_replace('&', '&amp;', $url);
+    }
+
+    protected function save_general_settings($config, $request)
+    {
+        $forums = preg_replace('/[^0-9,\s]/', '', $request->variable('mundophpbb_supporttriage_forums', '', true));
+        $prefix = trim($request->variable('mundophpbb_supporttriage_prefix', '', true));
+        $default_status = $request->variable('mundophpbb_supporttriage_default_status', 'new', true);
+        $allowed_statuses = ['new', 'in_progress', 'waiting_reply', 'solved', 'no_reply'];
+
+        if (!in_array($default_status, $allowed_statuses, true))
+        {
+            $default_status = 'new';
+        }
+
+        $config->set('mundophpbb_supporttriage_enable', $request->variable('mundophpbb_supporttriage_enable', 0));
+        $config->set('mundophpbb_supporttriage_forums', trim($forums));
+        $config->set('mundophpbb_supporttriage_auto_insert', $request->variable('mundophpbb_supporttriage_auto_insert', 0));
+        $config->set('mundophpbb_supporttriage_prefix', $prefix);
+        $config->set('mundophpbb_supporttriage_status_enable', $request->variable('mundophpbb_supporttriage_status_enable', 0));
+        $config->set('mundophpbb_supporttriage_default_status', $default_status);
+
+        if (isset($config['mundophpbb_supporttriage_priority_enable']))
+        {
+            $default_priority = $request->variable('mundophpbb_supporttriage_default_priority', 'normal', true);
+            $allowed_priorities = ['low', 'normal', 'high', 'critical'];
+
+            if (!in_array($default_priority, $allowed_priorities, true))
+            {
+                $default_priority = 'normal';
+            }
+
+            $config->set('mundophpbb_supporttriage_priority_enable', $request->variable('mundophpbb_supporttriage_priority_enable', 0));
+            $config->set('mundophpbb_supporttriage_default_priority', $default_priority);
+        }
+
+        if (isset($config['mundophpbb_supporttriage_queue_enable']))
+        {
+            $queue_stale_days = max(0, (int) $request->variable('mundophpbb_supporttriage_queue_stale_days', 5));
+
+            $config->set('mundophpbb_supporttriage_queue_enable', $request->variable('mundophpbb_supporttriage_queue_enable', 0));
+            $config->set('mundophpbb_supporttriage_queue_stale_days', $queue_stale_days);
+        }
+
+        if (isset($config['mundophpbb_supporttriage_notifications_enable']))
+        {
+            $sla_hours = max(1, (int) $request->variable('mundophpbb_supporttriage_alert_sla_hours', 24));
+
+            $config->set('mundophpbb_supporttriage_notifications_enable', $request->variable('mundophpbb_supporttriage_notifications_enable', 0));
+            $config->set('mundophpbb_supporttriage_alert_author_return', $request->variable('mundophpbb_supporttriage_alert_author_return', 0));
+            $config->set('mundophpbb_supporttriage_alert_no_reply', $request->variable('mundophpbb_supporttriage_alert_no_reply', 0));
+            $config->set('mundophpbb_supporttriage_alert_sla_warning', $request->variable('mundophpbb_supporttriage_alert_sla_warning', 0));
+            $config->set('mundophpbb_supporttriage_alert_sla_hours', $sla_hours);
+            $config->set('mundophpbb_supporttriage_alert_kb_linked', $request->variable('mundophpbb_supporttriage_alert_kb_linked', 0));
+        }
+    }
+
+    protected function save_automation_settings($config, $request)
+    {
+        if (isset($config['mundophpbb_supporttriage_priority_auto_enable']))
+        {
+            $auto_stale_days = max(0, (int) $request->variable('mundophpbb_supporttriage_priority_auto_stale_days', 3));
+            $auto_forums = preg_replace('/[^0-9,\s]/', '', $request->variable('mundophpbb_supporttriage_priority_auto_forums', '', true));
+            $auto_issue_types = $this->normalize_issue_type_csv($request->variable('mundophpbb_supporttriage_priority_auto_issue_types', '', true));
+            $allowed_priorities = ['low', 'normal', 'high', 'critical'];
+            $auto_stale_target = $request->variable('mundophpbb_supporttriage_priority_auto_stale_target', 'high', true);
+            $auto_forums_target = $request->variable('mundophpbb_supporttriage_priority_auto_forums_target', 'critical', true);
+            $auto_issue_target = $request->variable('mundophpbb_supporttriage_priority_auto_issue_target', 'high', true);
+
+            if (!in_array($auto_stale_target, $allowed_priorities, true))
+            {
+                $auto_stale_target = 'high';
+            }
+
+            if (!in_array($auto_forums_target, $allowed_priorities, true))
+            {
+                $auto_forums_target = 'critical';
+            }
+
+            if (!in_array($auto_issue_target, $allowed_priorities, true))
+            {
+                $auto_issue_target = 'high';
+            }
+
+            $config->set('mundophpbb_supporttriage_priority_auto_enable', $request->variable('mundophpbb_supporttriage_priority_auto_enable', 0));
+            $config->set('mundophpbb_supporttriage_priority_auto_stale_days', $auto_stale_days);
+            $config->set('mundophpbb_supporttriage_priority_auto_stale_target', $auto_stale_target);
+            $config->set('mundophpbb_supporttriage_priority_auto_forums', trim($auto_forums));
+            $config->set('mundophpbb_supporttriage_priority_auto_forums_target', $auto_forums_target);
+            $config->set('mundophpbb_supporttriage_priority_auto_issue_types', $auto_issue_types);
+            $config->set('mundophpbb_supporttriage_priority_auto_issue_target', $auto_issue_target);
+        }
+
+        if (isset($config['mundophpbb_supporttriage_automation_enable']))
+        {
+            $auto_days = max(0, (int) $request->variable('mundophpbb_supporttriage_auto_no_reply_days', 7));
+
+            $config->set('mundophpbb_supporttriage_automation_enable', $request->variable('mundophpbb_supporttriage_automation_enable', 0));
+            $config->set('mundophpbb_supporttriage_auto_waiting_reply', $request->variable('mundophpbb_supporttriage_auto_waiting_reply', 0));
+            $config->set('mundophpbb_supporttriage_auto_in_progress', $request->variable('mundophpbb_supporttriage_auto_in_progress', 0));
+            $config->set('mundophpbb_supporttriage_auto_no_reply_days', $auto_days);
+        }
+    }
+
+    protected function save_content_settings($config, $request, $db, $table_prefix, $user, $snippets_supported)
+    {
+        if (isset($config['mundophpbb_supporttriage_kb_enable']))
+        {
+            $kb_forum = preg_replace('/[^0-9]/', '', $request->variable('mundophpbb_supporttriage_kb_forum', '', true));
+            $kb_prefix = trim($request->variable('mundophpbb_supporttriage_kb_prefix', '', true));
+            if ($kb_prefix === '')
+            {
+                $kb_prefix = '[KB Draft]';
+            }
+
+            $config->set('mundophpbb_supporttriage_kb_enable', $request->variable('mundophpbb_supporttriage_kb_enable', 0));
+            $config->set('mundophpbb_supporttriage_kb_forum', $kb_forum);
+            $config->set('mundophpbb_supporttriage_kb_prefix', $kb_prefix);
+            $config->set('mundophpbb_supporttriage_kb_lock', $request->variable('mundophpbb_supporttriage_kb_lock', 0));
+        }
+
+        if ($snippets_supported)
+        {
+            $config->set('mundophpbb_supporttriage_snippets_enable', $request->variable('mundophpbb_supporttriage_snippets_enable', 0));
+            $this->save_snippets($db, $table_prefix, $user, $request);
+        }
     }
 
     protected function normalize_issue_type_csv($value)

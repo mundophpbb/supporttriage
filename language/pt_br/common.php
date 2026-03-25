@@ -17,6 +17,16 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
     'ACP_SUPPORTTRIAGE_TITLE' => 'Support Triage',
     'ACP_SUPPORTTRIAGE_SETTINGS' => 'Configurações do Support Triage',
+
+'ACP_SUPPORTTRIAGE_DASHBOARD_TAB' => 'Painel',
+'ACP_SUPPORTTRIAGE_GENERAL_TAB' => 'Configurações gerais',
+'ACP_SUPPORTTRIAGE_GENERAL_EXPLAIN' => 'Configure o assistente principal, fóruns monitorados, status de triagem, fila do MCP, prioridades e alertas visuais.',
+'ACP_SUPPORTTRIAGE_AUTOMATION_TAB' => 'Automação',
+'ACP_SUPPORTTRIAGE_AUTOMATION_EXPLAIN_TAB' => 'Controle as automações do fluxo e as regras de elevação automática de prioridade.',
+'ACP_SUPPORTTRIAGE_CONTENT_TAB' => 'Conteúdo e KB',
+'ACP_SUPPORTTRIAGE_CONTENT_EXPLAIN' => 'Gerencie a integração com a base de conhecimento e a biblioteca de respostas prontas usadas pela equipe.',
+'ACP_SUPPORTTRIAGE_DIAGNOSTICS_TAB' => 'Diagnóstico e relatórios',
+'ACP_SUPPORTTRIAGE_DIAGNOSTICS_EXPLAIN_TAB' => 'Revise permissões, saúde da extensão, diagnóstico de aprovação, métricas, logs e exportações CSV.',
     'ACP_SUPPORTTRIAGE_EXPLAIN' => 'Adiciona um painel guiado de suporte ao abrir novos tópicos e uma camada de status de triagem para acompanhamento técnico.',
     'ACP_SUPPORTTRIAGE_ENABLE' => 'Ativar assistente de triagem',
     'ACP_SUPPORTTRIAGE_FORUMS' => 'IDs dos fóruns',

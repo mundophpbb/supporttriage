@@ -1,0 +1,67 @@
+<!-- INCLUDE overall_header.html -->
+
+<h1>{PAGE_TITLE}</h1>
+<p>{PAGE_EXPLAIN}</p>
+
+<form id="acp_supporttriage" method="post" action="{U_ACTION}">
+    <fieldset id="supporttriage-dashboard">
+        <legend>{L_ACP_SUPPORTTRIAGE_DASHBOARD}</legend>
+        <p>{L_ACP_SUPPORTTRIAGE_DASHBOARD_EXPLAIN}</p>
+
+        <div class="columns2">
+            <div class="column1">
+                <h3>{L_ACP_SUPPORTTRIAGE_DASHBOARD_SUMMARY}</h3>
+                <dl>
+                    <dt>{L_ACP_SUPPORTTRIAGE_DASHBOARD_OPEN_TOPICS}{L_COLON}</dt>
+                    <dd><strong>{SUPPORTTRIAGE_DASHBOARD_OPEN_TOPICS}</strong></dd>
+                </dl>
+                <dl>
+                    <dt>{L_ACP_SUPPORTTRIAGE_DASHBOARD_URGENT_TOPICS}{L_COLON}</dt>
+                    <dd><strong>{SUPPORTTRIAGE_DASHBOARD_URGENT_TOPICS}</strong></dd>
+                </dl>
+                <dl>
+                    <dt>{L_ACP_SUPPORTTRIAGE_DASHBOARD_NOTICES}{L_COLON}</dt>
+                    <dd><strong>{SUPPORTTRIAGE_ACTIVE_NOTICE_COUNT}</strong></dd>
+                </dl>
+                <dl>
+                    <dt>{L_ACP_SUPPORTTRIAGE_DASHBOARD_TRACKED_FORUMS}{L_COLON}</dt>
+                    <dd><strong>{SUPPORTTRIAGE_DASHBOARD_TRACKED_FORUMS}</strong></dd>
+                </dl>
+                <dl>
+                    <dt>{L_ACP_SUPPORTTRIAGE_DASHBOARD_HEALTH}{L_COLON}</dt>
+                    <dd><strong>{SUPPORTTRIAGE_DASHBOARD_HEALTH_LABEL}</strong><br /><span>{SUPPORTTRIAGE_DASHBOARD_HEALTH_DETAILS}</span></dd>
+                </dl>
+            </div>
+            <div class="column2">
+                <h3>{L_ACP_SUPPORTTRIAGE_DASHBOARD_QUICK_ACTIONS}</h3>
+                <p>
+                    <a class="button2" href="{U_SUPPORTTRIAGE_PAGE_DIAGNOSTICS}#supporttriage-overview">{L_ACP_SUPPORTTRIAGE_DASHBOARD_GO_OVERVIEW}</a>
+                    <a class="button2" href="{U_SUPPORTTRIAGE_PAGE_DIAGNOSTICS}#supporttriage-metrics">{L_ACP_SUPPORTTRIAGE_DASHBOARD_GO_METRICS}</a>
+                    <a class="button2" href="{U_SUPPORTTRIAGE_PAGE_DIAGNOSTICS}#supporttriage-health">{L_ACP_SUPPORTTRIAGE_DASHBOARD_GO_HEALTH}</a>
+                    <a class="button2" href="{U_SUPPORTTRIAGE_PAGE_DIAGNOSTICS}#supporttriage-approval">{L_ACP_SUPPORTTRIAGE_DASHBOARD_GO_APPROVAL}</a>
+                    <a class="button2" href="{U_SUPPORTTRIAGE_PAGE_DIAGNOSTICS}#supporttriage-exports">{L_ACP_SUPPORTTRIAGE_DASHBOARD_GO_EXPORTS}</a>
+                </p>
+                <h3>{L_ACP_SUPPORTTRIAGE_DASHBOARD_TODAY}</h3>
+                <dl>
+                    <dt>{L_ACP_SUPPORTTRIAGE_DASHBOARD_LAST_PERIOD}{L_COLON}</dt>
+                    <dd>{SUPPORTTRIAGE_DASHBOARD_LAST_PERIOD}</dd>
+                </dl>
+                <dl>
+                    <dt>{L_ACP_SUPPORTTRIAGE_METRICS_ACTIONS}{L_COLON}</dt>
+                    <dd><strong>{SUPPORTTRIAGE_DASHBOARD_LAST_ACTIONS}</strong></dd>
+                </dl>
+                <dl>
+                    <dt>{L_ACP_SUPPORTTRIAGE_METRICS_TOPICS_SOLVED}{L_COLON}</dt>
+                    <dd><strong>{SUPPORTTRIAGE_DASHBOARD_LAST_SOLVED}</strong></dd>
+                </dl>
+                <dl>
+                    <dt>{L_ACP_SUPPORTTRIAGE_QUEUE_ENABLE}{L_COLON}</dt>
+                    <dd>{SUPPORTTRIAGE_DASHBOARD_QUEUE_STATUS}</dd>
+                </dl>
+            </div>
+        </div>
+    </fieldset>
+    {S_FORM_TOKEN}
+</form>
+
+<!-- INCLUDE overall_footer.html -->

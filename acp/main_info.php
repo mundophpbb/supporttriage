@@ -14,8 +14,28 @@ class main_info
             'filename' => '\\mundophpbb\\supporttriage\\acp\\main_module',
             'title' => 'ACP_SUPPORTTRIAGE_TITLE',
             'modes' => [
-                'settings' => [
-                    'title' => 'ACP_SUPPORTTRIAGE_SETTINGS',
+                'dashboard' => [
+                    'title' => 'ACP_SUPPORTTRIAGE_DASHBOARD_TAB',
+                    'auth' => 'acl_a_supporttriage_manage',
+                    'cat' => ['ACP_SUPPORTTRIAGE_TITLE'],
+                ],
+                'general' => [
+                    'title' => 'ACP_SUPPORTTRIAGE_GENERAL_TAB',
+                    'auth' => 'acl_a_supporttriage_manage',
+                    'cat' => ['ACP_SUPPORTTRIAGE_TITLE'],
+                ],
+                'automation' => [
+                    'title' => 'ACP_SUPPORTTRIAGE_AUTOMATION_TAB',
+                    'auth' => 'acl_a_supporttriage_manage',
+                    'cat' => ['ACP_SUPPORTTRIAGE_TITLE'],
+                ],
+                'content' => [
+                    'title' => 'ACP_SUPPORTTRIAGE_CONTENT_TAB',
+                    'auth' => 'acl_a_supporttriage_manage',
+                    'cat' => ['ACP_SUPPORTTRIAGE_TITLE'],
+                ],
+                'diagnostics' => [
+                    'title' => 'ACP_SUPPORTTRIAGE_DIAGNOSTICS_TAB',
                     'auth' => 'acl_a_supporttriage_manage',
                     'cat' => ['ACP_SUPPORTTRIAGE_TITLE'],
                 ],

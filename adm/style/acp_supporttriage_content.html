@@ -1,0 +1,101 @@
+<!-- INCLUDE overall_header.html -->
+
+<h1>{PAGE_TITLE}</h1>
+<p>{PAGE_EXPLAIN}</p>
+
+<form id="acp_supporttriage" method="post" action="{U_ACTION}">
+    <!-- IF S_SUPPORTTRIAGE_KB_SUPPORTED -->
+    <fieldset>
+        <legend>{L_ACP_SUPPORTTRIAGE_KB_SETTINGS}</legend>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_kb_enable">{L_ACP_SUPPORTTRIAGE_KB_ENABLE}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_KB_ENABLE_EXPLAIN}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="mundophpbb_supporttriage_kb_enable" name="mundophpbb_supporttriage_kb_enable" value="1"<!-- IF SUPPORTTRIAGE_KB_ENABLE --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+                <label><input type="radio" class="radio" name="mundophpbb_supporttriage_kb_enable" value="0"<!-- IF not SUPPORTTRIAGE_KB_ENABLE --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_kb_forum">{L_ACP_SUPPORTTRIAGE_KB_FORUM}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_KB_FORUM_EXPLAIN}</span></dt>
+            <dd><input type="text" id="mundophpbb_supporttriage_kb_forum" name="mundophpbb_supporttriage_kb_forum" value="{SUPPORTTRIAGE_KB_FORUM}" size="20" maxlength="20" /></dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_kb_prefix">{L_ACP_SUPPORTTRIAGE_KB_PREFIX}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_KB_PREFIX_EXPLAIN}</span></dt>
+            <dd><input type="text" id="mundophpbb_supporttriage_kb_prefix" name="mundophpbb_supporttriage_kb_prefix" value="{SUPPORTTRIAGE_KB_PREFIX}" size="40" maxlength="100" /></dd>
+        </dl>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_kb_lock">{L_ACP_SUPPORTTRIAGE_KB_LOCK}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_KB_LOCK_EXPLAIN}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="mundophpbb_supporttriage_kb_lock" name="mundophpbb_supporttriage_kb_lock" value="1"<!-- IF SUPPORTTRIAGE_KB_LOCK --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+                <label><input type="radio" class="radio" name="mundophpbb_supporttriage_kb_lock" value="0"<!-- IF not SUPPORTTRIAGE_KB_LOCK --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+            </dd>
+        </dl>
+    </fieldset>
+    <!-- ENDIF -->
+
+    <!-- IF S_SUPPORTTRIAGE_SNIPPETS_SUPPORTED -->
+    <fieldset>
+        <legend>{L_ACP_SUPPORTTRIAGE_SNIPPETS_SETTINGS}</legend>
+
+        <dl>
+            <dt><label for="mundophpbb_supporttriage_snippets_enable">{L_ACP_SUPPORTTRIAGE_SNIPPETS_ENABLE}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_SNIPPETS_ENABLE_EXPLAIN}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="mundophpbb_supporttriage_snippets_enable" name="mundophpbb_supporttriage_snippets_enable" value="1"<!-- IF SUPPORTTRIAGE_SNIPPETS_ENABLE --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+                <label><input type="radio" class="radio" name="mundophpbb_supporttriage_snippets_enable" value="0"<!-- IF not SUPPORTTRIAGE_SNIPPETS_ENABLE --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+            </dd>
+        </dl>
+
+        <p>{L_ACP_SUPPORTTRIAGE_SNIPPETS_EXPLAIN}</p>
+
+        <table class="table1">
+            <thead>
+                <tr>
+                    <th>{L_ACP_SUPPORTTRIAGE_SNIPPET_ORDER}</th>
+                    <th>{L_ACP_SUPPORTTRIAGE_SNIPPET_TITLE}</th>
+                    <th>{L_ACP_SUPPORTTRIAGE_SNIPPET_TEXT}</th>
+                    <th>{L_ACP_SUPPORTTRIAGE_SNIPPET_ACTIVE}</th>
+                    <th>{L_DELETE}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- BEGIN supporttriage_snippet_rows -->
+                <tr>
+                    <td><input type="number" min="1" name="snippet_sort[{supporttriage_snippet_rows.ROW_INDEX}]" value="{supporttriage_snippet_rows.SORT_ORDER}" style="width: 70px;" /></td>
+                    <td><input type="text" name="snippet_title[{supporttriage_snippet_rows.ROW_INDEX}]" value="{supporttriage_snippet_rows.TITLE}" style="width: 100%; box-sizing: border-box;" maxlength="255" /></td>
+                    <td><textarea name="snippet_text[{supporttriage_snippet_rows.ROW_INDEX}]" rows="5" style="width: 100%; box-sizing: border-box;">{supporttriage_snippet_rows.TEXT}</textarea></td>
+                    <td style="text-align: center;"><input type="checkbox" name="snippet_active[{supporttriage_snippet_rows.ROW_INDEX}]" value="1"<!-- IF supporttriage_snippet_rows.S_ACTIVE --> checked="checked"<!-- ENDIF --> /></td>
+                    <td style="text-align: center;"><input type="checkbox" name="snippet_delete[{supporttriage_snippet_rows.ROW_INDEX}]" value="1" /></td>
+                </tr>
+                <!-- BEGINELSE -->
+                <tr>
+                    <td colspan="5">{L_ACP_SUPPORTTRIAGE_SNIPPETS_EMPTY}</td>
+                </tr>
+                <!-- END supporttriage_snippet_rows -->
+            </tbody>
+        </table>
+
+        <dl>
+            <dt><label for="new_snippet_title">{L_ACP_SUPPORTTRIAGE_SNIPPET_NEW}{L_COLON}</label><br /><span>{L_ACP_SUPPORTTRIAGE_SNIPPET_NEW_EXPLAIN}</span></dt>
+            <dd>
+                <p><input type="text" id="new_snippet_title" name="new_snippet_title" value="" size="60" maxlength="255" placeholder="{L_ACP_SUPPORTTRIAGE_SNIPPET_TITLE}" /></p>
+                <p><textarea id="new_snippet_text" name="new_snippet_text" rows="6" cols="70" placeholder="{L_ACP_SUPPORTTRIAGE_SNIPPET_TEXT}"></textarea></p>
+                <p>
+                    <label>{L_ACP_SUPPORTTRIAGE_SNIPPET_ORDER}{L_COLON} <input type="number" min="1" name="new_snippet_sort" value="{SUPPORTTRIAGE_NEW_SNIPPET_SORT}" style="width: 70px;" /></label>
+                    &nbsp;&nbsp;
+                    <label><input type="checkbox" name="new_snippet_active" value="1" checked="checked" /> {L_ACP_SUPPORTTRIAGE_SNIPPET_ACTIVE}</label>
+                </p>
+            </dd>
+        </dl>
+    </fieldset>
+    <!-- ENDIF -->
+    <fieldset class="submit-buttons">
+        <input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+        <input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+        {S_FORM_TOKEN}
+    </fieldset>
+</form>
+
+<!-- INCLUDE overall_footer.html -->
