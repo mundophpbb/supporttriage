@@ -41,4 +41,26 @@ class v1000_install extends \phpbb\db\migration\migration
             ]],
         ];
     }
+
+    public function revert_data()
+    {
+        return [
+            ['module.remove', [
+                'acp',
+                'ACP_SUPPORTTRIAGE_TITLE',
+                [
+                    'module_basename' => '\\mundophpbb\\supporttriage\\acp\\main_module',
+                    'modes' => ['settings'],
+                ],
+            ]],
+            ['module.remove', [
+                'acp',
+                'ACP_SUPPORTTRIAGE_TITLE',
+            ]],
+            ['config.remove', ['mundophpbb_supporttriage_prefix']],
+            ['config.remove', ['mundophpbb_supporttriage_auto_insert']],
+            ['config.remove', ['mundophpbb_supporttriage_forums']],
+            ['config.remove', ['mundophpbb_supporttriage_enable']],
+        ];
+    }
 }

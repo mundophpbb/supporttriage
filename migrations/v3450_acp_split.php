@@ -51,14 +51,6 @@ class v3450_acp_split extends \phpbb\db\migration\migration
                     'modes' => ['dashboard', 'general', 'automation', 'content', 'diagnostics'],
                 ],
             ]],
-            ['module.add', [
-                'acp',
-                'ACP_SUPPORTTRIAGE_TITLE',
-                [
-                    'module_basename' => '\\mundophpbb\\supporttriage\\acp\\main_module',
-                    'modes' => ['settings'],
-                ],
-            ]],
         ];
     }
 }
