@@ -12,32 +12,32 @@ class main_info
     {
         return [
             'filename' => '\\mundophpbb\\supporttriage\\acp\\main_module',
-            'title' => 'ACP_SUPPORTTRIAGE_TITLE',
-            'modes' => [
+            'title'    => 'ACP_SUPPORTTRIAGE_TITLE',
+            'modes'    => [
                 'dashboard' => [
                     'title' => 'ACP_SUPPORTTRIAGE_DASHBOARD_TAB',
-                    'auth' => 'acl_a_supporttriage_manage',
-                    'cat' => ['ACP_SUPPORTTRIAGE_TITLE'],
+                    'auth'  => 'ext_mundophpbb/supporttriage && acl_a_supporttriage_manage',
+                    'cat'   => ['ACP_SUPPORTTRIAGE_TITLE'],
                 ],
                 'general' => [
                     'title' => 'ACP_SUPPORTTRIAGE_GENERAL_TAB',
-                    'auth' => 'acl_a_supporttriage_manage',
-                    'cat' => ['ACP_SUPPORTTRIAGE_TITLE'],
+                    'auth'  => 'ext_mundophpbb/supporttriage && acl_a_supporttriage_manage',
+                    'cat'   => ['ACP_SUPPORTTRIAGE_TITLE'],
                 ],
                 'automation' => [
                     'title' => 'ACP_SUPPORTTRIAGE_AUTOMATION_TAB',
-                    'auth' => 'acl_a_supporttriage_manage',
-                    'cat' => ['ACP_SUPPORTTRIAGE_TITLE'],
+                    'auth'  => 'ext_mundophpbb/supporttriage && acl_a_supporttriage_manage',
+                    'cat'   => ['ACP_SUPPORTTRIAGE_TITLE'],
                 ],
                 'content' => [
                     'title' => 'ACP_SUPPORTTRIAGE_CONTENT_TAB',
-                    'auth' => 'acl_a_supporttriage_manage',
-                    'cat' => ['ACP_SUPPORTTRIAGE_TITLE'],
+                    'auth'  => 'ext_mundophpbb/supporttriage && acl_a_supporttriage_manage',
+                    'cat'   => ['ACP_SUPPORTTRIAGE_TITLE'],
                 ],
                 'diagnostics' => [
                     'title' => 'ACP_SUPPORTTRIAGE_DIAGNOSTICS_TAB',
-                    'auth' => 'acl_a_supporttriage_manage',
-                    'cat' => ['ACP_SUPPORTTRIAGE_TITLE'],
+                    'auth'  => 'ext_mundophpbb/supporttriage && acl_a_supporttriage_manage',
+                    'cat'   => ['ACP_SUPPORTTRIAGE_TITLE'],
                 ],
             ],
         ];
