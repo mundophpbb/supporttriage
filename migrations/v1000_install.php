@@ -236,8 +236,13 @@ class v1000_install extends \phpbb\db\migration\migration
                 'ACP_SUPPORTTRIAGE_TITLE',
             ]],
 
-            // Remove permissões
-            ['custom', [[$this, 'remove_all_permissions']]],
+            // Remove permissões nativamente
+            ['permission.remove', ['a_supporttriage_manage']],
+            ['permission.remove', ['m_supporttriage_status']],
+            ['permission.remove', ['m_supporttriage_snippets']],
+            ['permission.remove', ['m_supporttriage_kb_create']],
+            ['permission.remove', ['m_supporttriage_kb_sync']],
+            ['permission.remove', ['m_supporttriage_priority']],
 
             // Remove todas as configurações
             ['config.remove', ['mundophpbb_supporttriage_enable']],
