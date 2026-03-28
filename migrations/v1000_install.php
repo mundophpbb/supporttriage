@@ -10,7 +10,10 @@ class v1000_install extends \phpbb\db\migration\migration
 {
     public function effectively_installed()
     {
-        return isset($this->config['mundophpbb_supporttriage_enable']);
+        return isset($this->config['mundophpbb_supporttriage_enable'])
+            && $this->db_tools->sql_table_exists($this->table_prefix . 'supporttriage_topics')
+            && $this->acp_category_exists('ACP_CAT_DOT_MODS', 'ACP_SUPPORTTRIAGE_TITLE')
+            && $this->acp_module_exists('\\mundophpbb\\supporttriage\\acp\\main_module', 'dashboard');
     }
 
     static public function depends_on()
@@ -229,7 +232,16 @@ class v1000_install extends \phpbb\db\migration\migration
     public function revert_data()
     {
         return [
-            // Remove módulo completamente
+            // Remove primeiro os modos filhos e depois a categoria ACP
+            ['module.remove', [
+                'acp',
+                'ACP_SUPPORTTRIAGE_TITLE',
+                [
+                    'module_basename' => '\\mundophpbb\\supporttriage\\acp\\main_module',
+                    'modes' => ['dashboard', 'general', 'automation', 'content', 'diagnostics'],
+                ],
+            ]],
+
             ['module.remove', [
                 'acp',
                 'ACP_CAT_DOT_MODS',
@@ -306,12 +318,47 @@ class v1000_install extends \phpbb\db\migration\migration
     protected function auth_option_exists($auth_option)
     {
         $sql = 'SELECT auth_option_id
-                FROM ' . ACL_OPTIONS_TABLE . "
-                WHERE auth_option = '" . $this->db->sql_escape($auth_option) . "'";
+                FROM ' . ACL_OPTIONS_TABLE . '
+                WHERE ' . $this->sql_string_equals('auth_option', $auth_option);
         $result = $this->db->sql_query_limit($sql, 1);
         $row = $this->db->sql_fetchrow($result);
         $this->db->sql_freeresult($result);
 
         return !empty($row['auth_option_id']);
+    }
+
+    protected function acp_category_exists($parent_langname, $category_langname)
+    {
+        $sql = 'SELECT m.module_id
+            FROM ' . MODULES_TABLE . ' m
+            INNER JOIN ' . MODULES_TABLE . ' p
+                ON p.module_id = m.parent_id
+            WHERE ' . $this->sql_string_equals('m.module_class', 'acp') . '
+                AND ' . $this->sql_string_equals('m.module_langname', $category_langname) . '
+                AND ' . $this->sql_string_equals('p.module_langname', $parent_langname);
+        $result = $this->db->sql_query_limit($sql, 1);
+        $module_id = (int) $this->db->sql_fetchfield('module_id');
+        $this->db->sql_freeresult($result);
+
+        return $module_id > 0;
+    }
+
+    protected function acp_module_exists($module_basename, $module_mode)
+    {
+        $sql = 'SELECT module_id
+            FROM ' . MODULES_TABLE . '
+            WHERE ' . $this->sql_string_equals('module_class', 'acp') . '
+                AND ' . $this->sql_string_equals('module_basename', $module_basename) . '
+                AND ' . $this->sql_string_equals('module_mode', $module_mode);
+        $result = $this->db->sql_query_limit($sql, 1);
+        $module_id = (int) $this->db->sql_fetchfield('module_id');
+        $this->db->sql_freeresult($result);
+
+        return $module_id > 0;
+    }
+
+    protected function sql_string_equals($column, $value)
+    {
+        return $this->db->sql_in_set($column, [(string) $value]);
     }
 }

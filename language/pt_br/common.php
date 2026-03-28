@@ -29,6 +29,7 @@ $lang = array_merge($lang, [
 'ACP_SUPPORTTRIAGE_DIAGNOSTICS_EXPLAIN_TAB' => 'Revise permissões, saúde da extensão, diagnóstico de aprovação, métricas, logs e exportações CSV.',
     'ACP_SUPPORTTRIAGE_EXPLAIN' => 'Adiciona um painel guiado de suporte ao abrir novos tópicos e uma camada de status de triagem para acompanhamento técnico.',
     'ACP_SUPPORTTRIAGE_ENABLE' => 'Ativar assistente de triagem',
+    'ACP_SUPPORTTRIAGE_ENABLE_EXPLAIN' => 'Chave geral dos recursos da extensão. Isto não desativa a extensão no Gerenciador de Extensões do phpBB e não bloqueia o acesso ao módulo do ACP.',
     'ACP_SUPPORTTRIAGE_FORUMS' => 'IDs dos fóruns',
     'ACP_SUPPORTTRIAGE_FORUMS_EXPLAIN' => 'Informe os IDs dos fóruns separados por vírgula onde o assistente e os status devem aparecer. Deixe vazio para ativar em todos os fóruns.',
     'ACP_SUPPORTTRIAGE_AUTO_INSERT' => 'Inserir e atualizar relatório automaticamente',

@@ -19,11 +19,6 @@ class main_module
     {
         global $config, $db, $request, $template, $user, $table_prefix;
 
-        // Proteção importante: impede acesso se a extensão estiver desativada
-        if (empty($config['mundophpbb_supporttriage_enable'])) {
-            trigger_error('ACP_SUPPORTTRIAGE_NOT_ENABLED', E_USER_WARNING);
-        }
-
         $user->add_lang_ext('mundophpbb/supporttriage', 'common');
 
         $this->config = $config;
@@ -664,7 +659,8 @@ class main_module
         $post_counts = [];
 
         $sql = 'SELECT forum_id, COUNT(topic_id) AS total FROM ' . TOPICS_TABLE . '
-                WHERE topic_moved_id = 0 AND topic_visibility = ' . $unapproved_value . '
+                WHERE topic_moved_id = 0
+                AND ' . $db->sql_in_set('topic_visibility', [(int) $unapproved_value]) . '
                 AND ' . $db->sql_in_set('forum_id', array_map('intval', $forum_ids)) . ' GROUP BY forum_id';
         $result = $db->sql_query($sql);
         while ($row = $db->sql_fetchrow($result)) {
@@ -673,7 +669,7 @@ class main_module
         $db->sql_freeresult($result);
 
         $sql = 'SELECT forum_id, COUNT(post_id) AS total FROM ' . POSTS_TABLE . '
-                WHERE post_visibility = ' . $unapproved_value . '
+                WHERE ' . $db->sql_in_set('post_visibility', [(int) $unapproved_value]) . '
                 AND ' . $db->sql_in_set('forum_id', array_map('intval', $forum_ids)) . ' GROUP BY forum_id';
         $result = $db->sql_query($sql);
         while ($row = $db->sql_fetchrow($result)) {
@@ -1132,7 +1128,7 @@ class main_module
         if (!empty($filters['since'])) $where[] = 'l.log_time >= ' . (int) $filters['since'];
         if (!empty($filters['forum_ids'])) $where[] = $db->sql_in_set('l.forum_id', array_map('intval', $filters['forum_ids']));
         if (!empty($filters['action']) && $filters['action'] !== 'all') {
-            $where[] = "l.action_key = '" . $db->sql_escape($filters['action']) . "'";
+            $where[] = $this->sql_string_equals($db, 'l.action_key', $filters['action']);
         }
 
         $sql = 'SELECT l.*, u.username FROM ' . $this->logs_table($table_prefix) . ' l
@@ -1180,9 +1176,9 @@ class main_module
         ];
 
         if (!empty($filters['forum_ids'])) $where[] = $db->sql_in_set('st.forum_id', array_map('intval', $filters['forum_ids']));
-        if (!empty($filters['status']) && $filters['status'] !== 'all') $where[] = "st.status_key = '" . $db->sql_escape($filters['status']) . "'";
+        if (!empty($filters['status']) && $filters['status'] !== 'all') $where[] = $this->sql_string_equals($db, 'st.status_key', $filters['status']);
         if (!empty($filters['priority']) && $filters['priority'] !== 'all' && isset($config['mundophpbb_supporttriage_priority_enable'])) {
-            $where[] = "st.priority_key = '" . $db->sql_escape($filters['priority']) . "'";
+            $where[] = $this->sql_string_equals($db, 'st.priority_key', $filters['priority']);
         }
         if (!empty($filters['since'])) $where[] = 'st.status_updated >= ' . (int) $filters['since'];
         if (!empty($filters['stalled_only']) && $stale_threshold > 0) $where[] = 'st.status_updated <= ' . (int) $stale_threshold;
@@ -1454,5 +1450,10 @@ class main_module
     protected function html($value)
     {
         return utf8_htmlspecialchars((string) $value);
+    }
+
+    protected function sql_string_equals($db, $column, $value)
+    {
+        return $db->sql_in_set($column, [(string) $value]);
     }
 }

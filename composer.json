@@ -35,12 +35,6 @@
         "display-name": "Support Triage",
         "soft-require": {
             "phpbb/phpbb": ">=3.3.0,<4.0.0@dev"
-        },
-        "version-check": {
-            "host": "raw.githubusercontent.com",
-            "directory": "mundophpbb/supporttriage/master",
-            "filename": "version_check.json",
-            "ssl": true
         }
     }
 }

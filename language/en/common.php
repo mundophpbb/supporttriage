@@ -29,6 +29,7 @@ $lang = array_merge($lang, [
 'ACP_SUPPORTTRIAGE_DIAGNOSTICS_EXPLAIN_TAB' => 'Review permissions, health checks, approval diagnostics, metrics, logs and CSV exports.',
     'ACP_SUPPORTTRIAGE_EXPLAIN' => 'Adds a guided support report panel when users open new topics and a triage status layer for technical follow-up.',
     'ACP_SUPPORTTRIAGE_ENABLE' => 'Enable triage assistant',
+    'ACP_SUPPORTTRIAGE_ENABLE_EXPLAIN' => 'Master switch for the extension features. This does not disable the extension in phpBB Extension Management and does not block access to the ACP module.',
     'ACP_SUPPORTTRIAGE_FORUMS' => 'Forum IDs',
     'ACP_SUPPORTTRIAGE_FORUMS_EXPLAIN' => 'Comma-separated forum IDs where the assistant and the triage statuses should appear. Leave empty to enable it in every forum.',
     'ACP_SUPPORTTRIAGE_AUTO_INSERT' => 'Auto insert and update report',
